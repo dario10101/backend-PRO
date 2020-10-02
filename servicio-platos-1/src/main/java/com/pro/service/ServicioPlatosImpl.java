@@ -11,6 +11,7 @@ import com.pro.repository.RepositorioPlatos;
 
 import lombok.RequiredArgsConstructor;
 
+
 @Service
 @RequiredArgsConstructor
 public class ServicioPlatosImpl implements ServicioPlatos{	
