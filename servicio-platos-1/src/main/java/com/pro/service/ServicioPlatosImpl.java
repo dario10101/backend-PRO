@@ -2,7 +2,7 @@ package com.pro.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pro.entity.Plato;
@@ -52,6 +52,8 @@ public class ServicioPlatosImpl implements ServicioPlatos{
         
 		//verificar si existe
 		Plato plato_encontrado = buscarPlatoPorId(platoNuevo.getIdPlato());
+		
+		//verificar por nombre
 		
 		//el plato ya existe
 		if (plato_encontrado != null){
