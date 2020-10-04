@@ -9,7 +9,7 @@ spring:
           uri: https://github.com/dario10101/backend-PRO.git
           searchPaths: config-data
           username: ${GIT_USER}
-          password: ${GIT-PASSWORD}
+          password: ${GIT_PASSWORD}
           default-label: "master"
   security:
     user:
