@@ -1,5 +1,0 @@
-server:
-  port: 8091
-  error:
-    include-message: always
-    include-binding-errors: always
