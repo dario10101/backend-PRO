@@ -1,8 +1,11 @@
+server:
+  port: 8091
+  
 spring:
   application:
     name: servicio-platos-1
   cloud:
     config:
-      uri: http://localhost:8082
+      uri: http://localhost:8081
       username: root
       password: s3cr3t
