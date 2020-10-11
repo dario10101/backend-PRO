@@ -10,6 +10,7 @@ import javax.validation.Valid;
 //import org.apache.http.HttpStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -32,15 +34,15 @@ import com.pro.service.ServicioPlatos;
 @RestController
 @RequestMapping (value = "/platos")
 public class ControladorPlatos {
-
+	
+	
 	@Autowired
     private ServicioPlatos miServicioPlatos;
-	
-	@GetMapping
-	public ResponseEntity<List<Plato>> listarPlatos(){
-		List<Plato> platos = miServicioPlatos.listarPlatos();
 
-		//System.out.println("\n\ntam lista: " + platos.size() + "\n\n\n");
+	@GetMapping
+	public ResponseEntity<List<Plato>> listarPlatos(){	
+		
+		List<Plato> platos = miServicioPlatos.listarPlatos();
 		
         if(platos.size() <= 0){
             return ResponseEntity.noContent().build();
