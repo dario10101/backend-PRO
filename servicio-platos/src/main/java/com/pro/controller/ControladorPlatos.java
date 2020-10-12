@@ -10,7 +10,6 @@ import javax.validation.Valid;
 //import org.apache.http.HttpStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -104,7 +102,8 @@ public class ControladorPlatos {
 	public ResponseEntity<Plato> crearPlato(@Valid @RequestBody Plato plato, BindingResult result){
         //System.out.println("\nLlega, id: \n" + plato.getIdPlato() + " desc: " + plato.getDescPlato() + "\n\n");
 		
-		if (result.hasErrors()){        
+		if (result.hasErrors()){     
+			System.out.println("\n\nTiene errores.\n\n");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));
         }
         
@@ -177,14 +176,14 @@ public class ControladorPlatos {
 	
 	
 	/* test
-    {
-	    "nombre_plato": "afrroz con pollo",
-	    "desc_plato": "arroz, pollo, salchicha",
-	    "img_plato": "sin imagen",
-	    "categoria_plato": "especial",
-	    "status_plato": "ACTIVATED",
-	    "cantidad_plato": 12,
-	    "id_rest": 1 
+    {	    
+	    "nombrePlato": "afrroz con pollo",
+	    "descPlato": "arroz, pollo, salchicha",
+	    "imgPlato": "sin imagen",
+	    "categoriaPlato": "especial",
+	    "statusPlato": "ACTIVATED",
+	    "cantidadPlato": 12,
+	    "idRest": 1 
 	}
     */
 }	

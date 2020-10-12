@@ -11,9 +11,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.sun.istack.NotNull;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -58,7 +59,7 @@ public class Plato {
     @Column(name = "ingredientes_plato")
     private String ingredientesPlato;
 
-    @NotNull
+    @NotNull(message = "El restaurante no puede ser vacio")
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn (name = "id_rest")
     @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})

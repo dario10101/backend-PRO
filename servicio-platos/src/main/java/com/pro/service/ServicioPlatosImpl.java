@@ -48,10 +48,12 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 	@Override
 	public Plato crearPlato(Plato plato) {
 		//construir plato valido
-		Plato platoNuevo = this.construirNuevoPlato(plato);			
-        
+		this.validarPlato(plato);			
+        		
 		//verificar si existe
-		Plato plato_encontrado = buscarPlatoPorId(platoNuevo.getIdPlato());
+		Plato plato_encontrado = null;
+		if(plato.getIdPlato() != null)
+			plato_encontrado = buscarPlatoPorId(plato.getIdPlato());
 		
 		//verificar por nombre
 		
@@ -59,10 +61,14 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		if (plato_encontrado != null){
 			System.out.println("\nPlato exixtente\n");
             return null;
-        }				
+        }	
+		
+		if(plato.getPrecioPlato() == null) {
+			plato.setPrecioPlato(0.0);
+		}
 		
 		//System.out.println("\n\nid del plato: " + plato.getIdPlato() + "\n\\n");
-        return miRepositorioPlatos.save(platoNuevo);
+        return miRepositorioPlatos.save(plato);
 	}
 
 	@Override
@@ -126,39 +132,23 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 	
 	
 	//TODO ¿este metodo debe ir aqui?
-	private Plato construirNuevoPlato(Plato platoBase) {
+	private Plato validarPlato(Plato platoBase) {
 		
 		//validar status
-		String status = platoBase.getStatusPlato();
 		if (platoBase.getStatusPlato() == null) {
-			status = "ACTIVATED";
+			platoBase.setStatusPlato("ACTIVATED");
 		}
-		if(!status.equals("ACTIVATED") && status.equals("DELETED")) {
-			status = "ACTIVATED";
+		if(!(platoBase.getStatusPlato().equals("ACTIVATED") || platoBase.getStatusPlato().equals("DELETED"))) {
+			platoBase.setStatusPlato("ACTIVATED");
 		}
 		
 		//validar cantidad
 		Double cantidad = platoBase.getCantidadPlato();
 		if(cantidad == null){
-			cantidad = 0.0;
+			platoBase.setCantidadPlato(0.0);
 		}
-		
-		//crear el plato valido
-		Plato plNuevo;
-		plNuevo = Plato.builder()
-				.idPlato(platoBase.getIdPlato())
-                .nombrePlato("Sancocho")
-                .descPlato("De gallina muerta")
-                .precioPlato(15000.0)
-                .imgPlato("sin imagen")
-                .categoriaPlato("Especial")
-                .statusPlato(status)
-                .cantidadPlato(15.0)
-                .ingredientesPlato("ENTRADAS INGREDIENTES POSTRES")
-                .restaurante(Restaurante.builder().idRest(2L).build())
-                .build();
-		
-		return plNuevo;
+				
+		return platoBase;
 	}
 	
 	
