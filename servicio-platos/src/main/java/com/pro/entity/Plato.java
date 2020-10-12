@@ -59,7 +59,7 @@ public class Plato {
     @Column(name = "ingredientes_plato")
     private String ingredientesPlato;
 
-    @NotNull(message = "El restaurante no puede ser vacio")
+    //@NotNull(message = "El restaurante no puede ser vacio")
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn (name = "id_rest")
     @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
