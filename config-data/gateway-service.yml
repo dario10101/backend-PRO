@@ -17,3 +17,9 @@ spring:
           uri: lb://servicio-platos
           predicates:
             - Path=/platos/**
+          
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
