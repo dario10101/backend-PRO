@@ -147,14 +147,14 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		Plato plNuevo;
 		plNuevo = Plato.builder()
 				.idPlato(platoBase.getIdPlato())
-                .nombrePlato("Sancocho")
-                .descPlato("De gallina muerta")
-                .precioPlato(15000.0)
+                .nombrePlato(platoBase.getNombrePlato())
+                .descPlato(platoBase.getDescPlato())
+                .precioPlato(platoBase.getPrecioPlato())
                 .imgPlato("sin imagen")
-                .categoriaPlato("Especial")
+                .categoriaPlato(platoBase.getCategoriaPlato())
                 .statusPlato(status)
-                .cantidadPlato(15.0)
-                .ingredientesPlato("ENTRADAS INGREDIENTES POSTRES")
+                .cantidadPlato(platoBase.getCantidadPlato())
+                .ingredientesPlato(platoBase.getIngredientesPlato())
                 .restaurante(Restaurante.builder().idRest(2L).build())
                 .build();
 		
