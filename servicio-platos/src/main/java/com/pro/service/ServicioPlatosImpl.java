@@ -61,11 +61,7 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		if (plato_encontrado != null){
 			System.out.println("\nPlato exixtente\n");
             return null;
-        }	
-		
-		if(plato.getPrecioPlato() == null) {
-			plato.setPrecioPlato(0.0);
-		}
+        }			
 		
 		//System.out.println("\n\nid del plato: " + plato.getIdPlato() + "\n\\n");
         return miRepositorioPlatos.save(plato);
@@ -146,6 +142,11 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		Double cantidad = platoBase.getCantidadPlato();
 		if(cantidad == null){
 			platoBase.setCantidadPlato(0.0);
+		}
+		
+		//validar precio
+		if(platoBase.getPrecioPlato() == null) {
+			platoBase.setPrecioPlato(0.0);
 		}
 				
 		return platoBase;
