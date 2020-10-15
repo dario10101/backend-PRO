@@ -36,7 +36,7 @@ public class ControladorPlatos {
 	
 	@Autowired
     private ServicioPlatos miServicioPlatos;
-
+    //TODO
 	@GetMapping
 	public ResponseEntity<List<Plato>> listarPlatos(){	
 		
@@ -58,6 +58,7 @@ public class ControladorPlatos {
         return ResponseEntity.ok(plato);
     }
 	
+	//TODO
 	@GetMapping(value = "buscar-por-nombre/{nombre}")
     public ResponseEntity<List<Plato>> buscarPlatoPorNombre(@PathVariable("nombre") String nombrePlato) {
         List<Plato> platos =  miServicioPlatos.buscarPlatoPorNombre(nombrePlato);
@@ -98,6 +99,7 @@ public class ControladorPlatos {
         return ResponseEntity.ok(platos);
     }
 	
+	//TODO
 	@PostMapping
 	public ResponseEntity<Plato> crearPlato(@Valid @RequestBody Plato plato, BindingResult result){
         //System.out.println("\nLlega, id: \n" + plato.getIdPlato() + " desc: " + plato.getDescPlato() + "\n\n");
@@ -113,6 +115,7 @@ public class ControladorPlatos {
         return ResponseEntity.status(HttpStatus.CREATED).body(plato_creado);        
     }
 	
+	//TODO
 	@PutMapping(value = "/actualizar-plato/{id}")
     public ResponseEntity<Plato> actualizarPlato(@PathVariable("id") Long id, @RequestBody Plato plato){
         plato.setIdPlato(id);
@@ -123,6 +126,7 @@ public class ControladorPlatos {
         return ResponseEntity.ok(plato_encontrado);
     }
 	
+	//TODO
 	@DeleteMapping(value = "/eliminar-plato/{id}")
     public ResponseEntity<Plato> eliminarPlato(@PathVariable("id") Long id){
 		Plato plato_encontrado = miServicioPlatos.eliminarPlato(id);

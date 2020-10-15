@@ -2,6 +2,7 @@ package com.pro;
 
 import java.util.List;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -42,8 +43,28 @@ public class RepositorioPlatosMockTest {
         	System.out.println("nombre: " + platos.get(i).getNombrePlato());
         }
         System.out.println("\n\n");
-        //Assertions.assertThat(founds.size()).isEqualTo(3);
-
-
+        Assertions.assertThat(platos.size()).isEqualTo(3);
     }
+	
+	@Test
+	public void buscarPorNombre()
+	{
+		Plato platoRecuperado = Plato.builder()
+                .nombrePlato("Bandeja paisa")
+                .descPlato("Plato especial del dia")
+                .precioPlato(12.500)
+                .imgPlato("Sin imagen")
+                .categoriaPlato("especial")
+                .statusPlato("ACTIVATE")
+                .cantidadPlato(15.0)
+                .ingredientesPlato("Frijoles, huevo, arroz, chicharron,salchicha")
+                .restaurante(Restaurante.builder().idRest(1L).build())
+                .build();
+
+		miRepositorioPlatos.save(platoRecuperado);
+		List<Plato> listaPlatos = miRepositorioPlatos.findByNombrePlato("Bandeja paisa");
+		Assertions.assertThat(listaPlatos.size()).isEqualTo(1);
+		
+	}
+	
 }

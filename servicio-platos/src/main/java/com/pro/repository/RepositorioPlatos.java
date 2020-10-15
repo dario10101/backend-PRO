@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface RepositorioPlatos extends JpaRepository<Plato, Long> {
 	
 	public List<Plato> findByRestaurante(Restaurante restaurante);
-	
+	//TODO
 	public List<Plato> findByNombrePlato(String nombre_plato);
 	
 	public List<Plato> findByStatusPlato(String status_plato);
