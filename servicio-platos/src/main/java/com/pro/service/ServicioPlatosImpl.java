@@ -2,11 +2,13 @@ package com.pro.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pro.client.RestauranteClient;
 import com.pro.entity.Plato;
-import com.pro.entity.Restaurante;
+import com.pro.model.Restaurante;
 import com.pro.repository.RepositorioPlatos;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,9 @@ import lombok.RequiredArgsConstructor;
 public class ServicioPlatosImpl implements ServicioPlatos{	
 
 	private final RepositorioPlatos miRepositorioPlatos;
+	
+	@Autowired
+	RestauranteClient clienteRestaurante;
 	
 	@Override
 	public List<Plato> listarPlatos() {
@@ -61,7 +66,14 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		if (plato_encontrado != null){
 			System.out.println("\nPlato exixtente\n");
             return null;
-        }			
+        }	
+		
+		
+		//crear restaurante
+		if(plato.getIdRest() != null) {
+			plato.setRestaurante(clienteRestaurante.buscarRestaurantePorId(plato.getIdRest()).getBody());
+		}
+		
 		
 		//System.out.println("\n\nid del plato: " + plato.getIdPlato() + "\n\\n");
         return miRepositorioPlatos.save(plato);
@@ -107,10 +119,12 @@ public class ServicioPlatosImpl implements ServicioPlatos{
         return miRepositorioPlatos.save(plato_encontrado);
 	}
 
+	
 	@Override
 	public List<Plato> buscarPlatoPorRestaurante(Restaurante restaurante) {
 		return miRepositorioPlatos.findByRestaurante(restaurante);
 	}
+	
 
 	@Override
 	public Plato actualizarStock(Long idPlato, Double cantidad) {

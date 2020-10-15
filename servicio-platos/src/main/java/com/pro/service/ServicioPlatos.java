@@ -3,7 +3,7 @@ package com.pro.service;
 import java.util.List;
 
 import com.pro.entity.Plato;
-import com.pro.entity.Restaurante;
+import com.pro.model.Restaurante;
 
 public interface ServicioPlatos {	
 

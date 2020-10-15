@@ -25,8 +25,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pro.client.RestauranteClient;
 import com.pro.entity.Plato;
-import com.pro.entity.Restaurante;
+import com.pro.model.Restaurante;
+//import com.pro.entity.Restaurante;
 import com.pro.service.ServicioPlatos;
 
 @RestController
@@ -85,6 +87,7 @@ public class ControladorPlatos {
         return ResponseEntity.ok(platos);
     }
 	
+	
 	@GetMapping(value = "/buscar-por-restaurante/{id}")
     public ResponseEntity<List<Plato>> buscarPlatosPorRestaurante(@PathVariable("id") Long id) {
 		Restaurante restaurante  = Restaurante.builder().idRest(id).build();
@@ -97,6 +100,7 @@ public class ControladorPlatos {
 		
         return ResponseEntity.ok(platos);
     }
+    
 	
 	@PostMapping
 	public ResponseEntity<Plato> crearPlato(@Valid @RequestBody Plato plato, BindingResult result){

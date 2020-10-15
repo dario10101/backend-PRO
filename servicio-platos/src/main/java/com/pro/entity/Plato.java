@@ -9,12 +9,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import com.pro.model.Restaurante;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -59,12 +60,19 @@ public class Plato {
     @Column(name = "ingredientes_plato")
     private String ingredientesPlato;
 
+    @Column(name = "id_rest")
+    private Long idRest;
+    
+    @Transient
+    private Restaurante restaurante;
+    
+    /*
     //@NotNull(message = "El restaurante no puede ser vacio")
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn (name = "id_rest")
     @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private Restaurante restaurante;	
-    
+    */
     
 	
 }

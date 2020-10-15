@@ -1,7 +1,8 @@
 package com.pro.repository;
 
 import com.pro.entity.Plato;
-import com.pro.entity.Restaurante;
+//import com.pro.entity.Restaurante;
+import com.pro.model.Restaurante;
 
 import java.util.List;
 

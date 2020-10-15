@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.pro.entity.Plato;
-import com.pro.entity.Restaurante;
 import com.pro.repository.RepositorioPlatos;
 
 @DataJpaTest
@@ -20,6 +19,7 @@ public class RepositorioPlatosMockTest {
     public void buscarPorRestaurante(){
 		System.out.println("\n\n -------------------------------  Iniciando prueba unitaria.\n\n");
 		
+		/*
 		Plato pl1 = Plato.builder()
                 .nombrePlato("Sancocho")
                 .descPlato("De gallina muerta")
@@ -43,7 +43,7 @@ public class RepositorioPlatosMockTest {
         }
         System.out.println("\n\n");
         //Assertions.assertThat(founds.size()).isEqualTo(3);
-
+		*/
 
     }
 }
