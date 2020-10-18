@@ -122,7 +122,8 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 	
 	@Override
 	public List<Plato> buscarPlatoPorRestaurante(Restaurante restaurante) {
-		return miRepositorioPlatos.findByRestaurante(restaurante);
+		// TODO return miRepositorioPlatos.findByRestaurante(restaurante);
+		return null;
 	}
 	
 

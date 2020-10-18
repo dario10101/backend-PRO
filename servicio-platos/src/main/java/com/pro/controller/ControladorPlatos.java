@@ -87,7 +87,7 @@ public class ControladorPlatos {
         return ResponseEntity.ok(platos);
     }
 	
-	
+	/*
 	@GetMapping(value = "/buscar-por-restaurante/{id}")
     public ResponseEntity<List<Plato>> buscarPlatosPorRestaurante(@PathVariable("id") Long id) {
 		Restaurante restaurante  = Restaurante.builder().idRest(id).build();
@@ -100,6 +100,7 @@ public class ControladorPlatos {
 		
         return ResponseEntity.ok(platos);
     }
+    */
     
 	
 	@PostMapping
