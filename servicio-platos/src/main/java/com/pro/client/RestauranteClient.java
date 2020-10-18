@@ -19,7 +19,7 @@ public interface RestauranteClient {
 	public ResponseEntity<List<Restaurante>> listarRestaurantes();
 	
 	
-	@GetMapping(value = "buscar-por-id/{id}")
+	@GetMapping(value = "/buscar-por-id/{id}")
 	public ResponseEntity<Restaurante> buscarRestaurantePorId(@PathVariable("id") Long id);
 
 }

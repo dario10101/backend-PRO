@@ -66,13 +66,13 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		if (plato_encontrado != null){
 			System.out.println("\nPlato exixtente\n");
             return null;
-        }	
-		
+        }			
 		
 		//crear restaurante
 		if(plato.getIdRest() != null) {
 			plato.setRestaurante(clienteRestaurante.buscarRestaurantePorId(plato.getIdRest()).getBody());
 		}
+		
 		
 		
 		//System.out.println("\n\nid del plato: " + plato.getIdPlato() + "\n\\n");
