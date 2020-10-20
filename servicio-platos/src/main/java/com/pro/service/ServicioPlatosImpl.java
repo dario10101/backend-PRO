@@ -27,27 +27,89 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 	public List<Plato> listarPlatos() {
 		List<Plato> platosPrueba = miRepositorioPlatos.findAll();		
 		
+		//TODO solo pedir el restaurante si cambia
+		//TODO modificar porque el metodo deberia funcionar con un solo id de restaurante (POST ?)
+		Restaurante rest;
+		Long idPlatoTemp;
+		if(platosPrueba.size() > 0) {				
+			for(Plato plato: platosPrueba) {
+				idPlatoTemp = plato.getIdRest();
+				rest = clienteRestaurante.buscarRestaurantePorId(idPlatoTemp).getBody();
+				plato.setRestaurante(rest);
+			}
+		}		
+		
 		return platosPrueba;
 	}
 
 	@Override
-	public Plato buscarPlatoPorId(Long idPlato) {		
-		return miRepositorioPlatos.findById(idPlato).orElse(null);
+	public Plato buscarPlatoPorId(Long idPlato) {	
+		Plato platoEncontrado = miRepositorioPlatos.findById(idPlato).orElse(null);
+		
+		if(platoEncontrado != null) {
+			Restaurante rest = clienteRestaurante.buscarRestaurantePorId(idPlato).getBody();
+			platoEncontrado.setRestaurante(rest);
+		}
+		
+		return platoEncontrado;
 	}
 	
 	@Override
-	public List<Plato> buscarPlatoPorNombre(String nombrePlato) {		
-		return miRepositorioPlatos.findByNombrePlato(nombrePlato);
+	public List<Plato> buscarPlatoPorNombre(String nombrePlato) {	
+		List<Plato> platosPrueba = miRepositorioPlatos.findByNombrePlato(nombrePlato);
+		
+		//TODO solo pedir el restaurante si cambia
+		//TODO modificar porque el metodo deberia funcionar con un solo id de restaurante (POST ?)
+		Restaurante rest;
+		Long idPlatoTemp;
+		if(platosPrueba.size() > 0) {				
+			for(Plato plato: platosPrueba) {
+				idPlatoTemp = plato.getIdRest();
+				rest = clienteRestaurante.buscarRestaurantePorId(idPlatoTemp).getBody();
+				plato.setRestaurante(rest);
+			}
+		}
+		
+		
+		return platosPrueba;
 	}
 	
 	@Override
-	public List<Plato> buscarPlatoPorStatus(String statusPlato) {		
-		return miRepositorioPlatos.findByStatusPlato(statusPlato);
+	public List<Plato> buscarPlatoPorStatus(String statusPlato) {
+		List<Plato> platosPrueba = miRepositorioPlatos.findByStatusPlato(statusPlato);
+		
+		//TODO solo pedir el restaurante si cambia
+		//TODO modificar porque el metodo deberia funcionar con un solo id de restaurante (POST ?)
+		Restaurante rest;
+		Long idPlatoTemp;
+		if(platosPrueba.size() > 0) {				
+			for(Plato plato: platosPrueba) {
+				idPlatoTemp = plato.getIdRest();
+				rest = clienteRestaurante.buscarRestaurantePorId(idPlatoTemp).getBody();
+				plato.setRestaurante(rest);
+			}
+		}
+		
+		return platosPrueba;
 	}
 
 	@Override
 	public List<Plato> buscarPlatoPorCategoria(String categoriaPlato){
-		return miRepositorioPlatos.findByCategoriaPlato(categoriaPlato);
+		List<Plato> platosPrueba = miRepositorioPlatos.findByCategoriaPlato(categoriaPlato);
+		
+		//TODO solo pedir el restaurante si cambia
+		//TODO modificar porque el metodo deberia funcionar con un solo id de restaurante (POST ?)
+		Restaurante rest;
+		Long idPlatoTemp;
+		if(platosPrueba.size() > 0) {				
+			for(Plato plato: platosPrueba) {
+				idPlatoTemp = plato.getIdRest();
+				rest = clienteRestaurante.buscarRestaurantePorId(idPlatoTemp).getBody();
+				plato.setRestaurante(rest);
+			}
+		}
+		
+		return platosPrueba;
 	}
 	
 	@Override
@@ -69,7 +131,9 @@ public class ServicioPlatosImpl implements ServicioPlatos{
         }			
 		
 		//crear restaurante
+		//System.out.println("\n\nCreando restaurante nuevo\n\n");
 		if(plato.getIdRest() != null) {
+			//System.out.println("\n\nId: " + String.valueOf(plato.getIdRest()) + "\n\n"); 
 			plato.setRestaurante(clienteRestaurante.buscarRestaurantePorId(plato.getIdRest()).getBody());
 		}
 		
@@ -82,9 +146,11 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 	@Override
 	public Plato actualizarPlato(Plato plato) {
 		Plato plato_encontrado = buscarPlatoPorId(plato.getIdPlato());
-        if (null == plato_encontrado){
+        
+		if (null == plato_encontrado){
             return null;
         }
+		
         plato_encontrado.setNombrePlato(plato.getNombrePlato());
         plato_encontrado.setDescPlato(plato.getDescPlato());
         plato_encontrado.setPrecioPlato(plato.getPrecioPlato());
@@ -92,7 +158,11 @@ public class ServicioPlatosImpl implements ServicioPlatos{
         plato_encontrado.setCategoriaPlato(plato.getCategoriaPlato());
         plato_encontrado.setStatusPlato(plato.getStatusPlato());
         plato_encontrado.setCantidadPlato(plato.getCantidadPlato());
-        plato_encontrado.setRestaurante(plato.getRestaurante());
+        plato_encontrado.setIdRest(plato.getIdRest());
+        
+        // TODO validar que existe el restaurante
+        if(plato.getIdRest() != null)
+        	plato_encontrado.setRestaurante(clienteRestaurante.buscarRestaurantePorId(plato.getIdRest()).getBody());
         
         return miRepositorioPlatos.save(plato_encontrado);
 	}
@@ -121,9 +191,22 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 
 	
 	@Override
-	public List<Plato> buscarPlatoPorRestaurante(Restaurante restaurante) {
-		// TODO return miRepositorioPlatos.findByRestaurante(restaurante);
-		return null;
+	public List<Plato> buscarPlatoPorRestaurante(Long idRest) {  
+		List<Plato> platosEncontrados =  miRepositorioPlatos.findByIdRest(idRest);
+		
+		//TODO solo pedir el restaurante si cambia
+		//TODO modificar porque el metodo deberia funcionar con un solo id de restaurante (POST ?)
+		Restaurante rest;
+		Long idPlatoTemp;
+		if(platosEncontrados.size() > 0) {				
+			for(Plato plato: platosEncontrados) {
+				idPlatoTemp = plato.getIdRest();
+				rest = clienteRestaurante.buscarRestaurantePorId(idPlatoTemp).getBody();
+				plato.setRestaurante(rest);
+			}
+		}
+		
+		return platosEncontrados;
 	}
 	
 
@@ -167,6 +250,10 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		return platoBase;
 	}
 	
+	
+	private Restaurante buscarRestaurante(Long idRest) {
+		return clienteRestaurante.buscarRestaurantePorId(idRest).getBody();
+	}
 	
 	
 	

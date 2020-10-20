@@ -23,6 +23,7 @@ public class ServicioRestaurantesImpl implements ServicioRestaurantes{
 
 	@Override
 	public Restaurante buscarRestaurantePorId(Long idRestaurante) {
+		System.out.println("\n\nBuscando restaurante " + idRestaurante + "\n\n");
 		return miRepositorioRestaurantes.findById(idRestaurante).orElse(null);
 	}
 

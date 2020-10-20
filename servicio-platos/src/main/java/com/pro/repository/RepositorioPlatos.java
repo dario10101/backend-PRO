@@ -20,4 +20,6 @@ public interface RepositorioPlatos extends JpaRepository<Plato, Long> {
 	
 	public List<Plato> findByCategoriaPlato(String categoria_plato);
 	
+	public List<Plato> findByIdRest(Long id_rest);
+	
 }

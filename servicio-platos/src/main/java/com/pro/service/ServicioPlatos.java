@@ -16,7 +16,7 @@ public interface ServicioPlatos {
     public Plato actualizarPlato(Plato Plato);
     public Plato eliminarPlato(Long idPlato);
     public Plato activarPlato(Long idPlato);
-    public List<Plato> buscarPlatoPorRestaurante(Restaurante restaurante);	
+    public List<Plato> buscarPlatoPorRestaurante(Long idRest);	
     public Plato actualizarStock(Long iPplato, Double cantidad);
     
 }

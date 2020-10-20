@@ -36,6 +36,7 @@ public class controladorRestaurantes {
 	
 	@GetMapping(value = "buscar-por-id/{id}")
     public ResponseEntity<Restaurante> buscarRestaurantePorId(@PathVariable("id") Long id) {
+		System.out.println("\n\nBuscando restaurante ...\n\n");
 		Restaurante restaurante =  miServicioRestaurantes.buscarRestaurantePorId(id);
         if (null == restaurante){
             return ResponseEntity.notFound().build();

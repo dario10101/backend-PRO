@@ -46,22 +46,31 @@ public class ControladorPlatos {
 		
         if(platos.size() <= 0){
             return ResponseEntity.noContent().build();
-        }
+        }        
 
         return ResponseEntity.ok(platos);
 	}
 	
-	@GetMapping(value = "buscar-por-id/{id}")
-    public ResponseEntity<Plato> buscarPlatoPorId(@PathVariable("id") Long id) {
-        Plato plato =  miServicioPlatos.buscarPlatoPorId(id);
+	@GetMapping(value = "buscar-por-restaurante/{idrest}")
+    public ResponseEntity<List<Plato>> buscarPlatoPorRestaurante(@PathVariable("idrest") Long idRest) {
+        List<Plato> platos =  miServicioPlatos.buscarPlatoPorRestaurante(idRest);
+        if (platos.size() <= 0){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(platos);
+    }
+	
+	@GetMapping(value = "buscar-por-id/{idrest}/{idplato}")
+    public ResponseEntity<Plato> buscarPlatoPorId(@PathVariable("idrest") Long idRest, @PathVariable("idplato") Long idPlato) {
+        Plato plato =  miServicioPlatos.buscarPlatoPorId(idRest);
         if (null==plato){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(plato);
     }
 	
-	@GetMapping(value = "buscar-por-nombre/{nombre}")
-    public ResponseEntity<List<Plato>> buscarPlatoPorNombre(@PathVariable("nombre") String nombrePlato) {
+	@GetMapping(value = "buscar-por-nombre/{idrest}/{nombre}")
+    public ResponseEntity<List<Plato>> buscarPlatoPorNombre(@PathVariable("idrest") Long idPlato, @PathVariable("nombre") String nombrePlato) {
         List<Plato> platos =  miServicioPlatos.buscarPlatoPorNombre(nombrePlato);
         if (platos.size() <= 0){
             return ResponseEntity.notFound().build();
@@ -69,8 +78,8 @@ public class ControladorPlatos {
         return ResponseEntity.ok(platos);
     }
 	
-	@GetMapping(value = "buscar-por-status/{status}")
-    public ResponseEntity<List<Plato>> buscarPlatoPorStatus(@PathVariable("status") String statusPlato) {
+	@GetMapping(value = "buscar-por-status/{idrest}/{status}")
+    public ResponseEntity<List<Plato>> buscarPlatoPorStatus(@PathVariable("idrest") Long idRest, @PathVariable("status") String statusPlato) {
         List<Plato> platos =  miServicioPlatos.buscarPlatoPorStatus(statusPlato);
         if (platos.size() <= 0){
             return ResponseEntity.notFound().build();
@@ -78,30 +87,14 @@ public class ControladorPlatos {
         return ResponseEntity.ok(platos);
     }
 		
-	@GetMapping(value = "buscar-por-categoria/{categoria}")
-    public ResponseEntity<List<Plato>> buscarPlatoPorCategoria(@PathVariable("categoria") String categoriaPlato) {
+	@GetMapping(value = "buscar-por-categoria/{idrest}/{categoria}")
+    public ResponseEntity<List<Plato>> buscarPlatoPorCategoria(@PathVariable("idrest") Long idRest, @PathVariable("categoria") String categoriaPlato) {
         List<Plato> platos =  miServicioPlatos.buscarPlatoPorCategoria(categoriaPlato);
         if (platos.size() <= 0){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(platos);
-    }
-	
-	/*
-	@GetMapping(value = "/buscar-por-restaurante/{id}")
-    public ResponseEntity<List<Plato>> buscarPlatosPorRestaurante(@PathVariable("id") Long id) {
-		Restaurante restaurante  = Restaurante.builder().idRest(id).build();
-		
-		List<Plato> platos = miServicioPlatos.buscarPlatoPorRestaurante(restaurante);
-		
-		if(platos.size() <= 0){
-            return ResponseEntity.noContent().build();
-        }
-		
-        return ResponseEntity.ok(platos);
-    }
-    */
-    
+    }    
 	
 	@PostMapping
 	public ResponseEntity<Plato> crearPlato(@Valid @RequestBody Plato plato, BindingResult result){
