@@ -21,6 +21,18 @@ spring:
           uri: lb://servicio-restaurantes
           predicates:
             - Path=/restaurantes/**
+        - id: servicio-clientes
+          uri: lb://servicio-clientes
+          predicates:
+            - Path=/clientes/**
+        - id: servicio-pedidos
+          uri: lb://servicio-pedidos
+          predicates:
+            - Path=/pedidos/**
+        - id: servicio-roles
+          uri: lb://servicio-roles
+          predicates:
+            - Path=/roles/**
           
 management:
   endpoints:
