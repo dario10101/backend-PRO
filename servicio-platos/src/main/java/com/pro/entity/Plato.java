@@ -60,6 +60,7 @@ public class Plato {
     @Column(name = "ingredientes_plato")
     private String ingredientesPlato;
 
+    @NotNull(message = "El id del restaurante no puede ser nulo")
     @Column(name = "id_rest")
     private Long idRest;
     

@@ -1,5 +1,6 @@
 package com.pro.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,91 +28,157 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 	public List<Plato> listarPlatos() {
 		List<Plato> platosPrueba = miRepositorioPlatos.findAll();		
 		
-		//TODO solo pedir el restaurante si cambia
-		//TODO modificar porque el metodo deberia funcionar con un solo id de restaurante (POST ?)
+		//TODO optimizar
 		Restaurante rest;
-		Long idPlatoTemp;
+		Long idRestTemp;
 		if(platosPrueba.size() > 0) {				
 			for(Plato plato: platosPrueba) {
-				idPlatoTemp = plato.getIdRest();
-				rest = clienteRestaurante.buscarRestaurantePorId(idPlatoTemp).getBody();
-				plato.setRestaurante(rest);
+				idRestTemp = plato.getIdRest();
+				if(idRestTemp != null) {					
+					rest = this.buscarRestaurante(idRestTemp);
+					plato.setRestaurante(rest);
+				}
 			}
 		}		
 		
 		return platosPrueba;
+	}	
+	
+	@Override
+	public List<Plato> buscarPlatoPorRestaurante(Long idRest) {  
+		//Datos no validos
+		if(idRest == null) {
+			System.out.println("\nError: null\n");
+			return null;
+		}
+		
+		// traer el restaurante del otro microservicio
+		Restaurante rest = this.buscarRestaurante(idRest);
+		
+		//No existe el restaurante
+		if(rest == null) {
+			System.out.println("\nEl restaurante no existe\n");
+			return null;
+		}			
+		
+		List<Plato> platosEncontrados =  miRepositorioPlatos.findByIdRest(idRest);
+		if(platosEncontrados.size() > 0) {				
+			for(Plato plato: platosEncontrados) {
+				plato.setRestaurante(rest);
+			}
+		}
+		
+		return platosEncontrados;
 	}
-
+	
 	@Override
 	public Plato buscarPlatoPorId(Long idPlato) {	
 		Plato platoEncontrado = miRepositorioPlatos.findById(idPlato).orElse(null);
 		
+		//encontrar el restaurante
 		if(platoEncontrado != null) {
-			Restaurante rest = clienteRestaurante.buscarRestaurantePorId(idPlato).getBody();
-			platoEncontrado.setRestaurante(rest);
+			Long idRestaurante = platoEncontrado.getIdRest(); 
+			
+			//el restaurante existe
+			if(idRestaurante != null){
+				Restaurante rest = this.buscarRestaurante(idRestaurante);
+				platoEncontrado.setRestaurante(rest);
+			}
 		}
 		
 		return platoEncontrado;
 	}
-	
-	@Override
-	public List<Plato> buscarPlatoPorNombre(String nombrePlato) {	
-		List<Plato> platosPrueba = miRepositorioPlatos.findByNombrePlato(nombrePlato);
 		
-		//TODO solo pedir el restaurante si cambia
-		//TODO modificar porque el metodo deberia funcionar con un solo id de restaurante (POST ?)
-		Restaurante rest;
-		Long idPlatoTemp;
-		if(platosPrueba.size() > 0) {				
-			for(Plato plato: platosPrueba) {
-				idPlatoTemp = plato.getIdRest();
-				rest = clienteRestaurante.buscarRestaurantePorId(idPlatoTemp).getBody();
+	@Override
+	public List<Plato> buscarPlatoPorNombre(Long idRest, String nombrePlato) {	
+		//Datos no validos
+		if(idRest == null || nombrePlato == null) {
+			System.out.println("\nError: null\n");
+			return null;
+		}
+		
+		// traer el restaurante del otro microservicio
+		Restaurante rest = this.buscarRestaurante(idRest);
+		
+		//No existe el restaurante
+		if(rest == null) {
+			System.out.println("\nEl restaurante no existe\n");
+			return null;
+		}		
+		
+		List<Plato> platosPrueba = miRepositorioPlatos.findByIdRest(idRest);		
+		List<Plato> platosEncontrados = new ArrayList<Plato>();				
+		
+		for(Plato plato: platosPrueba) {
+			if(plato.getNombrePlato().equals(nombrePlato)) {
 				plato.setRestaurante(rest);
+				platosEncontrados.add(plato);
 			}
 		}
 		
-		
-		return platosPrueba;
+		return platosEncontrados;
 	}
 	
 	@Override
-	public List<Plato> buscarPlatoPorStatus(String statusPlato) {
-		List<Plato> platosPrueba = miRepositorioPlatos.findByStatusPlato(statusPlato);
+	public List<Plato> buscarPlatoPorStatus(Long idRest, String statusPlato) {
+		//Datos no validos
+		if(idRest == null || statusPlato == null) {
+			System.out.println("\nError: null\n");
+			return null;
+		}
 		
-		//TODO solo pedir el restaurante si cambia
-		//TODO modificar porque el metodo deberia funcionar con un solo id de restaurante (POST ?)
-		Restaurante rest;
-		Long idPlatoTemp;
-		if(platosPrueba.size() > 0) {				
-			for(Plato plato: platosPrueba) {
-				idPlatoTemp = plato.getIdRest();
-				rest = clienteRestaurante.buscarRestaurantePorId(idPlatoTemp).getBody();
+		// traer el restaurante del otro microservicio
+		Restaurante rest = this.buscarRestaurante(idRest);
+		
+		//No existe el restaurante
+		if(rest == null) {
+			System.out.println("\nEl restaurante no existe\n");
+			return null;
+		}		
+		
+		List<Plato> platosPrueba = miRepositorioPlatos.findByIdRest(idRest);		
+		List<Plato> platosEncontrados = new ArrayList<Plato>();				
+		
+		for(Plato plato: platosPrueba) {
+			if(plato.getStatusPlato().equals(statusPlato)) {
 				plato.setRestaurante(rest);
+				platosEncontrados.add(plato);
 			}
 		}
 		
-		return platosPrueba;
+		return platosEncontrados;
 	}
 
 	@Override
-	public List<Plato> buscarPlatoPorCategoria(String categoriaPlato){
-		List<Plato> platosPrueba = miRepositorioPlatos.findByCategoriaPlato(categoriaPlato);
+	public List<Plato> buscarPlatoPorCategoria(Long idRest, String categoriaPlato){
+		//Datos no validos
+		if(idRest == null || categoriaPlato == null) {
+			System.out.println("\nError: null\n");
+			return null;
+		}
 		
-		//TODO solo pedir el restaurante si cambia
-		//TODO modificar porque el metodo deberia funcionar con un solo id de restaurante (POST ?)
-		Restaurante rest;
-		Long idPlatoTemp;
-		if(platosPrueba.size() > 0) {				
-			for(Plato plato: platosPrueba) {
-				idPlatoTemp = plato.getIdRest();
-				rest = clienteRestaurante.buscarRestaurantePorId(idPlatoTemp).getBody();
+		// traer el restaurante del otro microservicio
+		Restaurante rest = this.buscarRestaurante(idRest);
+		
+		//No existe el restaurante
+		if(rest == null) {
+			System.out.println("\nEl restaurante no existe\n");
+			return null;
+		}		
+		
+		List<Plato> platosPrueba = miRepositorioPlatos.findByIdRest(idRest);		
+		List<Plato> platosEncontrados = new ArrayList<Plato>();				
+		
+		for(Plato plato: platosPrueba) {
+			if(plato.getCategoriaPlato().equals(categoriaPlato)) {
 				plato.setRestaurante(rest);
+				platosEncontrados.add(plato);
 			}
 		}
 		
-		return platosPrueba;
+		return platosEncontrados;
 	}
-	
+			
 	@Override
 	public Plato crearPlato(Plato plato) {
 		//construir plato valido
@@ -130,14 +197,18 @@ public class ServicioPlatosImpl implements ServicioPlatos{
             return null;
         }			
 		
-		//crear restaurante
-		//System.out.println("\n\nCreando restaurante nuevo\n\n");
+		//Validacion del restaurante
 		if(plato.getIdRest() != null) {
-			//System.out.println("\n\nId: " + String.valueOf(plato.getIdRest()) + "\n\n"); 
-			plato.setRestaurante(clienteRestaurante.buscarRestaurantePorId(plato.getIdRest()).getBody());
-		}
-		
-		
+			Restaurante rest = this.buscarRestaurante(plato.getIdRest());
+			
+			//El restaurante no existe
+			if(rest == null) {
+				System.out.println("\nEl restaurante no existe\n");
+				return null;
+			}
+			
+			plato.setRestaurante(rest);
+		}		
 		
 		//System.out.println("\n\nid del plato: " + plato.getIdPlato() + "\n\\n");
         return miRepositorioPlatos.save(plato);
@@ -147,8 +218,21 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 	public Plato actualizarPlato(Plato plato) {
 		Plato plato_encontrado = buscarPlatoPorId(plato.getIdPlato());
         
-		if (null == plato_encontrado){
+		if (plato_encontrado == null){
             return null;
+        }
+		
+		//validar el restaurante
+		if(plato.getIdRest() != null) {
+			Restaurante rest = this.buscarRestaurante(plato.getIdRest());
+			
+			//El restaurante no existe
+			if(rest == null) {
+				System.out.println("\nEl restaurante no existe\n");
+				return null;
+			}
+			
+			plato_encontrado.setRestaurante(rest);
         }
 		
         plato_encontrado.setNombrePlato(plato.getNombrePlato());
@@ -159,11 +243,7 @@ public class ServicioPlatosImpl implements ServicioPlatos{
         plato_encontrado.setStatusPlato(plato.getStatusPlato());
         plato_encontrado.setCantidadPlato(plato.getCantidadPlato());
         plato_encontrado.setIdRest(plato.getIdRest());
-        
-        // TODO validar que existe el restaurante
-        if(plato.getIdRest() != null)
-        	plato_encontrado.setRestaurante(clienteRestaurante.buscarRestaurantePorId(plato.getIdRest()).getBody());
-        
+                
         return miRepositorioPlatos.save(plato_encontrado);
 	}
 
@@ -189,27 +269,6 @@ public class ServicioPlatosImpl implements ServicioPlatos{
         return miRepositorioPlatos.save(plato_encontrado);
 	}
 
-	
-	@Override
-	public List<Plato> buscarPlatoPorRestaurante(Long idRest) {  
-		List<Plato> platosEncontrados =  miRepositorioPlatos.findByIdRest(idRest);
-		
-		//TODO solo pedir el restaurante si cambia
-		//TODO modificar porque el metodo deberia funcionar con un solo id de restaurante (POST ?)
-		Restaurante rest;
-		Long idPlatoTemp;
-		if(platosEncontrados.size() > 0) {				
-			for(Plato plato: platosEncontrados) {
-				idPlatoTemp = plato.getIdRest();
-				rest = clienteRestaurante.buscarRestaurantePorId(idPlatoTemp).getBody();
-				plato.setRestaurante(rest);
-			}
-		}
-		
-		return platosEncontrados;
-	}
-	
-
 	@Override
 	public Plato actualizarStock(Long idPlato, Double cantidad) {
 		Plato plato_encontrado = buscarPlatoPorId(idPlato);
@@ -221,6 +280,7 @@ public class ServicioPlatosImpl implements ServicioPlatos{
         plato_encontrado.setCantidadPlato(stock);
         return miRepositorioPlatos.save(plato_encontrado);
 	}
+	
 	
 	
 	
@@ -250,11 +310,15 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		return platoBase;
 	}
 	
-	
 	private Restaurante buscarRestaurante(Long idRest) {
-		return clienteRestaurante.buscarRestaurantePorId(idRest).getBody();
+		Restaurante rest = null;
+		try {
+			rest = clienteRestaurante.buscarRestaurantePorId(idRest).getBody();
+		}catch(Exception e) {
+			return null;
+		}
+		return rest;
 	}
-	
 	
 	
 	
