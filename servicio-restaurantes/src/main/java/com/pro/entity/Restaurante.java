@@ -35,6 +35,9 @@ public class Restaurante {
     @Column(name = "img_rest")
     private String imgRest;
     
+    @Column(name = "telefono_rest")
+    private String telefonoRest;
+    
     @Column(name = "categoria_rest")
     private String categoriaRest;
     
