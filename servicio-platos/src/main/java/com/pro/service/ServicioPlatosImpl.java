@@ -61,7 +61,12 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 			return null;
 		}			
 		
+		// Buscar los platos de un restaurante
 		List<Plato> platosEncontrados =  miRepositorioPlatos.findByIdRest(idRest);
+		
+		// No tener en cuenta los platos eliminados
+		this.eliminarPorStatus("DELETED", platosEncontrados);
+		
 		if(platosEncontrados.size() > 0) {				
 			for(Plato plato: platosEncontrados) {
 				plato.setRestaurante(rest);
@@ -175,6 +180,9 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 				platosEncontrados.add(plato);
 			}
 		}
+		
+		// No tener en cuenta los platos eliminados
+		this.eliminarPorStatus("DELETED", platosEncontrados);
 		
 		return platosEncontrados;
 	}
@@ -320,6 +328,16 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		return rest;
 	}
 	
+	//Eliminar los platos de una lista con un status
+	private void eliminarPorStatus(String status, List<Plato> platos){
+		if(platos != null) {
+			for(int i = 0; i < platos.size(); i++) {
+				if(platos.get(i).getStatusPlato().equals(status)) {
+					platos.remove(i);
+				}
+			}
+		}
+	}
 	
 	
 	

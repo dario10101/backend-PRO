@@ -43,6 +43,10 @@ public class ServicioClientesImpl implements ServicioClientes {
 			System.out.println("\nCliente exixtente\n");
             return null;
         }
+		
+		if(cliente.getStatusCliente() == null) {
+			cliente.setStatusCliente("ACTIVATED");
+		}
 		return miRepositorioClientes.save(cliente);
 	}
 
@@ -67,7 +71,11 @@ public class ServicioClientesImpl implements ServicioClientes {
 		cliente_encontrado.setPasswordCliente(cliente.getPasswordCliente());
 		cliente_encontrado.setStatusCliente(cliente.getStatusCliente());
 		cliente_encontrado.setTelefonoCliente(cliente.getTelefonoCliente());
-		cliente_encontrado.setImgCliente(cliente.getImgCliente());        
+		cliente_encontrado.setImgCliente(cliente.getImgCliente()); 
+		
+		if(cliente_encontrado.getStatusCliente() == null) {
+			cliente_encontrado.setStatusCliente("ACTIVATED");
+		}
 		
 		return miRepositorioClientes.save(cliente_encontrado);
 	}
@@ -101,7 +109,13 @@ public class ServicioClientesImpl implements ServicioClientes {
 		
 		//TODO ver como se debe hacer esta parte
 		if(cliente_encontrado != null) {
+			//Validar contraseña, al machetazo
 			if(!cliente_encontrado.getPasswordCliente().equals(cliente.getPasswordCliente())) {
+				cliente_encontrado = null;
+			}
+			
+			//validar que esté activo
+			if(!cliente_encontrado.getStatusCliente().equals("ACTIVATED")) {
 				cliente_encontrado = null;
 			}
 		}

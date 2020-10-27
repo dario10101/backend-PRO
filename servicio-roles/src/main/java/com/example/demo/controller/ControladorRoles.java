@@ -43,6 +43,12 @@ public class ControladorRoles {
 	}
 	
 	
+	/* Ejemplo
+	{
+	    "correo": "nacho@unicauca.edu.co",
+	    "password": "123"
+	}
+	*/
 	@PostMapping
 	public ResponseEntity<Rol> obtenerRol(@RequestBody Usuario user, BindingResult result){		
 		if (result.hasErrors()){     

@@ -29,9 +29,11 @@ public class Cliente {
     @NotEmpty (message = "El nombre no debe ser vacío")
     private String nombresCliente;
     
+    
     @Column(name = "apellidos_cliente")
-    @NotEmpty (message = "El apellido no debe ser vacío")
+    //@NotEmpty (message = "El apellido no debe ser vacío")
     private String apellidosCliente;
+    
     
     @Column(name = "correo_cliente")
     @NotEmpty (message = "El correo no debe ser vacío")

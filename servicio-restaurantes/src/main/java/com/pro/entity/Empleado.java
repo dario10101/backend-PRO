@@ -52,6 +52,9 @@ public class Empleado {
     @Column(name = "img_empleado")
     private String imgEmpleado;
     
+    @Column(name = "status_empleado")
+    private String statusEmpleado;
+    
     @Column(name = "id_rol")
     private Long IdRolEmpleado;
     

@@ -46,6 +46,12 @@ public class ControladorClientes {
 	}
 	
 	
+	/* EJEMPLO
+	{
+	    "correoCliente" : "ruben@unicauca.edu.co",
+	    "passwordCliente": "123"
+	}
+	*/
 	@PostMapping(value = "/validar-cliente")
     public ResponseEntity<Cliente> validarCliente(@RequestBody Cliente cliente) {
 		Cliente cliente_encontrado =  miServicioClientes.validarCredenciales(cliente);
@@ -54,6 +60,7 @@ public class ControladorClientes {
         }
         return ResponseEntity.ok(cliente_encontrado);
     }
+	
 	
 	
 	@GetMapping(value = "/buscar-por-id/{idcliente}")
@@ -65,8 +72,16 @@ public class ControladorClientes {
         return ResponseEntity.ok(cliente);
     }
 	
-	
-	@PostMapping
+	/* EJEMPLO
+	{
+	    "correoCliente" : "rupert@unicauca.edu.co",
+	    "passwordCliente": "123",
+	    "nombresCliente": "Rupert",
+	    "apellidosCliente": "Apellido de Rupert",
+	    "telefonoCliente": "123445"
+	}
+	*/
+	@PostMapping(value = "/crear-cliente")
 	public ResponseEntity<Cliente> crearCliente(@Valid @RequestBody Cliente cliente, BindingResult result){		
 		if (result.hasErrors()){     
 			System.out.println("\n\nTiene errores.\n\n");
@@ -82,7 +97,16 @@ public class ControladorClientes {
         return ResponseEntity.status(HttpStatus.CREATED).body(cliente_creado);        
     }
 	
-	
+	/* EJEMPLO
+	{
+	    "correoCliente" : "rupert@unicauca.edu.co",
+	    "passwordCliente": "123",
+	    "nombresCliente": "Rupert",
+	    "apellidosCliente": "Apellido de Rupert",
+	    "telefonoCliente": "123445",
+	    "statusCliente": "DELETED"
+	}
+	*/	
 	@PutMapping(value = "/actualizar-cliente/{id}")
     public ResponseEntity<Cliente> actualizarCliente(@PathVariable("id") Long id, @Valid @RequestBody Cliente cliente){
 		cliente.setIdCliente(id);
@@ -105,7 +129,7 @@ public class ControladorClientes {
     }
 	
 	
-	@PutMapping (value = "/activar-plato/{id}")
+	@PutMapping (value = "/activar-cliente/{id}")
     public ResponseEntity<Cliente> activarCliente(@PathVariable  Long id){
 		Cliente cliente = miServicioClientes.activarCliente(id);
         if (cliente == null){

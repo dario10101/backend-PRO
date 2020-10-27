@@ -32,9 +32,13 @@ public class ServicioEmpleadosImpl implements ServicioEmpleados{
 	}
 
 	@Override
-	public Empleado buscarEmpleadoPorCorres(String correo) {
-		
+	public Empleado buscarEmpleadoPorCorreo(String correo) {		
 		return miRepositorioEmpleados.findByCorreoEmpleado(correo);
+	}
+	
+	@Override
+	public Empleado buscarEmpleadoPorId(Long idEmpleado) {
+		return miRepositorioEmpleados.findById(idEmpleado).orElse(null);
 	}
 
 	@Override
@@ -50,5 +54,57 @@ public class ServicioEmpleadosImpl implements ServicioEmpleados{
 		
 		return empleado_encontrado;
 	}
+
+	@Override
+	public Empleado crearEmpleado(Empleado empleado) {
+		if(empleado == null)
+			return null;		
+		
+		//verificar si existe
+		Empleado empleado_encontrado = null;
+		if(empleado.getIdEmpleado() != null)
+			empleado_encontrado = miRepositorioEmpleados.findById(empleado.getIdEmpleado()).orElse(null);
+				
+		//el cliente ya existe
+		if (empleado_encontrado != null){
+			System.out.println("\nCliente exixtente\n");
+            return null;
+        }
+		return miRepositorioEmpleados.save(empleado);
+	}
+
+	@Override
+	public Empleado actualizarEmpleado(Empleado empleado) {
+		if(empleado == null)
+			return null;		
+		Long idEmpleado = empleado.getIdEmpleado();
+		
+		// El Empleado no tiene el id
+		if(idEmpleado == null)
+			return null;		
+		
+		Empleado empleado_encontrado = buscarEmpleadoPorId(idEmpleado);
+        
+		// NO existe el cliente
+		if (empleado_encontrado == null)
+            return null;
+		
+		empleado_encontrado.setNombreEmpleado(empleado.getNombreEmpleado());
+		empleado_encontrado.setCorreoEmpleado(empleado.getCorreoEmpleado());
+		empleado_encontrado.setPasswordEmpleado(empleado.getPasswordEmpleado());
+		empleado_encontrado.setStatusEmpleado(empleado.getStatusEmpleado());
+		empleado_encontrado.setTelefonoEmpleado(empleado.getTelefonoEmpleado());
+		empleado_encontrado.setImgEmpleado(empleado.getImgEmpleado()); 
+		empleado_encontrado.setDireccionEmpleado(empleado.getDireccionEmpleado()); 
+		empleado_encontrado.setIdRolEmpleado(empleado.getIdRolEmpleado());
+		
+		if(empleado_encontrado.getStatusEmpleado() == null) {
+			empleado_encontrado.setStatusEmpleado("ACTIVATED");
+		}
+		
+		return miRepositorioEmpleados.save(empleado_encontrado);
+	}
+
+	
 	
 }

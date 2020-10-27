@@ -36,7 +36,9 @@ public class ControladorPlatos {
 	
 	@Autowired
     private ServicioPlatos miServicioPlatos;
-
+	
+	
+	
 	@GetMapping
 	public ResponseEntity<List<Plato>> listarPlatos(){		
 		List<Plato> platos = miServicioPlatos.listarPlatos();
@@ -47,6 +49,8 @@ public class ControladorPlatos {
 
         return ResponseEntity.ok(platos);
 	}
+	
+	
 	
 	@GetMapping(value = "buscar-por-restaurante/{idrest}")
     public ResponseEntity<List<Plato>> buscarPlatoPorRestaurante(@PathVariable("idrest") Long idRest) {
@@ -63,6 +67,8 @@ public class ControladorPlatos {
         return ResponseEntity.ok(platos);
     }
 	
+	
+	
 	@GetMapping(value = "buscar-por-id/{idplato}")
     public ResponseEntity<Plato> buscarPlatoPorId(@PathVariable("idplato") Long idPlato) {
         Plato plato =  miServicioPlatos.buscarPlatoPorId(idPlato);
@@ -72,9 +78,19 @@ public class ControladorPlatos {
         return ResponseEntity.ok(plato);
     }
 	
-	@GetMapping(value = "buscar-por-nombre/{idrest}/{nombre}")
-    public ResponseEntity<List<Plato>> buscarPlatoPorNombre(@PathVariable("idrest") Long idRest, @PathVariable("nombre") String nombrePlato) {
-        List<Plato> platos =  miServicioPlatos.buscarPlatoPorNombre(idRest, nombrePlato);
+	
+
+	 /* Ejemplo:
+	  
+	 	http://localhost:8080/platos/buscar-por-nombre/1
+	 	body:
+	 	{
+    		"nombrePlato": "Carne asada"
+	 	}	  
+	 */
+	@PostMapping(value = "buscar-por-nombre/{idrest}")
+    public ResponseEntity<List<Plato>> buscarPlatoPorNombre(@RequestBody Plato plato, @PathVariable("idrest") Long idRest, BindingResult result) {
+		List<Plato> platos =  miServicioPlatos.buscarPlatoPorNombre(idRest, plato.getNombrePlato());
         
         if (platos == null){
             return ResponseEntity.notFound().build();
@@ -87,9 +103,19 @@ public class ControladorPlatos {
         return ResponseEntity.ok(platos);
     }
 	
-	@GetMapping(value = "buscar-por-status/{idrest}/{status}")
-    public ResponseEntity<List<Plato>> buscarPlatoPorStatus(@PathVariable("idrest") Long idRest, @PathVariable("status") String statusPlato) {
-        List<Plato> platos =  miServicioPlatos.buscarPlatoPorStatus(idRest, statusPlato);
+	
+	
+	/* Ejemplo:
+	  
+ 	http://localhost:8080/platos/buscar-por-status/1
+ 	body:
+ 	{
+		"statusPlato": "ACTIVATED"
+ 	}	  
+	*/
+	@PostMapping(value = "buscar-por-status/{idrest}")
+    public ResponseEntity<List<Plato>> buscarPlatoPorStatus(@RequestBody Plato plato, @PathVariable("idrest") Long idRest, BindingResult result) {
+		List<Plato> platos =  miServicioPlatos.buscarPlatoPorStatus(idRest, plato.getStatusPlato());
         
         if (platos == null){
             return ResponseEntity.notFound().build();
@@ -102,9 +128,19 @@ public class ControladorPlatos {
         return ResponseEntity.ok(platos);
     }
 		
-	@GetMapping(value = "buscar-por-categoria/{idrest}/{categoria}")
-    public ResponseEntity<List<Plato>> buscarPlatoPorCategoria(@PathVariable("idrest") Long idRest, @PathVariable("categoria") String categoriaPlato) {
-        List<Plato> platos =  miServicioPlatos.buscarPlatoPorCategoria(idRest, categoriaPlato);
+	
+	
+	/* Ejemplo:
+	  
+ 	http://localhost:8080/platos/buscar-por-categoria/1
+ 	body:
+ 	{
+		"categoriaPlato": "plato-especial"
+ 	}	  
+    */
+	@PostMapping(value = "buscar-por-categoria/{idrest}")
+    public ResponseEntity<List<Plato>> buscarPlatoPorCategoria(@RequestBody Plato plato, @PathVariable("idrest") Long idRest, BindingResult result) {
+		List<Plato> platos =  miServicioPlatos.buscarPlatoPorCategoria(idRest, plato.getCategoriaPlato());
         
         if (platos == null){
             return ResponseEntity.notFound().build();
@@ -115,9 +151,27 @@ public class ControladorPlatos {
         }
         
         return ResponseEntity.ok(platos);
-    }    
+    }  
 	
-	@PostMapping
+	
+	
+	/* Ejemplo:
+	  
+ 	http://localhost:8080/platos/crear-plato
+ 	body:
+	{
+        "nombrePlato": "arroz con pollo",
+        "descPlato": "descripcion",
+        "precioPlato": 20000.0,
+        "imgPlato": "vacio",
+        "categoriaPlato": "plato-especial",
+        "statusPlato": "ACTIVATED",
+        "cantidadPlato": 11.0,
+        "ingredientesPlato": "vacio",
+        "idRest": 1
+	}
+	*/
+	@PostMapping(value = "crear-plato")
 	public ResponseEntity<Plato> crearPlato(@Valid @RequestBody Plato plato, BindingResult result){		
 		if (result.hasErrors()){     
 			System.out.println("\n\nTiene errores.\n\n");
@@ -133,6 +187,21 @@ public class ControladorPlatos {
         return ResponseEntity.status(HttpStatus.CREATED).body(plato_creado);        
     }
 	
+	/* EJEMPLO
+	http://localhost:8080/platos/actualizar-plato/32 
+	 
+	{
+	    "nombrePlato": "arroz con pollo",
+	    "descPlato": "Arroz roa",
+	    "precioPlato": 20000.0,
+	    "imgPlato": "vacio",
+	    "categoriaPlato": "plato-especial",
+	    "statusPlato": "ACTIVATED",
+	    "cantidadPlato": 11.0,
+	    "ingredientesPlato": "vacio",
+	    "idRest": 1
+	}
+	*/
 	@PutMapping(value = "/actualizar-plato/{id}")
     public ResponseEntity<Plato> actualizarPlato(@PathVariable("id") Long id, @Valid @RequestBody Plato plato){
         plato.setIdPlato(id);
@@ -143,6 +212,8 @@ public class ControladorPlatos {
         return ResponseEntity.ok(plato_encontrado);
     }
 	
+	
+	
 	@DeleteMapping(value = "/eliminar-plato/{id}")
     public ResponseEntity<Plato> eliminarPlato(@PathVariable("id") Long id){
 		Plato plato_encontrado = miServicioPlatos.eliminarPlato(id);
@@ -151,6 +222,8 @@ public class ControladorPlatos {
         }
         return ResponseEntity.ok(plato_encontrado);
     }
+	
+	
 	
 	@PutMapping (value = "/activar-plato/{id}")
     public ResponseEntity<Plato> activarPlato(@PathVariable  Long id){
@@ -161,6 +234,12 @@ public class ControladorPlatos {
         return ResponseEntity.ok(plato);
     }
 	
+	
+	/* Ejemplo
+	http://localhost:8080/platos/actualizar-cantidad/31?cantidad=-1 
+	
+	resta 1 unidad al stock, al plato con id 31
+	*/
 	@PutMapping (value = "/actualizar-cantidad/{id}")
     public ResponseEntity<Plato> actualizarCantidadPlato(@PathVariable  Long id ,@RequestParam(name = "cantidad", required = true) Double cantidad){
         Plato plato = miServicioPlatos.actualizarStock(id, cantidad);
