@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-//import org.apache.http.HttpStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pro.entity.Plato;
-//import com.pro.entity.Restaurante;
 import com.pro.service.ServicioPlatos;
+
 
 @RestController
 @RequestMapping (value = "/platos")
@@ -49,12 +47,11 @@ public class ControladorPlatos {
 
         return ResponseEntity.ok(platos);
 	}
+		
 	
-	
-	
-	@GetMapping(value = "buscar-por-restaurante/{idrest}")
-    public ResponseEntity<List<Plato>> buscarPlatoPorRestaurante(@PathVariable("idrest") Long idRest) {
-        List<Plato> platos =  miServicioPlatos.buscarPlatoPorRestaurante(idRest);
+	@GetMapping(value = "buscar-por-restaurante/{nitrest}")
+    public ResponseEntity<List<Plato>> buscarPlatoPorRestaurante(@PathVariable("nitrest") String nit) {
+        List<Plato> platos =  miServicioPlatos.buscarPlatoPorRestaurante(nit);
         
         if (platos == null){
             return ResponseEntity.notFound().build();
@@ -67,8 +64,7 @@ public class ControladorPlatos {
         return ResponseEntity.ok(platos);
     }
 	
-	
-	
+		
 	@GetMapping(value = "buscar-por-id/{idplato}")
     public ResponseEntity<Plato> buscarPlatoPorId(@PathVariable("idplato") Long idPlato) {
         Plato plato =  miServicioPlatos.buscarPlatoPorId(idPlato);
@@ -77,8 +73,7 @@ public class ControladorPlatos {
         }
         return ResponseEntity.ok(plato);
     }
-	
-	
+		
 
 	 /* Ejemplo:
 	  
@@ -88,34 +83,9 @@ public class ControladorPlatos {
     		"nombrePlato": "Carne asada"
 	 	}	  
 	 */
-	@PostMapping(value = "buscar-por-nombre/{idrest}")
-    public ResponseEntity<List<Plato>> buscarPlatoPorNombre(@RequestBody Plato plato, @PathVariable("idrest") Long idRest, BindingResult result) {
-		List<Plato> platos =  miServicioPlatos.buscarPlatoPorNombre(idRest, plato.getNombrePlato());
-        
-        if (platos == null){
-            return ResponseEntity.notFound().build();
-        }
-        
-        if (platos.size() <= 0){
-            return ResponseEntity.notFound().build();
-        }
-        
-        return ResponseEntity.ok(platos);
-    }
-	
-	
-	
-	/* Ejemplo:
-	  
- 	http://localhost:8080/platos/buscar-por-status/1
- 	body:
- 	{
-		"statusPlato": "ACTIVATED"
- 	}	  
-	*/
-	@PostMapping(value = "buscar-por-status/{idrest}")
-    public ResponseEntity<List<Plato>> buscarPlatoPorStatus(@RequestBody Plato plato, @PathVariable("idrest") Long idRest, BindingResult result) {
-		List<Plato> platos =  miServicioPlatos.buscarPlatoPorStatus(idRest, plato.getStatusPlato());
+	@PostMapping(value = "buscar-por-nombre/{nitrest}")
+    public ResponseEntity<List<Plato>> buscarPlatoPorNombre(@RequestBody Plato plato, @PathVariable("nitrest") String nit, BindingResult result) {
+		List<Plato> platos =  miServicioPlatos.buscarPlatoPorNombre(nit, plato.getNombrePlato());
         
         if (platos == null){
             return ResponseEntity.notFound().build();
@@ -129,6 +99,29 @@ public class ControladorPlatos {
     }
 		
 	
+	/* Ejemplo:
+	  
+ 	http://localhost:8080/platos/buscar-por-status/1
+ 	body:
+ 	{
+		"statusPlato": "ACTIVATED"
+ 	}	  
+	*/
+	@PostMapping(value = "buscar-por-status/{nitrest}")
+    public ResponseEntity<List<Plato>> buscarPlatoPorStatus(@RequestBody Plato plato, @PathVariable("nitrest") String nit, BindingResult result) {
+		List<Plato> platos =  miServicioPlatos.buscarPlatoPorStatus(nit, plato.getStatusPlato());
+        
+        if (platos == null){
+            return ResponseEntity.notFound().build();
+        }
+        
+        if (platos.size() <= 0){
+            return ResponseEntity.notFound().build();
+        }
+        
+        return ResponseEntity.ok(platos);
+    }
+			
 	
 	/* Ejemplo:
 	  
@@ -138,9 +131,9 @@ public class ControladorPlatos {
 		"categoriaPlato": "plato-especial"
  	}	  
     */
-	@PostMapping(value = "buscar-por-categoria/{idrest}")
-    public ResponseEntity<List<Plato>> buscarPlatoPorCategoria(@RequestBody Plato plato, @PathVariable("idrest") Long idRest, BindingResult result) {
-		List<Plato> platos =  miServicioPlatos.buscarPlatoPorCategoria(idRest, plato.getCategoriaPlato());
+	@PostMapping(value = "buscar-por-categoria/{nitrest}")
+    public ResponseEntity<List<Plato>> buscarPlatoPorCategoria(@RequestBody Plato plato, @PathVariable("nitrest") String nit, BindingResult result) {
+		List<Plato> platos =  miServicioPlatos.buscarPlatoPorCategoria(nit, plato.getCategoriaPlato());
         
         if (platos == null){
             return ResponseEntity.notFound().build();
@@ -152,23 +145,22 @@ public class ControladorPlatos {
         
         return ResponseEntity.ok(platos);
     }  
-	
-	
+		
 	
 	/* Ejemplo:
 	  
  	http://localhost:8080/platos/crear-plato
  	body:
 	{
-        "nombrePlato": "arroz con pollo",
-        "descPlato": "descripcion",
-        "precioPlato": 20000.0,
-        "imgPlato": "vacio",
-        "categoriaPlato": "plato-especial",
-        "statusPlato": "ACTIVATED",
-        "cantidadPlato": 11.0,
-        "ingredientesPlato": "vacio",
-        "idRest": 1
+	    "nombrePlato": "arroz con pollo",
+	    "descPlato": "descripcion",
+	    "precioPlato": 20000.0,
+	    "imgPlato": "vacio",
+	    "categoriaPlato": "plato-especial",
+	    "statusPlato": "ACTIVATED",
+	    "cantidadPlato": 11.0,
+	    "ingredientesPlato": "vacio",
+	    "nitRest": 1
 	}
 	*/
 	@PostMapping(value = "crear-plato")
@@ -186,6 +178,7 @@ public class ControladorPlatos {
         
         return ResponseEntity.status(HttpStatus.CREATED).body(plato_creado);        
     }
+	
 	
 	/* EJEMPLO
 	http://localhost:8080/platos/actualizar-plato/32 
@@ -211,8 +204,7 @@ public class ControladorPlatos {
         }
         return ResponseEntity.ok(plato_encontrado);
     }
-	
-	
+		
 	
 	@DeleteMapping(value = "/eliminar-plato/{id}")
     public ResponseEntity<Plato> eliminarPlato(@PathVariable("id") Long id){
@@ -222,8 +214,7 @@ public class ControladorPlatos {
         }
         return ResponseEntity.ok(plato_encontrado);
     }
-	
-	
+		
 	
 	@PutMapping (value = "/activar-plato/{id}")
     public ResponseEntity<Plato> activarPlato(@PathVariable  Long id){
@@ -248,6 +239,23 @@ public class ControladorPlatos {
         }
         return ResponseEntity.ok(plato);
     }
+		
+	
+	@GetMapping(value = "buscar-categorias/{nitrest}")
+    public ResponseEntity<List<String>> buscarCategoriasPorRestaurante(@PathVariable("nitrest") String nit) {
+        List<String> categorias =  miServicioPlatos.buscarCategoriasPorRestaurante(nit);
+        
+        if (categorias == null){
+            return ResponseEntity.notFound().build();
+        }
+        
+        if (categorias.size() <= 0){
+            return ResponseEntity.notFound().build();
+        }
+        
+        return ResponseEntity.ok(categorias);
+    }
+	
 	
 	
 	
@@ -272,17 +280,4 @@ public class ControladorPlatos {
         }
         return jsonString;
     }
-	
-	
-	/* test
-    {	    
-	    "nombrePlato": "afrroz con pollo",
-	    "descPlato": "arroz, pollo, salchicha",
-	    "imgPlato": "sin imagen",
-	    "categoriaPlato": "especial",
-	    "statusPlato": "ACTIVATED",
-	    "cantidadPlato": 12,
-	    "idRest": 1 
-	}
-    */
 }	

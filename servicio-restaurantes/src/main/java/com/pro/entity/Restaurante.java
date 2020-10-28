@@ -2,8 +2,8 @@ package com.pro.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+//import javax.persistence.GeneratedValue;
+//import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -18,13 +18,19 @@ import lombok.NoArgsConstructor;
 @Data 
 @AllArgsConstructor @NoArgsConstructor @Builder
 public class Restaurante {	
-
+	
+	/*
     @Id
     @Column(name = "id_rest")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     //private Long id;
     private Long idRest;
+    */
     
+	@Id
+    @Column(name = "nit_rest")
+    //private Long id;
+    private String nitRest;
+	
     @Column(name = "nombre_rest")
     @NotEmpty (message = "El nombre no debe ser vacío")
     private String nombreRest;

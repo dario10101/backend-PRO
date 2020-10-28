@@ -50,19 +50,19 @@ public class ControladorRoles {
 	}
 	*/
 	@PostMapping
-	public ResponseEntity<Rol> obtenerRol(@RequestBody Usuario user, BindingResult result){		
+	public ResponseEntity<Usuario> obtenerRol(@RequestBody Usuario user, BindingResult result){		
 		if (result.hasErrors()){     
 			System.out.println("\n\nTiene errores.\n\n");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));
         }
         
-        Rol rol_creado = miServicioRoles.validarRol(user);        
+		Usuario rol_usuario_creado = miServicioRoles.validarRol(user);        
         
-        if (rol_creado == null){
+        if (rol_usuario_creado == null){
             return ResponseEntity.unprocessableEntity().build();
         }        
         
-        return ResponseEntity.status(HttpStatus.CREATED).body(rol_creado);        
+        return ResponseEntity.status(HttpStatus.CREATED).body(rol_usuario_creado);        
     }
 	
 	

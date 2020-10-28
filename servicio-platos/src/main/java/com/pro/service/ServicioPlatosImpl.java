@@ -30,12 +30,12 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		
 		//TODO optimizar
 		Restaurante rest;
-		Long idRestTemp;
+		String nitTemp;
 		if(platosPrueba.size() > 0) {				
 			for(Plato plato: platosPrueba) {
-				idRestTemp = plato.getIdRest();
-				if(idRestTemp != null) {					
-					rest = this.buscarRestaurante(idRestTemp);
+				nitTemp = plato.getNitRest();
+				if(nitTemp != null) {					
+					rest = this.buscarRestaurante(nitTemp);
 					plato.setRestaurante(rest);
 				}
 			}
@@ -45,15 +45,15 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 	}	
 	
 	@Override
-	public List<Plato> buscarPlatoPorRestaurante(Long idRest) {  
+	public List<Plato> buscarPlatoPorRestaurante(String nit) {  
 		//Datos no validos
-		if(idRest == null) {
+		if(nit == null) {
 			System.out.println("\nError: null\n");
 			return null;
 		}
 		
 		// traer el restaurante del otro microservicio
-		Restaurante rest = this.buscarRestaurante(idRest);
+		Restaurante rest = this.buscarRestaurante(nit);
 		
 		//No existe el restaurante
 		if(rest == null) {
@@ -62,7 +62,7 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		}			
 		
 		// Buscar los platos de un restaurante
-		List<Plato> platosEncontrados =  miRepositorioPlatos.findByIdRest(idRest);
+		List<Plato> platosEncontrados =  miRepositorioPlatos.findByNitRest(nit);
 		
 		// No tener en cuenta los platos eliminados
 		this.eliminarPorStatus("DELETED", platosEncontrados);
@@ -82,11 +82,11 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		
 		//encontrar el restaurante
 		if(platoEncontrado != null) {
-			Long idRestaurante = platoEncontrado.getIdRest(); 
+			String nitRestaurante = platoEncontrado.getNitRest(); 
 			
 			//el restaurante existe
-			if(idRestaurante != null){
-				Restaurante rest = this.buscarRestaurante(idRestaurante);
+			if(nitRestaurante != null){
+				Restaurante rest = this.buscarRestaurante(nitRestaurante);
 				platoEncontrado.setRestaurante(rest);
 			}
 		}
@@ -95,15 +95,15 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 	}
 		
 	@Override
-	public List<Plato> buscarPlatoPorNombre(Long idRest, String nombrePlato) {	
+	public List<Plato> buscarPlatoPorNombre(String nit, String nombrePlato) {	
 		//Datos no validos
-		if(idRest == null || nombrePlato == null) {
+		if(nit == null || nombrePlato == null) {
 			System.out.println("\nError: null\n");
 			return null;
 		}
 		
 		// traer el restaurante del otro microservicio
-		Restaurante rest = this.buscarRestaurante(idRest);
+		Restaurante rest = this.buscarRestaurante(nit);
 		
 		//No existe el restaurante
 		if(rest == null) {
@@ -111,7 +111,7 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 			return null;
 		}		
 		
-		List<Plato> platosPrueba = miRepositorioPlatos.findByIdRest(idRest);		
+		List<Plato> platosPrueba = miRepositorioPlatos.findByNitRest(nit);		
 		List<Plato> platosEncontrados = new ArrayList<Plato>();				
 		
 		for(Plato plato: platosPrueba) {
@@ -125,15 +125,15 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 	}
 	
 	@Override
-	public List<Plato> buscarPlatoPorStatus(Long idRest, String statusPlato) {
+	public List<Plato> buscarPlatoPorStatus(String nit, String statusPlato) {
 		//Datos no validos
-		if(idRest == null || statusPlato == null) {
+		if(nit == null || statusPlato == null) {
 			System.out.println("\nError: null\n");
 			return null;
 		}
 		
 		// traer el restaurante del otro microservicio
-		Restaurante rest = this.buscarRestaurante(idRest);
+		Restaurante rest = this.buscarRestaurante(nit);
 		
 		//No existe el restaurante
 		if(rest == null) {
@@ -141,7 +141,7 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 			return null;
 		}		
 		
-		List<Plato> platosPrueba = miRepositorioPlatos.findByIdRest(idRest);		
+		List<Plato> platosPrueba = miRepositorioPlatos.findByNitRest(nit);		
 		List<Plato> platosEncontrados = new ArrayList<Plato>();				
 		
 		for(Plato plato: platosPrueba) {
@@ -155,15 +155,15 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 	}
 
 	@Override
-	public List<Plato> buscarPlatoPorCategoria(Long idRest, String categoriaPlato){
+	public List<Plato> buscarPlatoPorCategoria(String nit, String categoriaPlato){
 		//Datos no validos
-		if(idRest == null || categoriaPlato == null) {
+		if(nit == null || categoriaPlato == null) {
 			System.out.println("\nError: null\n");
 			return null;
 		}
 		
 		// traer el restaurante del otro microservicio
-		Restaurante rest = this.buscarRestaurante(idRest);
+		Restaurante rest = this.buscarRestaurante(nit);
 		
 		//No existe el restaurante
 		if(rest == null) {
@@ -171,7 +171,7 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 			return null;
 		}		
 		
-		List<Plato> platosPrueba = miRepositorioPlatos.findByIdRest(idRest);		
+		List<Plato> platosPrueba = miRepositorioPlatos.findByNitRest(nit);		
 		List<Plato> platosEncontrados = new ArrayList<Plato>();				
 		
 		for(Plato plato: platosPrueba) {
@@ -206,8 +206,8 @@ public class ServicioPlatosImpl implements ServicioPlatos{
         }			
 		
 		//Validacion del restaurante
-		if(plato.getIdRest() != null) {
-			Restaurante rest = this.buscarRestaurante(plato.getIdRest());
+		if(plato.getNitRest() != null) {
+			Restaurante rest = this.buscarRestaurante(plato.getNitRest());
 			
 			//El restaurante no existe
 			if(rest == null) {
@@ -231,8 +231,8 @@ public class ServicioPlatosImpl implements ServicioPlatos{
         }
 		
 		//validar el restaurante
-		if(plato.getIdRest() != null) {
-			Restaurante rest = this.buscarRestaurante(plato.getIdRest());
+		if(plato.getNitRest() != null) {
+			Restaurante rest = this.buscarRestaurante(plato.getNitRest());
 			
 			//El restaurante no existe
 			if(rest == null) {
@@ -250,7 +250,9 @@ public class ServicioPlatosImpl implements ServicioPlatos{
         plato_encontrado.setCategoriaPlato(plato.getCategoriaPlato());
         plato_encontrado.setStatusPlato(plato.getStatusPlato());
         plato_encontrado.setCantidadPlato(plato.getCantidadPlato());
-        plato_encontrado.setIdRest(plato.getIdRest());
+        
+        if(plato.getNitRest() != null)
+        	plato_encontrado.setNitRest(plato.getNitRest());
                 
         return miRepositorioPlatos.save(plato_encontrado);
 	}
@@ -318,10 +320,10 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		return platoBase;
 	}
 	
-	private Restaurante buscarRestaurante(Long idRest) {
+	private Restaurante buscarRestaurante(String nit) {
 		Restaurante rest = null;
 		try {
-			rest = clienteRestaurante.buscarRestaurantePorId(idRest).getBody();
+			rest = clienteRestaurante.buscarRestaurantePorId(nit).getBody();
 		}catch(Exception e) {
 			return null;
 		}
@@ -337,6 +339,32 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 				}
 			}
 		}
+	}
+
+	@Override
+	public List<String> buscarCategoriasPorRestaurante(String nit) {		
+		// Buscar los platos de un restaurante
+		List<Plato> platosEncontrados = this.buscarPlatoPorRestaurante(nit);
+		// Categorias encontradas
+		List<String> categorias = new ArrayList<String>();
+		
+		String categoria;
+		
+		// Datos incorrectos
+		if(platosEncontrados != null) {
+			for(Plato plato: platosEncontrados) {
+				// Tiene categoria:
+				categoria = plato.getCategoriaPlato(); 
+				if(categoria != null) {
+					//Si no está en la lista, la agrega
+					if(!categorias.contains(categoria)) {
+						categorias.add(categoria);
+					}
+				}
+			}
+		}
+		
+		return categorias;
 	}
 	
 	

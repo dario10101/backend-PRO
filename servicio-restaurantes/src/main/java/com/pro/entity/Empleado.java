@@ -60,9 +60,12 @@ public class Empleado {
     
     @NotNull(message = "El restaurante no puede ser vacio")
     @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn (name = "id_rest")
+    @JoinColumn (name = "nit_rest")
     @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private Restaurante restaurante;
 	
-	
+    
+    // alerta de machetazo
+	//@Transient
+	//private Long idRestauranteAux;
 }

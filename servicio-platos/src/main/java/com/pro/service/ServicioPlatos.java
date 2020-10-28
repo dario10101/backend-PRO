@@ -8,15 +8,17 @@ public interface ServicioPlatos {
 
     public List<Plato> listarPlatos();
     public Plato buscarPlatoPorId(Long idPlato); 
-    public List<Plato> buscarPlatoPorNombre(Long idRest, String nombrePlato);
-    public List<Plato> buscarPlatoPorStatus(Long idRest, String statusPlato);
-    public List<Plato> buscarPlatoPorCategoria(Long idRest, String categoriaPlato);
+    public List<Plato> buscarPlatoPorNombre(String nit, String nombrePlato);
+    public List<Plato> buscarPlatoPorStatus(String nit, String statusPlato);
+    public List<Plato> buscarPlatoPorCategoria(String nit, String categoriaPlato);
     
     public Plato crearPlato(Plato plato);    
     public Plato actualizarPlato(Plato Plato);
     public Plato eliminarPlato(Long idPlato);
     public Plato activarPlato(Long idPlato);
-    public List<Plato> buscarPlatoPorRestaurante(Long idRest);	
+    public List<Plato> buscarPlatoPorRestaurante(String nit);	
     public Plato actualizarStock(Long iPplato, Double cantidad);
+    
+    public List<String>buscarCategoriasPorRestaurante(String nit);
     
 }

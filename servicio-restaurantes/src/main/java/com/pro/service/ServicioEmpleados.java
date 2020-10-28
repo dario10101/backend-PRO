@@ -6,12 +6,15 @@ import com.pro.entity.Empleado;
 
 public interface ServicioEmpleados {
 	
-	public List<Empleado> listarEmpleados(Long idRest);
+	public List<Empleado> listarEmpleados(String nit);
 	public Empleado buscarEmpleadoPorCorreo(String correo);
 	public Empleado buscarEmpleadoPorId(Long idEmpleado);
-	//public Cliente buscarClientePorId(Long idCliente);
+	
 	public Empleado validarCredenciales(Empleado empleado);
 	public Empleado crearEmpleado(Empleado empleado);
 	public Empleado actualizarEmpleado(Empleado empleado);
+	
+	public Empleado eliminarEmpleado(Long idEmpleado);
+    public Empleado activarEmpleado(Long idEmpleado);
 	
 }

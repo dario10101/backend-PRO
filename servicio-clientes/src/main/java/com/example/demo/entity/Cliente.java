@@ -46,12 +46,20 @@ public class Cliente {
     @Column(name = "telefono_cliente")
     private String telefonoCliente;
     
+    @Column(name = "celular_cliente")
+    private String celularCliente;
+    
     @Column(name = "status_cliente")
     private String statusCliente;
     
     @Column(name = "img_cliente")
     private String imgCliente; 
     
+    @Column(name = "direccion_cliente")
+    @NotEmpty (message = "Error en la direccion")
+    private String direccionCliente;
+    
+    //direccion
     //Pendiente fecha registro
     //pendiente edad
     

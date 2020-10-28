@@ -22,6 +22,8 @@ public class Cliente {
     
     private String telefonoCliente;
     
+    private String celurarCliente;
+    
     private String statusCliente;
     
     private String imgCliente;

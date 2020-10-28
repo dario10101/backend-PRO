@@ -17,15 +17,17 @@ public class ServicioRestaurantesImpl implements ServicioRestaurantes{
 
 	@Override
 	public List<Restaurante> listarRestaurantes() {
-		List<Restaurante> restaurantePrueba = miRepositorioRestaurantes.findAll();		
+		List<Restaurante> restaurantesPrueba = miRepositorioRestaurantes.findAll();		
 		
-		return restaurantePrueba;
+		this.eliminarPorStatus("DELETED", restaurantesPrueba);
+		
+		return restaurantesPrueba;
 	}
 
 	@Override
-	public Restaurante buscarRestaurantePorId(Long idRestaurante) {
-		System.out.println("\n\nBuscando restaurante " + idRestaurante + "\n\n");
-		return miRepositorioRestaurantes.findById(idRestaurante).orElse(null);
+	public Restaurante buscarRestaurantePorNit(String nit) {
+		System.out.println("\n\nBuscando restaurante " + nit + "\n\n");
+		return miRepositorioRestaurantes.findById(nit).orElse(null);
 	}
 
 	@Override
@@ -48,9 +50,12 @@ public class ServicioRestaurantesImpl implements ServicioRestaurantes{
 		
 		//verificar si existe
 		Restaurante restaurante_encontrado = null;
-		if(rest.getIdRest() != null)
-			restaurante_encontrado = buscarRestaurantePorId(rest.getIdRest());
-				
+		if(rest.getNitRest() != null) {
+			restaurante_encontrado = buscarRestaurantePorNit(rest.getNitRest());
+		}else {
+			// id nulo
+			return null;
+		}
 		//ya existe
 		if (restaurante_encontrado != null){
 			System.out.println("\nRestaurante exixtente\n");
@@ -68,13 +73,13 @@ public class ServicioRestaurantesImpl implements ServicioRestaurantes{
 	public Restaurante actualizarRestaurante(Restaurante rest) {
 		if(rest == null)
 			return null;		
-		Long idRestaurante = rest.getIdRest();
+		String nitRestaurante = rest.getNitRest();
 		
 		// El cliente no tiene el id
-		if(idRestaurante == null)
+		if(nitRestaurante == null)
 			return null;
 		
-		Restaurante restaurante_encontrado = buscarRestaurantePorId(idRestaurante);
+		Restaurante restaurante_encontrado = buscarRestaurantePorNit(nitRestaurante);
         
 		// NO existe el Restaurante
 		if (restaurante_encontrado == null)
@@ -92,6 +97,42 @@ public class ServicioRestaurantesImpl implements ServicioRestaurantes{
 		}
 		
 		return miRepositorioRestaurantes.save(restaurante_encontrado);
+	}
+
+	@Override
+	public Restaurante eliminarRestaurante(String nitRestaurante) {
+		Restaurante restaurante_encontrado = buscarRestaurantePorNit(nitRestaurante);
+        if (null == restaurante_encontrado){
+            return null;
+        }
+        
+        restaurante_encontrado.setStatusRest("DELETED");
+        return miRepositorioRestaurantes.save(restaurante_encontrado);
+	}
+
+	@Override
+	public Restaurante activarRestaurante(String nitRestaurante) {
+		Restaurante restaurante_encontrado = buscarRestaurantePorNit(nitRestaurante);
+        if (null == restaurante_encontrado){
+            return null;
+        }
+        
+        restaurante_encontrado.setStatusRest("ACTIVATED");
+        return miRepositorioRestaurantes.save(restaurante_encontrado);
+	}
+	
+	
+	
+	
+	
+	private void eliminarPorStatus(String status, List<Restaurante> restaurantes){
+		if(restaurantes != null) {
+			for(int i = 0; i < restaurantes.size(); i++) {
+				if(restaurantes.get(i).getStatusRest().equals(status)) {
+					restaurantes.remove(i);
+				}
+			}
+		}
 	}
 
 }

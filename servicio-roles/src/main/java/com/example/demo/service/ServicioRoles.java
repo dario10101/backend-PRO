@@ -9,7 +9,7 @@ public interface ServicioRoles {
 	
 	public List<Rol> listarRoles();
 	
-	public Rol validarRol(Usuario user);
+	public Usuario validarRol(Usuario user);
 	
 	
 	

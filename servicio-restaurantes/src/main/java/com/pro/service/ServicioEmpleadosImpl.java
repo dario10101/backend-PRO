@@ -18,13 +18,13 @@ public class ServicioEmpleadosImpl implements ServicioEmpleados{
 	private final RepositorioEmpleados miRepositorioEmpleados;
 
 	@Override
-	public List<Empleado> listarEmpleados(Long idRest) {		
-		Restaurante rest = Restaurante.builder().idRest(idRest).build();
+	public List<Empleado> listarEmpleados(String nit) {		
+		Restaurante rest = Restaurante.builder().nitRest(nit).build();
 		
 		List<Empleado> empleados = new ArrayList<Empleado>();
 		
 		if (rest != null) {
-			System.out.println("\n id del restaurante: " + rest.getIdRest() + "\n");
+			System.out.println("\n id del restaurante: " + rest.getNitRest() + "\n");
 			empleados = miRepositorioEmpleados.findByRestaurante(rest);
 		}
 		
@@ -47,10 +47,17 @@ public class ServicioEmpleadosImpl implements ServicioEmpleados{
 		
 		//TODO ver como se debe hacer esta parte
 		if(empleado_encontrado != null) {
+			//Machetazo
+			//if(empleado_encontrado.getRestaurante() != null) {
+			//	empleado_encontrado.setIdRestauranteAux(empleado_encontrado.getRestaurante().getNitRest());
+			//}
+			
 			if(!empleado_encontrado.getPasswordEmpleado().equals(empleado.getPasswordEmpleado())) {
 				empleado_encontrado = null;
 			}
 		}
+		
+		
 		
 		return empleado_encontrado;
 	}
@@ -70,6 +77,11 @@ public class ServicioEmpleadosImpl implements ServicioEmpleados{
 			System.out.println("\nCliente exixtente\n");
             return null;
         }
+		
+		if(empleado.getStatusEmpleado() == null) {
+			empleado.setStatusEmpleado("ACTIVATED");
+		}
+		
 		return miRepositorioEmpleados.save(empleado);
 	}
 
@@ -103,6 +115,28 @@ public class ServicioEmpleadosImpl implements ServicioEmpleados{
 		}
 		
 		return miRepositorioEmpleados.save(empleado_encontrado);
+	}
+
+	@Override
+	public Empleado eliminarEmpleado(Long idEmpleado) {
+		Empleado empleado_encontrado = buscarEmpleadoPorId(idEmpleado);
+        if (null == empleado_encontrado){
+            return null;
+        }
+        
+        empleado_encontrado.setStatusEmpleado("DELETED");
+        return miRepositorioEmpleados.save(empleado_encontrado);
+	}
+
+	@Override
+	public Empleado activarEmpleado(Long idEmpleado) {
+		Empleado empleado_encontrado = buscarEmpleadoPorId(idEmpleado);
+        if (null == empleado_encontrado){
+            return null;
+        }
+        
+        empleado_encontrado.setStatusEmpleado("ACTIVATED");
+        return miRepositorioEmpleados.save(empleado_encontrado);
 	}
 
 	

@@ -53,12 +53,14 @@ public class Plato {
     @Column(name = "cantidad_plato")
     private Double cantidadPlato;
     
+    /*
     @Column(name = "ingredientes_plato")
     private String ingredientesPlato;
+	*/
 
-    @NotNull(message = "El id del restaurante no puede ser nulo")
-    @Column(name = "id_rest")
-    private Long idRest;
+    @NotNull(message = "El nit del restaurante no puede ser nulo")
+    @Column(name = "nit_rest")
+    private String nitRest;
     
     @Transient
     private Restaurante restaurante;

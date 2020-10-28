@@ -8,12 +8,14 @@ import com.pro.entity.Restaurante;
 public interface ServicioRestaurantes {
 
 	public List<Restaurante> listarRestaurantes();
-    public Restaurante buscarRestaurantePorId(Long idRestaurante); 
+    public Restaurante buscarRestaurantePorNit(String nit); 
     
     public List<Restaurante> buscarRestaurantePorNombre(String nombreRest);
     public Restaurante crearRestaurante(Restaurante rest);
     public Restaurante actualizarRestaurante(Restaurante rest);
     
+    public Restaurante eliminarRestaurante(String nitRestaurante);
+    public Restaurante activarRestaurante(String nitRestaurante);
     
 	
 	

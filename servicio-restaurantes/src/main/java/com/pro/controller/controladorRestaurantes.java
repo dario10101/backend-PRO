@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,10 +57,10 @@ public class controladorRestaurantes {
 	}	
 	
 	
-	@GetMapping(value = "buscar-por-id/{id}")
-    public ResponseEntity<Restaurante> buscarRestaurantePorId(@PathVariable("id") Long id) {
-		System.out.println("\n\nBuscando restaurante ...\n\n");
-		Restaurante restaurante =  miServicioRestaurantes.buscarRestaurantePorId(id);
+	@GetMapping(value = "buscar-por-nit/{nit}")
+    public ResponseEntity<Restaurante> buscarRestaurantePorNit(@PathVariable("nit") String nit) {
+		System.out.println("Buscando restaurante ...");
+		Restaurante restaurante =  miServicioRestaurantes.buscarRestaurantePorNit(nit);
         if (null == restaurante){
             return ResponseEntity.notFound().build();
         }
@@ -71,12 +72,12 @@ public class controladorRestaurantes {
  	http://localhost:8080/restaurantes/buscar-por-nombre
  	body:
  	{
-		"nombreRest": "pio pio"
+		"nombreRest": "Pio Pio"
  	}	  
 	*/
 	@PostMapping(value = "buscar-por-nombre")
-	public ResponseEntity<List<Restaurante>> buscarPlatoPorNombre(@RequestBody Restaurante rest, BindingResult result) {
-		System.out.println("\nnombre: " + rest.getNombreRest() + "\n");
+	public ResponseEntity<List<Restaurante>> buscarRestaurantePorNombre(@RequestBody Restaurante rest, BindingResult result) {
+		//System.out.println("\nnombre: " + rest.getNombreRest() + "\n");
 		
 		List<Restaurante> restaurantes =  miServicioRestaurantes.buscarRestaurantePorNombre(rest.getNombreRest());
 	    
@@ -94,6 +95,7 @@ public class controladorRestaurantes {
 	
 	/* EJEMPLO
 	{
+	    "nitRest": "100",
 	    "nombreRest": "La española",
 	    "descRest": "Cajete",
 	    "telefonoRest": "12345",
@@ -103,7 +105,7 @@ public class controladorRestaurantes {
 	@PostMapping(value = "crear-restaurante")
 	public ResponseEntity<Restaurante> crearRestaurante(@Valid @RequestBody Restaurante restaurante, BindingResult result){		
 		if (result.hasErrors()){     
-			System.out.println("\n\nTiene errores.\n\n");
+			System.out.println("\nTiene errores.\n");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));
         }
         
@@ -125,9 +127,11 @@ public class controladorRestaurantes {
 	    "categoriaRest": "Almuerzos caseros"
 	}
 	*/
-	@PutMapping(value = "/actualizar-restaurante/{idrest}")
-    public ResponseEntity<Restaurante> actualizarRestaurante(@PathVariable("idrest") Long id, @Valid @RequestBody Restaurante restaurante){
-		restaurante.setIdRest(id);
+	@PutMapping(value = "/actualizar-restaurante/{nit}")
+    public ResponseEntity<Restaurante> actualizarRestaurante(@PathVariable("nit") String nit, @Valid @RequestBody Restaurante restaurante){
+		if(restaurante.getNitRest() == null)
+			restaurante.setNitRest(nit);
+		
 		Restaurante restaurante_encontrado =  miServicioRestaurantes.actualizarRestaurante(restaurante);
         if (restaurante_encontrado == null){
             return ResponseEntity.notFound().build();
@@ -136,14 +140,36 @@ public class controladorRestaurantes {
     }
 	
 	
+	@DeleteMapping(value = "/eliminar-restaurante/{nit}")
+    public ResponseEntity<Restaurante> eliminarRestaurante(@PathVariable("nit") String nit){
+		Restaurante restaurante_encontrado = miServicioRestaurantes.eliminarRestaurante(nit);
+        if (restaurante_encontrado == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(restaurante_encontrado);
+    }
+	
+	
+	@PutMapping(value = "/activar-restaurante/{nit}")
+    public ResponseEntity<Restaurante> activarRestaurante(@PathVariable("nit") String nit){
+		Restaurante restaurante_encontrado = miServicioRestaurantes.activarRestaurante(nit);
+        if (restaurante_encontrado == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(restaurante_encontrado);
+    }
+	
+	
+	
+	
 	//------------------------EMPLEADOS ----------------------------------
 	//--------------------------------------------------------------------
 	
 	
-	@GetMapping(value = "listar-empleados/{idrest}")
-	public ResponseEntity<List<Empleado>> listarEmpleados(@PathVariable("idrest") Long idRest){	
+	@GetMapping(value = "listar-empleados/{nit}")
+	public ResponseEntity<List<Empleado>> listarEmpleados(@PathVariable("nit") String nit){	
 		
-		List<Empleado> empleados = miServicioEmpleados.listarEmpleados(idRest);
+		List<Empleado> empleados = miServicioEmpleados.listarEmpleados(nit);
 		
         if(empleados.size() <= 0){
             return ResponseEntity.noContent().build();
@@ -168,10 +194,11 @@ public class controladorRestaurantes {
         return ResponseEntity.ok(empleado_encontrado);
     }
 		
+	
 	/* CREAR EMPLEADO, EJEMPLO:
-	 {
-	    "nombreEmpleado": "Dario",
-	    "correoEmpleado": "dario@unicauca.edu.co", 
+	{
+	    "nombreEmpleado": "Pepe",
+	    "correoEmpleado": "pepe@unicauca.edu.co", 
 	    "passwordEmpleado": "123",
 	    "telefonoEmpleado": "12345",
 	    "direccionEmpleado": "calle 1 carrera 1",
@@ -179,7 +206,7 @@ public class controladorRestaurantes {
 	    "idRolEmpleado": "2",
 	    "restaurante": 
 	    {
-	        "idRest": 1
+	        "nitRest": 1
 	    }
 	}
 	*/	
@@ -198,8 +225,7 @@ public class controladorRestaurantes {
         
         return ResponseEntity.status(HttpStatus.CREATED).body(empleado_creado);        
     }
-	
-	
+		
 	
 	/* Ejemplo
 	{
@@ -211,12 +237,12 @@ public class controladorRestaurantes {
 	    "idRolEmpleado": "2",
 	    "restaurante": 
 	    {
-	        "idRest": 1
+	        "nitRest": 1
 	    }
 	}
 	*/
 	@PutMapping(value = "/actualizar-empleado/{id}")
-    public ResponseEntity<Empleado> actualizarEmpleado(@PathVariable("id") Long id, @Valid @RequestBody Empleado empleado){
+    public ResponseEntity<Empleado> actualizarEmpleado(@PathVariable("id") Long id, @Valid @RequestBody Empleado empleado){		
 		empleado.setIdEmpleado(id);
 		Empleado empleado_encontrado =  miServicioEmpleados.actualizarEmpleado(empleado);
         
@@ -227,7 +253,24 @@ public class controladorRestaurantes {
     }
 	
 	
+	@DeleteMapping(value = "/eliminar-empleado/{id}")
+    public ResponseEntity<Empleado> eliminarEmpleado(@PathVariable("id") Long id){
+		Empleado empleado_encontrado = miServicioEmpleados.eliminarEmpleado(id);
+        if (empleado_encontrado == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(empleado_encontrado);
+    }
 	
+		
+	@PutMapping (value = "/activar-empleado/{id}")
+    public ResponseEntity<Empleado> activarEmpleado(@PathVariable  Long id){
+		Empleado empleado = miServicioEmpleados.activarEmpleado(id);
+        if (empleado == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(empleado);
+    }
 	
 	
 	

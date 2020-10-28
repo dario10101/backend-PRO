@@ -9,7 +9,7 @@ import com.pro.entity.Restaurante;
 
 
 @Repository
-public interface RepositorioRestaurantes extends JpaRepository<Restaurante, Long>{
+public interface RepositorioRestaurantes extends JpaRepository<Restaurante, String>{
 	
 	public List<Restaurante> findByNombreRest(String nombre_restaurante);
 

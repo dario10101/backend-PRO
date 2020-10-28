@@ -60,8 +60,7 @@ public class ControladorClientes {
         }
         return ResponseEntity.ok(cliente_encontrado);
     }
-	
-	
+		
 	
 	@GetMapping(value = "/buscar-por-id/{idcliente}")
     public ResponseEntity<Cliente> buscarClientePorId(@PathVariable("idcliente") Long idCliente) {
@@ -72,13 +71,15 @@ public class ControladorClientes {
         return ResponseEntity.ok(cliente);
     }
 	
+	
 	/* EJEMPLO
 	{
 	    "correoCliente" : "rupert@unicauca.edu.co",
 	    "passwordCliente": "123",
 	    "nombresCliente": "Rupert",
 	    "apellidosCliente": "Apellido de Rupert",
-	    "telefonoCliente": "123445"
+	    "telefonoCliente": "123445",
+	    "direccionCliente": "La Sierra Cauca"
 	}
 	*/
 	@PostMapping(value = "/crear-cliente")
@@ -97,6 +98,7 @@ public class ControladorClientes {
         return ResponseEntity.status(HttpStatus.CREATED).body(cliente_creado);        
     }
 	
+	
 	/* EJEMPLO
 	{
 	    "correoCliente" : "rupert@unicauca.edu.co",
@@ -104,7 +106,8 @@ public class ControladorClientes {
 	    "nombresCliente": "Rupert",
 	    "apellidosCliente": "Apellido de Rupert",
 	    "telefonoCliente": "123445",
-	    "statusCliente": "DELETED"
+	    "statusCliente": "DELETED",
+	    "direccionCliente": "La Sierra Cauca"
 	}
 	*/	
 	@PutMapping(value = "/actualizar-cliente/{id}")
@@ -140,6 +143,8 @@ public class ControladorClientes {
 	
 	
 	
+	
+	
 	private String formatMessage( BindingResult result){
 		List<Map<String,String>> errors = result.getFieldErrors().stream()
                 .map(err ->{
@@ -162,6 +167,4 @@ public class ControladorClientes {
         return jsonString;
     }
 	
-	
-
 }
