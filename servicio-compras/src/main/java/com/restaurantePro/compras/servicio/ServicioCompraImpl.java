@@ -120,8 +120,12 @@ public class ServicioCompraImpl implements IntServicioCompra{
 
 	@Override
 	public Factura vender(Long parIdCliente) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println("\n\nIngresando a veder\n\n");
+		Factura objFactura = Factura.builder().atrEstado("creado").atrIdCliente(parIdCliente).build();
+		System.out.println("\n\n Factura creada\n\n");
+		objFactura.setListaItems(obtenerCarrito().getAtrListaItems());
+		objFactura = crearFactura(objFactura);
+		return objFactura;
 	}
 
 	@Override

@@ -143,5 +143,12 @@ public class ControladorCompra {
 		return ResponseEntity.ok(carrito);
 	}
 	
+	@PostMapping("/factura/{idCliente}")
+	public ResponseEntity<Factura> realizarVenta(@PathVariable(name = "idCliente") Long parIdCliente)
+	{
+		Factura objFactura = objServioCompra.vender(parIdCliente);
+		return ResponseEntity.status(HttpStatus.CREATED).body(objFactura);
+	}
+	
 
 }
