@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.restaurantePro.compras.entidad.Factura;
 
 @Repository
-public interface IntRespositorioFactura extends JpaRepository<Factura,Long>{
+public interface IntRepositorioFactura extends JpaRepository<Factura,Long>{
 	public List<Factura> findByAtrIdCliente(Long atrIdCliente);
 	public Factura findByAtrNumeroFactura(String atrNumeroFactura);
 
