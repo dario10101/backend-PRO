@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class Cliente 
 {
+ /*
 	private Long atrIdCliente;
 	private String atrNombre;
 	private String atrApellido;
@@ -14,9 +15,9 @@ public class Cliente
 	private String atrNumeroTelefono;
 	private String atrNumeroCelular;
 	private String atrEstado;
-	private String atrContraseña;
+	private String atrContraseña;*/
 	
-    /*private Long idCliente;    
+    private Long idCliente;    
     private String nombresCliente;
     private String apellidosCliente;
     private String correoCliente;
@@ -25,6 +26,6 @@ public class Cliente
     private String celularCliente;
     private String statusCliente;
     private String imgCliente; 
-    private String direccionCliente;*/
+    private String direccionCliente;
 
 }

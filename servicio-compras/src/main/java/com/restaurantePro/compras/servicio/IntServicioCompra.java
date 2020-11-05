@@ -1,8 +1,10 @@
 package com.restaurantePro.compras.servicio;
 import java.util.List;
 
+
 import com.restaurantePro.compras.entidad.Factura;
 import com.restaurantePro.compras.entidad.ItemFactura;
+import com.restaurantePro.compras.modelo.Carrito;
 
 public interface IntServicioCompra {
 	public ItemFactura buscarItemFacturaPorIdPlato(Long parIdPlato);
@@ -13,5 +15,9 @@ public interface IntServicioCompra {
 	public Factura EliminarFactura(Factura parFactura);
 	public Factura buscarPorNumeroFactura(String parNumFactura);
 	public Factura vender(Long parIdCliente);
+	public ItemFactura reducirIntanciasDelCarrito(Long parIdPlato);
+	public ItemFactura agregarItemCarrito(double parPrecio,Long parIdPlato);
+	public ItemFactura eliminarItemCarrito(Long parIdPlato);
+	public Carrito obtenerCarrito();
 
 }
