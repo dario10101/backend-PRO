@@ -69,7 +69,7 @@ public class ServicioCompraImpl implements IntServicioCompra{
 		{
 			Cliente objCliente = objClienteFeing.buscarClientePorId(objFactura.getAtrIdCliente()).getBody();
 			objFactura.setObjCliente(objCliente);
-			objFactura = objRepositorioFactura.save(objFactura);
+			//objFactura = objRepositorioFactura.save(objFactura);
 			List<ItemFactura> listaItems = objFactura.getListaItems().stream().map(ItemFactura->{
 				Plato objPlato = objPlatoFeing.buscarPlatoPorId(ItemFactura.getAtrIdPlato()).getBody();
 				ItemFactura.setObjplato(objPlato);
@@ -97,7 +97,7 @@ public class ServicioCompraImpl implements IntServicioCompra{
 		{
 			return null;
 		}
-		objFactura.setAtrEstado("Anulada");
+		objFactura.setAtrEstado(" ANULADA ");
 		return objRepositorioFactura.save(objFactura);
 	}
 
@@ -121,7 +121,7 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	@Override
 	public Factura vender(Long parIdCliente) {
 		System.out.println("\n\nIngresando a veder\n\n");
-		Factura objFactura = Factura.builder().atrEstado("creado").atrIdCliente(parIdCliente).build();
+		Factura objFactura = Factura.builder().atrEstado(" CREADO ").atrIdCliente(parIdCliente).build();
 		System.out.println("\n\n Factura creada\n\n");
 		objFactura.setListaItems(obtenerCarrito().getAtrListaItems());
 		objFactura = crearFactura(objFactura);
@@ -195,5 +195,45 @@ public class ServicioCompraImpl implements IntServicioCompra{
 		objCarrito.setAtrListaItems(carrito);
 		return objCarrito;
 	}
+
+	@Override
+	public List<ItemFactura> limpiarCarrito() {
+		carrito.clear();
+		return carrito;
+	}
+
+	@Override
+	public List<Factura> listarFacturasCliente(Long parIdCliente) {
+		List<Factura> listaFacturas = objRepositorioFactura.findByAtrIdCliente(parIdCliente).stream().map(Factura->{
+			buscarFacturaPorId(Factura.getAtrIdFactua());
+			return Factura;
+		}).collect(Collectors.toList());
+		return listaFacturas;
+	
+	}
+
+	@Override
+	public List<Factura> listarFacturasAnuladas() {
+		List<Factura> listaFacturas = objRepositorioFactura.findByAtrEstado().stream().map(Factura->{
+			buscarFacturaPorId(Factura.getAtrIdFactua());
+			return Factura;
+		}).collect(Collectors.toList());
+		return listaFacturas;
+	}
+
+	@Override
+	public List<Factura> listarFacturasActivas() {
+		List<Factura> listaFacturas = objRepositorioFactura.findByAtrEstado1().stream().map(Factura->{
+			buscarFacturaPorId(Factura.getAtrIdFactua());
+			return Factura;
+		}).collect(Collectors.toList());
+		return listaFacturas;
+	}
+
+
+
+
+
+
 	
 }

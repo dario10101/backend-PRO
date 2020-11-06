@@ -15,9 +15,13 @@ public interface IntServicioCompra {
 	public Factura EliminarFactura(Factura parFactura);
 	public Factura buscarPorNumeroFactura(String parNumFactura);
 	public Factura vender(Long parIdCliente);
+	public List<Factura> listarFacturasCliente(Long parIdCliente);
+	public List<Factura> listarFacturasAnuladas();
+	public List<Factura> listarFacturasActivas();
 	public ItemFactura reducirIntanciasDelCarrito(Long parIdPlato);
 	public ItemFactura agregarItemCarrito(double parPrecio,Long parIdPlato);
 	public ItemFactura eliminarItemCarrito(Long parIdPlato);
 	public Carrito obtenerCarrito();
+	public List<ItemFactura> limpiarCarrito();
 
 }

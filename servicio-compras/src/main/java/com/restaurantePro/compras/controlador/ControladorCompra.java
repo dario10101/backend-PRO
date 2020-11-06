@@ -143,11 +143,55 @@ public class ControladorCompra {
 		return ResponseEntity.ok(carrito);
 	}
 	
+	@DeleteMapping("/limpiar-carrito")
+	public ResponseEntity<List<ItemFactura>> limpiarCarrito()
+	{
+		List<ItemFactura> carrito = objServioCompra.limpiarCarrito();
+		if(carrito.isEmpty()) 
+		{
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(carrito);
+	}
+	
 	@PostMapping("/factura/{idCliente}")
 	public ResponseEntity<Factura> realizarVenta(@PathVariable(name = "idCliente") Long parIdCliente)
 	{
 		Factura objFactura = objServioCompra.vender(parIdCliente);
 		return ResponseEntity.status(HttpStatus.CREATED).body(objFactura);
+	}
+	
+	@GetMapping("/facturas/cliente/{idCliente}")
+	public ResponseEntity<List<Factura>> listarFacturasPorIdCliente(@PathVariable(name = "idCliente")Long parIdCliente)
+	{
+		List<Factura> listaFacturas = objServioCompra.listarFacturasCliente(parIdCliente);
+		if(listaFacturas.isEmpty()) 
+		{
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(listaFacturas);
+	}
+	
+	@GetMapping("/facturasAnuladas")
+	public ResponseEntity<List<Factura>> listarFacturasAnuladas()
+	{
+		List<Factura> listaFacturasAnuladas = objServioCompra.listarFacturasAnuladas();
+		if(listaFacturasAnuladas.isEmpty()) 
+		{
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(listaFacturasAnuladas);
+	}
+	
+	@GetMapping("/facturasActivas")
+	public ResponseEntity<List<Factura>> listarFacturasActivas()
+	{
+		List<Factura> listaFacturasAnuladas = objServioCompra.listarFacturasActivas();
+		if(listaFacturasAnuladas.isEmpty()) 
+		{
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(listaFacturasAnuladas);
 	}
 	
 
