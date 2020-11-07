@@ -101,15 +101,11 @@ public class ControladorPlatos {
 	
 	/* Ejemplo:
 	  
- 	http://localhost:8080/platos/buscar-por-status/1
- 	body:
- 	{
-		"statusPlato": "ACTIVATED"
- 	}	  
+ 	http://localhost:8080/platos/buscar-por-status/1/ACTIVATED	  
 	*/
-	@PostMapping(value = "buscar-por-status/{nitrest}")
-    public ResponseEntity<List<Plato>> buscarPlatoPorStatus(@RequestBody Plato plato, @PathVariable("nitrest") String nit, BindingResult result) {
-		List<Plato> platos =  miServicioPlatos.buscarPlatoPorStatus(nit, plato.getStatusPlato());
+	@GetMapping(value = "buscar-por-status/{nitrest}/{status}")
+    public ResponseEntity<List<Plato>> buscarPlatoPorStatus(@PathVariable("nitrest") String nit, @PathVariable("status") String status) {
+		List<Plato> platos =  miServicioPlatos.buscarPlatoPorStatus(nit, status);
         
         if (platos == null){
             return ResponseEntity.notFound().build();
