@@ -19,9 +19,11 @@ public class ServicioImagenesImpl implements ServicioImagenes {
 	public String agregarImagenPlato(Long idPlato, String imagenCodificada) throws Exception {
 		String appdir = System.getProperty("user.dir") + File.separator;
 		String txtPath = "vacio por ahora";
-		String savePath = appdir + "imagenfacildebuscar.txt";
+		String savePath = appdir + "imagenfacildebuscar2.txt";
 		
 		//FileInputStream inputStream = new FileInputStream(txtPath);
+		
+		System.out.println("La hora de la verdad: ");
 		
 		FileOutputStream fileOutputStream = new FileOutputStream(savePath);
 		fileOutputStream.write(1);

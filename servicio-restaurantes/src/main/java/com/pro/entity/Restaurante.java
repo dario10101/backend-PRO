@@ -49,5 +49,7 @@ public class Restaurante {
     
     @Column(name = "status_rest")
     private String statusRest;
+    
+    //Direccion
 
 }

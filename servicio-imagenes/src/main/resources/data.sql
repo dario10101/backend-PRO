@@ -1,0 +1,2 @@
+INSERT INTO Imagen (id)
+VALUES(1);
