@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,15 +27,15 @@ public class ControladorImagenes {
 		return null;
 	}
 	
-	@PostMapping(value = "/obtener-imagen-plato/{idplato}")
-    public ResponseEntity<String> obtenerImagenPlato(@RequestBody String imagenCodificada){
+	@GetMapping(value = "/obtener-imagen-plato/{idplato}")
+    public ResponseEntity<String> obtenerImagenPlato(@PathVariable("idplato") Long idPlato){
 		
 		
 		return null;
 	}
 	
-	@PostMapping(value = "/obtener-imagen-restaurante/{nitrest}")
-    public ResponseEntity<String> obtenerImagenRestaurante(@RequestBody String imagenCodificada){
+	@GetMapping(value = "/obtener-imagen-restaurante/{nitrest}")
+    public ResponseEntity<String> obtenerImagenRestaurante(@PathVariable("nitrest") String nitRest){
 		
 		
 		return null;
