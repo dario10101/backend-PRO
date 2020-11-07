@@ -1,10 +1,34 @@
 package com.example.demo.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
+import org.springframework.stereotype.Service;
+
+
+import lombok.RequiredArgsConstructor;
+
+
+@Service
+@RequiredArgsConstructor
 public class ServicioImagenesImpl implements ServicioImagenes {
 
 	@Override
-	public String agregarImagenPlato(Long idPlato, String imagenCodificada) {
-		// TODO Auto-generated method stub
+	public String agregarImagenPlato(Long idPlato, String imagenCodificada) throws Exception {
+		String appdir = System.getProperty("user.dir") + File.separator;
+		String txtPath = "vacio por ahora";
+		String savePath = appdir + "imagenfacildebuscar.txt";
+		
+		//FileInputStream inputStream = new FileInputStream(txtPath);
+		
+		FileOutputStream fileOutputStream = new FileOutputStream(savePath);
+		fileOutputStream.write(1);
+		fileOutputStream.close();
+		
+		
+		
 		return null;
 	}
 
