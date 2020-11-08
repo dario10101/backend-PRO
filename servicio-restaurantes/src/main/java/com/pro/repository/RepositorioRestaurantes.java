@@ -12,5 +12,7 @@ import com.pro.entity.Restaurante;
 public interface RepositorioRestaurantes extends JpaRepository<Restaurante, String>{
 	
 	public List<Restaurante> findByNombreRest(String nombre_restaurante);
+	
+	public List<Restaurante> findByStatusRest(String status_restaurante);
 
 }

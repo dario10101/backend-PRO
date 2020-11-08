@@ -19,5 +19,5 @@ public class Usuario {
 	
 	private String nombreRol;
 	
-	//private Long idRestauranteAux;
+	private String nitRestAux;
 }

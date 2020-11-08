@@ -24,5 +24,5 @@ public class Empleado {
     
     private Long IdRolEmpleado;
     
-    //private Long idRestauranteAux;
+    private String nitRestAux;
 }

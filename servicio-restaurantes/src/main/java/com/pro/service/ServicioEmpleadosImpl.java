@@ -32,13 +32,49 @@ public class ServicioEmpleadosImpl implements ServicioEmpleados{
 	}
 
 	@Override
-	public Empleado buscarEmpleadoPorCorreo(String correo) {		
+	public Empleado buscarEmpleadoPorCorreo(String correo) {	
+		if(correo == null)
+			return null;
+					
 		return miRepositorioEmpleados.findByCorreoEmpleado(correo);
 	}
 	
 	@Override
 	public Empleado buscarEmpleadoPorId(Long idEmpleado) {
+		if(idEmpleado == null)
+			return null;
+		
 		return miRepositorioEmpleados.findById(idEmpleado).orElse(null);
+	}
+	
+	@Override
+	public List<Empleado> buscarPorStatus(String nit, String status) {
+		//Datos no validos
+		System.out.println("\n entrando... \n");
+		if(nit == null || status == null) {
+			System.out.println("\nError: null\n");
+			return null;
+		}
+		
+		Restaurante rest = Restaurante.builder().nitRest(nit).build();
+		if(rest == null) {
+			System.out.println("\n Rest es null \n");
+			return null;
+		}
+		
+		List<Empleado> empleados_encontrados = miRepositorioEmpleados.findByRestaurante(rest); 
+		
+		if(empleados_encontrados == null) {
+			return null;
+		}
+		
+		if(empleados_encontrados.size() <= 0) {
+			return null;
+		}		
+		
+		empleados_encontrados = this.filtrarPorStatus(empleados_encontrados, status);
+		
+		return empleados_encontrados;
 	}
 
 	@Override
@@ -47,12 +83,16 @@ public class ServicioEmpleadosImpl implements ServicioEmpleados{
 		
 		//TODO ver como se debe hacer esta parte
 		if(empleado_encontrado != null) {
-			//Machetazo
-			//if(empleado_encontrado.getRestaurante() != null) {
-			//	empleado_encontrado.setIdRestauranteAux(empleado_encontrado.getRestaurante().getNitRest());
-			//}
+			//Machete del bueno
+			if(empleado_encontrado.getRestaurante() != null) {
+				empleado_encontrado.setNitRestAux(empleado_encontrado.getRestaurante().getNitRest());
+			}
 			
 			if(!empleado_encontrado.getPasswordEmpleado().equals(empleado.getPasswordEmpleado())) {
+				empleado_encontrado = null;
+			}
+			
+			if(!empleado_encontrado.getStatusEmpleado().equals("ACTIVATED")) {
 				empleado_encontrado = null;
 			}
 		}
@@ -114,6 +154,11 @@ public class ServicioEmpleadosImpl implements ServicioEmpleados{
 			empleado_encontrado.setStatusEmpleado("ACTIVATED");
 		}
 		
+		//Machete del bueno
+		if(empleado_encontrado.getRestaurante() != null) {
+			empleado_encontrado.setNitRestAux(empleado_encontrado.getRestaurante().getNitRest());
+		}
+		
 		return miRepositorioEmpleados.save(empleado_encontrado);
 	}
 
@@ -138,6 +183,22 @@ public class ServicioEmpleadosImpl implements ServicioEmpleados{
         empleado_encontrado.setStatusEmpleado("ACTIVATED");
         return miRepositorioEmpleados.save(empleado_encontrado);
 	}
+	
+	
+	
+	private List<Empleado> filtrarPorStatus(List<Empleado> empleados, String status) {
+		List<Empleado> nuevos = new ArrayList<Empleado>();
+		if(status != null && empleados != null) {
+			for(int i = 0; i < empleados.size(); i++) {
+				if(empleados.get(i).getStatusEmpleado().equals(status)) {
+					nuevos.add(empleados.get(i));
+				}
+			}
+		}
+		return nuevos;
+	}
+
+	
 
 	
 	

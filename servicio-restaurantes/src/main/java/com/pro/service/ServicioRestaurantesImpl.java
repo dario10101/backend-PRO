@@ -19,7 +19,7 @@ public class ServicioRestaurantesImpl implements ServicioRestaurantes{
 	public List<Restaurante> listarRestaurantes() {
 		List<Restaurante> restaurantesPrueba = miRepositorioRestaurantes.findAll();		
 		
-		this.eliminarPorStatus("DELETED", restaurantesPrueba);
+		//this.eliminarPorStatus("DELETED", restaurantesPrueba);
 		
 		return restaurantesPrueba;
 	}
@@ -39,6 +39,19 @@ public class ServicioRestaurantesImpl implements ServicioRestaurantes{
 		}
 		
 		List<Restaurante> restaurantes = miRepositorioRestaurantes.findByNombreRest(nombreRest);
+		
+		return restaurantes;
+	}
+	
+	@Override
+	public List<Restaurante> buscarRestaurantePorStatus(String status) {
+		//Datos no validos
+		if(status == null) {
+			System.out.println("\nError: null\n");
+			return null;
+		}
+		
+		List<Restaurante> restaurantes = miRepositorioRestaurantes.findByStatusRest(status);
 		
 		return restaurantes;
 	}
@@ -134,5 +147,7 @@ public class ServicioRestaurantesImpl implements ServicioRestaurantes{
 			}
 		}
 	}
+
+
 
 }

@@ -11,6 +11,7 @@ public interface ServicioRestaurantes {
     public Restaurante buscarRestaurantePorNit(String nit); 
     
     public List<Restaurante> buscarRestaurantePorNombre(String nombreRest);
+    public List<Restaurante> buscarRestaurantePorStatus(String status);
     public Restaurante crearRestaurante(Restaurante rest);
     public Restaurante actualizarRestaurante(Restaurante rest);
     

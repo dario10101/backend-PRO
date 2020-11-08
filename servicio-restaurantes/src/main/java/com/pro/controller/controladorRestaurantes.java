@@ -49,6 +49,44 @@ public class controladorRestaurantes {
 		
 		List<Restaurante> restaurantes = miServicioRestaurantes.listarRestaurantes();
 		
+		if(restaurantes== null){
+            return ResponseEntity.noContent().build();
+        }		
+		
+        if(restaurantes.size() <= 0){
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(restaurantes);
+	}
+	
+	//http://localhost:8092/restaurantes/activos
+	@GetMapping(value = "activos")
+	public ResponseEntity<List<Restaurante>> listarRestaurantesActivos(){	
+		
+		List<Restaurante> restaurantes = miServicioRestaurantes.buscarRestaurantePorStatus("ACTIVATED");
+		
+		if(restaurantes== null){
+            return ResponseEntity.noContent().build();
+        }
+		
+        if(restaurantes.size() <= 0){
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(restaurantes);
+	}	
+	
+	//http://localhost:8092/restaurantes/inactivos
+	@GetMapping(value = "inactivos")
+	public ResponseEntity<List<Restaurante>> listarRestaurantesInactivos(){	
+		
+		List<Restaurante> restaurantes = miServicioRestaurantes.buscarRestaurantePorStatus("DELETED");
+		
+		if(restaurantes == null){
+            return ResponseEntity.noContent().build();
+        }
+		
         if(restaurantes.size() <= 0){
             return ResponseEntity.noContent().build();
         }
@@ -171,12 +209,69 @@ public class controladorRestaurantes {
 		
 		List<Empleado> empleados = miServicioEmpleados.listarEmpleados(nit);
 		
+		if(empleados == null){
+            return ResponseEntity.noContent().build();
+        }
+		
         if(empleados.size() <= 0){
             return ResponseEntity.noContent().build();
         }
 
         return ResponseEntity.ok(empleados);
 	}
+	
+	//http://localhost:8092/restaurantes/listar-empleados/activos/1
+	@GetMapping(value = "listar-empleados/activos/{nit}")
+	public ResponseEntity<List<Empleado>> listarEmpleadosActivos(@PathVariable("nit") String nit){	
+		System.out.println("\n Hola... \n");
+		List<Empleado> empleados = miServicioEmpleados.buscarPorStatus(nit, "ACTIVATED");
+		
+		if(empleados == null){
+            return ResponseEntity.noContent().build();
+        }
+		
+        if(empleados.size() <= 0){
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(empleados);
+	}
+	
+	//http://localhost:8092/restaurantes/listar-empleados/inactivos/1
+	@GetMapping(value = "listar-empleados/inactivos/{nit}")
+	public ResponseEntity<List<Empleado>> listarEmpleadosInactivos(@PathVariable("nit") String nit){	
+		System.out.println("\n Hola 2... \n");
+		List<Empleado> empleados = miServicioEmpleados.buscarPorStatus(nit, "DELETED");
+		
+		if(empleados == null){
+            return ResponseEntity.noContent().build();
+        }
+		
+        if(empleados.size() <= 0){
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(empleados);
+	}
+	
+	@GetMapping(value = "/buscar-empleado-por-id/{id}")
+    public ResponseEntity<Empleado> buscarEmpleadoPorId(@PathVariable("id") Long id) {
+		Empleado emp =  miServicioEmpleados.buscarEmpleadoPorId(id);
+        if (null == emp){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(emp);
+    }
+	
+	@GetMapping(value = "buscar-empleado-por-correo/{correo}")
+    public ResponseEntity<Empleado> buscarEmpleadoPorCorreo(@PathVariable("correo") String correo) {
+		System.out.println("Buscando restaurante ...");
+		Empleado emp =  miServicioEmpleados.buscarEmpleadoPorCorreo(correo);
+        if (null == emp){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(emp);
+    }
 	
 	
 	/* Ejemplo

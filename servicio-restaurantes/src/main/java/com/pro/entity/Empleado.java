@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -66,6 +67,6 @@ public class Empleado {
 	
     
     // alerta de machetazo
-	//@Transient
-	//private Long idRestauranteAux;
+	@Transient
+	private String nitRestAux;
 }

@@ -7,6 +7,7 @@ import com.pro.entity.Empleado;
 public interface ServicioEmpleados {
 	
 	public List<Empleado> listarEmpleados(String nit);
+	public List<Empleado> buscarPorStatus(String nit, String status);
 	public Empleado buscarEmpleadoPorCorreo(String correo);
 	public Empleado buscarEmpleadoPorId(Long idEmpleado);
 	

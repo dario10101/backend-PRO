@@ -84,7 +84,7 @@ public class ServicioRolesImpl implements ServicioRoles {
 				rol_usuario.setCorreo(empleado_encontrado.getCorreoEmpleado());
 				rol_usuario.setIdRol(rol_encontrado.getIdRol());
 				rol_usuario.setNombreRol(rol_encontrado.getNombreRol());
-				//rol_usuario.setIdRestauranteAux(empleado_encontrado.getIdRestauranteAux());
+				rol_usuario.setNitRestAux(empleado_encontrado.getNitRestAux());
 			}
 			
 			// retornar empleado
