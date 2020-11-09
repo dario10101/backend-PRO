@@ -192,7 +192,13 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	@Override
 	public Carrito obtenerCarrito() {
 		objCarrito.setAtrTotalApagar(0.0);
-		objCarrito.setAtrListaItems(carrito);
+		List<ItemFactura> listaItems = carrito.stream().map(ItemFactura->{
+			Plato objPlato = objPlatoFeing.buscarPlatoPorId(ItemFactura.getAtrIdPlato()).getBody();
+			ItemFactura.setObjplato(objPlato);
+			return ItemFactura;
+		}).collect(Collectors.toList());
+		
+		objCarrito.setAtrListaItems(listaItems);
 		return objCarrito;
 	}
 
