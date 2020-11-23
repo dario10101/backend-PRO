@@ -70,19 +70,19 @@ VALUES (22, 'Ensalada dulce', 'Mango, piña, lechuga, ajo', 3000.0, 'vacio', 'en
 
 
 INSERT INTO Plato (id_plato, nombre_plato, desc_plato, precio_plato, img_plato, categoria_plato, status_plato, cantidad_plato, nit_rest)
-VALUES (23, 'Cuarto pollo asado', 'pernil o pechuga', 3000.0, 'vacio', 'carne','ACTIVATED', 120.0, '1');
+VALUES (23, 'Cuarto pollo asado', 'pernil o pechuga', 3000.0, 'vacio', 'proteina','ACTIVATED', 120.0, '1');
 
 INSERT INTO Plato (id_plato, nombre_plato, desc_plato, precio_plato, img_plato, categoria_plato, status_plato, cantidad_plato, nit_rest)
-VALUES (24, 'cuarto pollo frito', 'pernil o pechuga', 3000.0, 'vacio', 'carne','ACTIVATED', 100.0, '1');
+VALUES (24, 'cuarto pollo frito', 'pernil o pechuga', 3000.0, 'vacio', 'proteina','ACTIVATED', 100.0, '1');
 
 INSERT INTO Plato (id_plato, nombre_plato, desc_plato, precio_plato, img_plato, categoria_plato, status_plato, cantidad_plato, nit_rest)
-VALUES (25, 'Pescado ahumado', 'Tilapia', 2000.0, 'vacio', 'carne','ACTIVATED', 100.0, '2');
+VALUES (25, 'Pescado ahumado', 'Tilapia', 2000.0, 'vacio', 'proteina','ACTIVATED', 100.0, '2');
 
 INSERT INTO Plato (id_plato, nombre_plato, desc_plato, precio_plato, img_plato, categoria_plato, status_plato, cantidad_plato, nit_rest)
-VALUES (26, 'Pollo sudado', 'Con salsa', 3000.0, 'vacio', 'carne','ACTIVATED', 50.0, '2');
+VALUES (26, 'Pollo sudado', 'Con salsa', 3000.0, 'vacio', 'proteina','ACTIVATED', 50.0, '2');
 
 INSERT INTO Plato (id_plato, nombre_plato, desc_plato, precio_plato, img_plato, categoria_plato, status_plato, cantidad_plato, nit_rest)
-VALUES (27, 'Carne de bufalo', 'Carne ahumada', 3000.0, 'vacio', 'carne','ACTIVATED', 50.0, '2');
+VALUES (27, 'Carne de bufalo', 'Carne ahumada', 3000.0, 'vacio', 'proteina','ACTIVATED', 50.0, '2');
 
 
 INSERT INTO Plato (id_plato, nombre_plato, desc_plato, precio_plato, img_plato, categoria_plato, status_plato, cantidad_plato, nit_rest)

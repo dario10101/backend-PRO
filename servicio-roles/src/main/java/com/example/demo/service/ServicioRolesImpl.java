@@ -108,6 +108,13 @@ public class ServicioRolesImpl implements ServicioRoles {
 		return null;
 	}
 	
+	@Override
+	public Rol buscarRolPorId(Long idRol) {
+		Rol rolEncontrado = miRepositorioRoles.findById(idRol).orElse(null);
+		
+		return rolEncontrado;
+	}
+	
 	
 	private Cliente buscarCliente(Cliente cliente) {
 		Cliente cliente_encontrado = null;
@@ -142,5 +149,8 @@ public class ServicioRolesImpl implements ServicioRoles {
 		
 		return false;
 	}
+
+
+	
 	
 }

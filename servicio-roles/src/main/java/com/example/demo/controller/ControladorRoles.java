@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +42,7 @@ public class ControladorRoles {
         return ResponseEntity.ok(roles);
 	}
 	
+		
 	
 	/* Ejemplo
 	{
@@ -62,6 +64,16 @@ public class ControladorRoles {
         }        
         
         return ResponseEntity.status(HttpStatus.CREATED).body(rol_usuario_creado);        
+    }
+	
+	@GetMapping(value = "buscar-por-id/{idrol}")
+    public ResponseEntity<Rol> buscarRolPorId(@PathVariable("idrol") Long idRol) {
+		System.out.println("Buscando restaurante ...");
+		Rol rol =  miServicioRoles.buscarRolPorId(idRol);
+        if (null == rol){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(rol);
     }
 	
 	

@@ -3,10 +3,13 @@ package com.pro.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pro.client.RolClient;
 import com.pro.entity.Empleado;
 import com.pro.entity.Restaurante;
+import com.pro.model.Rol;
 import com.pro.repository.RepositorioEmpleados;
 
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,10 @@ import lombok.RequiredArgsConstructor;
 public class ServicioEmpleadosImpl implements ServicioEmpleados{
 	
 	private final RepositorioEmpleados miRepositorioEmpleados;
+	
+	//contacto con el microserrvicio de roles
+	@Autowired
+	RolClient clienteRoles;
 
 	@Override
 	public List<Empleado> listarEmpleados(String nit) {		
@@ -122,6 +129,12 @@ public class ServicioEmpleadosImpl implements ServicioEmpleados{
 			empleado.setStatusEmpleado("ACTIVATED");
 		}
 		
+		//buscar el nombgre del rol
+		if(empleado.getIdRolEmpleado() != null) {
+			String nombreRolEmpleado = this.buscarNombreRol(empleado.getIdRolEmpleado());
+			empleado.setNombreRolEmpleado(nombreRolEmpleado);
+		}
+		
 		return miRepositorioEmpleados.save(empleado);
 	}
 
@@ -159,6 +172,12 @@ public class ServicioEmpleadosImpl implements ServicioEmpleados{
 			empleado_encontrado.setNitRestAux(empleado_encontrado.getRestaurante().getNitRest());
 		}
 		
+		//buscar el nombgre del rol
+		if(empleado_encontrado.getIdRolEmpleado() != null) {
+			String nombreRolEmpleado = this.buscarNombreRol(empleado_encontrado.getIdRolEmpleado());
+			empleado_encontrado.setNombreRolEmpleado(nombreRolEmpleado);
+		}
+		
 		return miRepositorioEmpleados.save(empleado_encontrado);
 	}
 
@@ -182,6 +201,22 @@ public class ServicioEmpleadosImpl implements ServicioEmpleados{
         
         empleado_encontrado.setStatusEmpleado("ACTIVATED");
         return miRepositorioEmpleados.save(empleado_encontrado);
+	}
+	
+	
+	//Buscar el nombre del rol en el otro microservicio
+	private String buscarNombreRol(Long idRol){
+		Rol rolEncontrado = null;
+		try {
+			rolEncontrado = this.clienteRoles.buscarRolPorId(idRol).getBody();
+		}catch(Exception e) {
+			System.out.println("\nError al consultar el rol del empleado.\n");
+		}
+		
+		if(rolEncontrado != null) {
+			return rolEncontrado.getNombreRol();
+		}
+		return null;		
 	}
 	
 	

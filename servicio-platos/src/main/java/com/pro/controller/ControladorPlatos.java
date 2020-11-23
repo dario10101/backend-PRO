@@ -47,7 +47,7 @@ public class ControladorPlatos {
 
         return ResponseEntity.ok(platos);
 	}
-		
+	
 	
 	@GetMapping(value = "buscar-por-restaurante/{nitrest}")
     public ResponseEntity<List<Plato>> buscarPlatoPorRestaurante(@PathVariable("nitrest") String nit) {
@@ -253,8 +253,45 @@ public class ControladorPlatos {
     }
 	
 	
+	//----------------------------------------------------------------------------------------------
+	//---------- METODOS DEL SEMANARIO--------------------------------------------------------------
+	//----------------------------------------------------------------------------------------------
+	
+	// http://localhost:8091/platos/semanario/buscar-por-dia/1?dia=1
+	@GetMapping(value = "/semanario/buscar-por-dia/{nitrest}")
+	public ResponseEntity<List<Plato>> buscarPlatosPorDia(@PathVariable("nitrest") String nit, 
+														  @RequestParam(name = "dia", required = false) Long dia){
+		
+		//si dia es nulo, devuelve del dia de hoy
+		
+		return null;
+	}
+	
+	// http://localhost:8091/platos/semanario/agregar-plato/1?dias=1,2,3
+	@PostMapping(value = "/semanario/agregar-plato/{idplato}")
+	public ResponseEntity<String> agregarPlatoSemanario(@PathVariable("idplato") Long idPlato, 
+														@RequestParam(name = "dias", required = false) String dias,
+														@RequestParam(name = "reiniciar", required = false) Long reiniciar){
+		
+		//si dias es nulo, lo agrega todos los dias
+		//si reiniciar es 1, borra lo q tenga asignado, sino, solo agrega
+		
+		return null;
+	}
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//----------------------------------------------------------------------------------------------	
 	private String formatMessage( BindingResult result){
 		List<Map<String,String>> errors = result.getFieldErrors().stream()
                 .map(err ->{

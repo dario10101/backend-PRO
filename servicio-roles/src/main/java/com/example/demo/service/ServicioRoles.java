@@ -11,6 +11,7 @@ public interface ServicioRoles {
 	
 	public Usuario validarRol(Usuario user);
 	
+	public Rol buscarRolPorId(Long idRol);
 	
 	
 }

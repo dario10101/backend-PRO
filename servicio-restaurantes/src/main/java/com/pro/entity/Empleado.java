@@ -59,6 +59,10 @@ public class Empleado {
     @Column(name = "id_rol")
     private Long IdRolEmpleado;
     
+    //nuevo
+    @Column(name = "nombre_rol")
+    private String nombreRolEmpleado;
+    
     @NotNull(message = "El restaurante no puede ser vacio")
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn (name = "nit_rest")

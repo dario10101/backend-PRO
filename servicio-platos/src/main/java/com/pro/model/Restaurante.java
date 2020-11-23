@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class Restaurante {
+	
     private Long nitRest;
     
     private String nombreRest;
