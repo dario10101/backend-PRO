@@ -1,5 +1,6 @@
 package com.pro.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pro.entity.Plato;
+import com.pro.entity.Semanario;
 import com.pro.service.ServicioPlatos;
 
 
@@ -44,7 +46,7 @@ public class ControladorPlatos {
         if(platos.size() <= 0){
             return ResponseEntity.noContent().build();
         }        
-
+        
         return ResponseEntity.ok(platos);
 	}
 	
@@ -257,31 +259,133 @@ public class ControladorPlatos {
 	//---------- METODOS DEL SEMANARIO--------------------------------------------------------------
 	//----------------------------------------------------------------------------------------------
 	
-	// http://localhost:8091/platos/semanario/buscar-por-dia/1?dia=1
+	// http://localhost:8091/platos/semanario/buscar-por-dia/1?dia=1&categoria=principio
 	@GetMapping(value = "/semanario/buscar-por-dia/{nitrest}")
 	public ResponseEntity<List<Plato>> buscarPlatosPorDia(@PathVariable("nitrest") String nit, 
-														  @RequestParam(name = "dia", required = false) Long dia){
+														  @RequestParam(name = "dia", required = false) String  dia,
+														  @RequestParam(name = "categoria", required = false) String  categoria){
 		
 		//si dia es nulo, devuelve del dia de hoy
+		//si categiria es nulo, devuelve todas las categorias
 		
-		return null;
+		List<Plato> platos = miServicioPlatos.buscarPlatosPorDia(nit, dia, categoria);
+		
+		System.out.println("\n" + platos + "\n");
+		
+		//No se encontraron platos
+		if(platos == null){
+            return ResponseEntity.noContent().build();
+        } 		
+		if(platos.size() <= 0){
+            return ResponseEntity.noContent().build();
+        } 
+		
+				
+		return ResponseEntity.ok(platos);
 	}
 	
-	// http://localhost:8091/platos/semanario/agregar-plato/1?dias=1,2,3
-	@PostMapping(value = "/semanario/agregar-plato/{idplato}")
-	public ResponseEntity<String> agregarPlatoSemanario(@PathVariable("idplato") Long idPlato, 
+	
+	// http://localhost:8091/platos/semanario/buscar-por-plato/1
+	@GetMapping(value = "/semanario/buscar-por-plato/{idplato}")
+	public ResponseEntity<List<String>> buscarSemanarioPlato(@PathVariable("idplato") Long idPlato){
+				
+		//id de plato no valido
+		if(idPlato == null){
+            return ResponseEntity.noContent().build();
+        } 
+				
+		String dias = this.miServicioPlatos.buscarSemanarioPlato(idPlato);
+		
+		//para devolver como una lista
+		String[] vectorDias = dias.split(",");
+		List<String> arregloDias = new ArrayList<String>();
+		for(int i = 0; i < vectorDias.length; i++) {
+			arregloDias.add(vectorDias[i]);
+		}
+		
+		return ResponseEntity.ok(arregloDias);
+		//return ResponseEntity.ok(dias);
+	}
+	
+	
+	// http://localhost:8091/platos/semanario/modificar/1?dias=1,2,3
+	@PutMapping(value = "/semanario/modificar/{idplato}")
+	public ResponseEntity<Plato> modificarSemanario(@PathVariable("idplato") Long idPlato, 
 														@RequestParam(name = "dias", required = false) String dias,
-														@RequestParam(name = "reiniciar", required = false) Long reiniciar){
+														@RequestParam(name = "reiniciar", required = false) String reiniciar){
 		
-		//si dias es nulo, lo agrega todos los dias
-		//si reiniciar es 1, borra lo q tenga asignado, sino, solo agrega
+		//PARAMETROS:
+		//reiniciar por defecto queda en 1
+		//si el parametro dias es (nulo, vacio o cero) y reiniciar es 1, se elimina ese plato de todos los dias del semanario
+		//separador por defecto: ","
+		//si reiniciar es 1, borra lo que tenga asignado y asigna los dias especificados en "dias"
+		//si reiniciar es 0, solo agrega los dias nuevos especificados en "dias" 
 		
-		return null;
+		//validar parametro "reiniciar"
+		boolean reiniciarDias = true;
+		if(reiniciar != null) {
+			if(reiniciar.equals("0")) {
+				reiniciarDias = false;
+			}
+			else if(reiniciar.equals("1")) {
+				reiniciarDias = true;
+			}else {
+				return ResponseEntity.badRequest().build();
+			}
+		}		
+		
+		String separador = ",";		
+		Plato plato_encontrado = null;		
+		if(dias == null) {
+			dias = "0";  
+		}
+		
+		//Si no se especifica el dia, y reiniciar es 1, se borra los datos del semanario de ese plato		
+		if( (dias.equals("0") || dias.equals("") || dias.equals(",")) && reiniciarDias) { 
+			plato_encontrado = this.miServicioPlatos.eliminarPlatoSemanario(idPlato);
+		}
+		else {
+			plato_encontrado = this.miServicioPlatos.agregarPlatoSemanario(idPlato, dias, separador, reiniciarDias);
+		}		
+		
+		//id plato incorrecto
+		if (plato_encontrado == null){
+            return ResponseEntity.notFound().build();
+        }
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(plato_encontrado);
 	}
 	
 	
+	@DeleteMapping(value = "/semanario/eliminar/{idplato}")
+	public ResponseEntity<Plato> eliminarPlatoSemanario(@PathVariable("idplato") Long idPlato){
+		if(idPlato != null) {
+			Plato plato_encontrado = this.miServicioPlatos.eliminarPlatoSemanario(idPlato);
+			
+			if(plato_encontrado == null) {
+				return ResponseEntity.notFound().build();
+			}
+			
+			return ResponseEntity.ok(plato_encontrado);
+		}
+		return ResponseEntity.unprocessableEntity().build();
+	}
 	
-	
+	/*
+	@GetMapping(value = "semanario")
+	public ResponseEntity<List<Semanario>> listarSemanario(){		
+		List<Semanario> sem = miServicioPlatos.listarSemanario();   
+		
+		//TODO Quitar esto
+		for(Semanario s: sem) {
+			s.setDias(s.getDias() + "   plato ---> "  + s.getPlato().getIdPlato().toString());
+			
+			s.setPlato(null);
+		}
+        
+        return ResponseEntity.ok(sem);
+	}
+	*/
 	
 	
 	

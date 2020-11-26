@@ -96,3 +96,22 @@ VALUES (30, 'Alberjas', 'grano', 2000.0, 'vacio', 'principio','ACTIVATED', 100.0
 
 INSERT INTO Plato (id_plato, nombre_plato, desc_plato, precio_plato, img_plato, categoria_plato, status_plato, cantidad_plato, nit_rest)
 VALUES (31, 'Garbanzos', 'grano', 3000.0, 'vacio', 'principio','ACTIVATED', 50.0, '2');
+
+
+INSERT INTO Semanario(id_semanario, nit_rest, id_plato, dias)
+VALUES (1, '1', 1, '1,2,3');
+
+INSERT INTO Semanario(id_semanario, nit_rest, id_plato, dias)
+VALUES (2, '2', 2, '4,5,6');
+
+INSERT INTO Semanario(id_semanario, nit_rest, id_plato, dias)
+VALUES (3, '2', 3, '7,1,2,4');
+
+INSERT INTO Semanario(id_semanario, nit_rest, id_plato, dias)
+VALUES (4, '1', 29, '1,2,3,4,5,6,7');
+
+INSERT INTO Semanario(id_semanario, nit_rest, id_plato, dias)
+VALUES (5, '2', 30, '1,2,3,4,5,6,7');
+
+INSERT INTO Semanario(id_semanario, nit_rest, id_plato, dias)
+VALUES (6, '2', 31, '1');
