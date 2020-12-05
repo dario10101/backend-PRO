@@ -12,6 +12,7 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.NotNull;
 
 import com.pro.model.Restaurante;
+import com.pro.model.Semana;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -64,6 +65,9 @@ public class Plato {
     
     @Transient
     private Restaurante restaurante;
+    
+    @Transient
+    private Semana semanario;
     
     /*
     //@NotNull(message = "El restaurante no puede ser vacio")

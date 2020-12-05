@@ -13,6 +13,7 @@ import com.pro.client.RestauranteClient;
 import com.pro.entity.Plato;
 import com.pro.entity.Semanario;
 import com.pro.model.Restaurante;
+import com.pro.model.Semana;
 import com.pro.repository.RepositorioPlatos;
 import com.pro.repository.RepositorioSemanario;
 
@@ -35,7 +36,8 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		List<Plato> platosPrueba = miRepositorioPlatos.findAll();		
 		
 		//traer los restaurantes de los platos del otro servicio
-		asignarRestaurantesAPlatos(platosPrueba);		
+		asignarRestaurantesAPlatos(platosPrueba);	
+		
 		
 		return platosPrueba;
 	}	
@@ -117,6 +119,9 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 			}
 		}
 		
+		// semanario, que dias se ofrece el plato
+		this.configurarSemanario(platosEncontrados, nit);
+		
 		return platosEncontrados;
 	}
 	
@@ -146,6 +151,9 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 				platosEncontrados.add(plato);
 			}
 		}
+		
+		// semanario, que dias se ofrece el plato
+		this.configurarSemanario(platosEncontrados, nit);
 		
 		return platosEncontrados;
 	}
@@ -179,6 +187,9 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		
 		// No tener en cuenta los platos eliminados
 		this.eliminarPorStatus("DELETED", platosEncontrados);
+		
+		// semanario, que dias se ofrece el plato
+		this.configurarSemanario(platosEncontrados, nit);
 		
 		return platosEncontrados;
 	}
@@ -361,6 +372,9 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		}
 		
 		//System.out.println("\n" + platosEncontrados + "\n");
+		
+		// semanario, que dias se ofrece el plato
+		this.configurarSemanario(platosEncontrados, nitRest);
 				
 		return platosEncontrados;
 	}
@@ -451,7 +465,7 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 	//----------------------------------------------------------------------------------------------
 	//---------- METODOS PRIVADOS-------------------------------------------------------------------
 	//----------------------------------------------------------------------------------------------
-	
+		
 	private Semanario sobreEscribirSemanario(Semanario semanario_encontrado, Plato plato_encontrado, String dias) {
 		if(semanario_encontrado == null) {
 			semanario_encontrado = Semanario.builder()
@@ -620,6 +634,61 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		return validos;
 	}
 
+	//TODO mucho machetazo, arreglar
+	private void configurarSemanario(List<Plato> platos, String nitRest) {
+		List<Semanario> semanarios = miRepositorioSemanario.findByNitRest(nitRest);	
+		Plato plato = null;
+		Plato platoAux = null;
+		
+		if(semanarios == null || platos == null) {
+			System.out.println("error: null 1");
+			return;
+		}
+		if(semanarios.size() <= 0 || platos.size() <= 0) {
+			System.out.println("error: null 2");
+			return;
+		}
+		
+		for(int i = 0; i < platos.size(); i++) {
+			plato = platos.get(i);
+			for(int j = 0; j < semanarios.size(); j++) {
+				platoAux = semanarios.get(j).getPlato();
+				
+				if(plato.getIdPlato() == platoAux.getIdPlato()) {
+					Semana sem = crearSemana(semanarios.get(j).getDias());
+					plato.setSemanario(sem);
+				}
+			}
+		}
+	}
+	
+	private Semana crearSemana(String dias) {
+		boolean lunes = false;
+		boolean martes = false;
+		boolean miercoles = false;
+		boolean jueves = false;
+		boolean viernes = false;
+		boolean sabado = false;
+		boolean domingo = false;
+		
+		if(dias.contains(CONST_LUNES)) {	lunes = true;	}
+		if(dias.contains(CONST_MARTES)) {	martes = true;	}
+		if(dias.contains(CONST_MIERCOLES)) {	miercoles = true;	}
+		if(dias.contains(CONST_JUEVES)) {	jueves = true;	}
+		if(dias.contains(CONST_VIERNES)) {	viernes = true;	}
+		if(dias.contains(CONST_SABADO)) {	sabado = true;	}
+		if(dias.contains(CONST_DOMINGO)) {	domingo = true;	}
+		
+		Semana sem = new Semana();
+		sem.setLunes(lunes);
+		sem.setMartes(martes);
+		sem.setMiercoles(miercoles);
+		sem.setJueves(jueves);
+		sem.setViernes(viernes);
+		sem.setSabado(sabado);
+		sem.setDomingo(domingo);
+		return sem;
+	}
 	
 
 		

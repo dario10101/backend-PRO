@@ -25,7 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pro.entity.Plato;
-import com.pro.entity.Semanario;
+import com.pro.model.Semana;
 import com.pro.service.ServicioPlatos;
 
 
@@ -306,8 +306,113 @@ public class ControladorPlatos {
 		return ResponseEntity.ok(arregloDias);
 		//return ResponseEntity.ok(dias);
 	}
+		
+	
+	// http://localhost:8091/platos/semanario/modificar/11
+	/*
+	{
+	    "lunes": true,
+	    "martes": true,
+	    "miercoles": false,
+	    "jueves": false,
+	    "viernes": true,
+	    "sabado": true,
+	    "domingo": false
+	}
+	*/
+	@PostMapping(value = "/semanario/modificar/{idplato}")
+	public ResponseEntity<Plato> modificarSemanario(@PathVariable("idplato") Long idPlato, 
+													@Valid @RequestBody Semana semana, BindingResult result){
+		
+		//PARAMETROS:
+		//reiniciar por defecto queda en 1
+		//separador por defecto: "," 
+		
+		
+		
+		//validar parametro "reiniciar"
+		boolean reiniciarDias = true;		
+		
+		String separador = ",";		
+		Plato plato_encontrado = null;		
+		if(semana == null) {
+			return ResponseEntity.unprocessableEntity().build(); 
+		}	
+		
+		String dias = "";
+		dias = configurarDias(semana);
+		
+		plato_encontrado = this.miServicioPlatos.agregarPlatoSemanario(idPlato, dias, separador, reiniciarDias);
+				
+		
+		//id plato incorrecto
+		if (plato_encontrado == null){
+            return ResponseEntity.notFound().build();
+        }
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(plato_encontrado);
+	}
+
+	
+	@DeleteMapping(value = "/semanario/eliminar/{idplato}")
+	public ResponseEntity<Plato> eliminarPlatoSemanario(@PathVariable("idplato") Long idPlato){
+		if(idPlato != null) {
+			Plato plato_encontrado = this.miServicioPlatos.eliminarPlatoSemanario(idPlato);
+			
+			if(plato_encontrado == null) {
+				return ResponseEntity.notFound().build();
+			}
+			
+			return ResponseEntity.ok(plato_encontrado);
+		}
+		return ResponseEntity.unprocessableEntity().build();
+	}
 	
 	
+	
+	
+	
+	
+	//----------------------------------------------------------------------------------------------
+	private String configurarDias(Semana semana) {
+		String dias = "";
+		
+		if(semana.isDomingo()) 		{	dias += "1,";	}
+		if(semana.isLunes()) 		{	dias += "2,";	}
+		if(semana.isMartes()) 		{	dias += "3,";	}
+		if(semana.isMiercoles()) 	{	dias += "4,";	}
+		if(semana.isJueves()) 		{	dias += "5,";	}
+		if(semana.isViernes()) 		{	dias += "6,";	}
+		if(semana.isSabado()) 		{	dias += "7,";	}
+		
+		return dias;
+	}
+		
+	//----------------------------------------------------------------------------------------------	
+	private String formatMessage( BindingResult result){
+		List<Map<String,String>> errors = result.getFieldErrors().stream()
+                .map(err ->{
+                    Map<String,String>  error =  new HashMap<>();
+                    error.put(err.getField(), err.getDefaultMessage());
+                    return error;
+
+                }).collect(Collectors.toList());
+        ErrorMessage errorMessage = ErrorMessage.builder()
+                .code("01")
+                .messages(errors).build();
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString="";
+        
+        try {
+            jsonString = mapper.writeValueAsString(errorMessage);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return jsonString;
+    }
+
+
+	/*
 	// http://localhost:8091/platos/semanario/modificar/1?dias=1,2,3
 	@PutMapping(value = "/semanario/modificar/{idplato}")
 	public ResponseEntity<Plato> modificarSemanario(@PathVariable("idplato") Long idPlato, 
@@ -355,21 +460,8 @@ public class ControladorPlatos {
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(plato_encontrado);
 	}
+	*/
 	
-	
-	@DeleteMapping(value = "/semanario/eliminar/{idplato}")
-	public ResponseEntity<Plato> eliminarPlatoSemanario(@PathVariable("idplato") Long idPlato){
-		if(idPlato != null) {
-			Plato plato_encontrado = this.miServicioPlatos.eliminarPlatoSemanario(idPlato);
-			
-			if(plato_encontrado == null) {
-				return ResponseEntity.notFound().build();
-			}
-			
-			return ResponseEntity.ok(plato_encontrado);
-		}
-		return ResponseEntity.unprocessableEntity().build();
-	}
 	
 	/*
 	@GetMapping(value = "semanario")
@@ -386,35 +478,4 @@ public class ControladorPlatos {
         return ResponseEntity.ok(sem);
 	}
 	*/
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//----------------------------------------------------------------------------------------------	
-	private String formatMessage( BindingResult result){
-		List<Map<String,String>> errors = result.getFieldErrors().stream()
-                .map(err ->{
-                    Map<String,String>  error =  new HashMap<>();
-                    error.put(err.getField(), err.getDefaultMessage());
-                    return error;
-
-                }).collect(Collectors.toList());
-        ErrorMessage errorMessage = ErrorMessage.builder()
-                .code("01")
-                .messages(errors).build();
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString="";
-        
-        try {
-            jsonString = mapper.writeValueAsString(errorMessage);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return jsonString;
-    }
 }	

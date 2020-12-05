@@ -22,6 +22,12 @@ public interface ServicioPlatos {
     public List<Plato> buscarPlatoPorStatus(String nit, String statusPlato);
     public List<Plato> buscarPlatoPorCategoria(String nit, String categoriaPlato);
     
+    
+    /**
+     * 
+     * @param plato
+     * @return
+     */
     public Plato crearPlato(Plato plato);    
     public Plato actualizarPlato(Plato Plato);
     public Plato eliminarPlato(Long idPlato);
