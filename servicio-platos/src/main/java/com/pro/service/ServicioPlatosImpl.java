@@ -644,10 +644,11 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 			System.out.println("error: null 1");
 			return;
 		}
-		if(semanarios.size() <= 0 || platos.size() <= 0) {
+	
+		if(platos.size() <= 0) {
 			System.out.println("error: null 2");
 			return;
-		}
+		}		
 		
 		for(int i = 0; i < platos.size(); i++) {
 			plato = platos.get(i);
@@ -658,6 +659,9 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 					Semana sem = crearSemana(semanarios.get(j).getDias());
 					plato.setSemanario(sem);
 				}
+			}
+			if(plato.getSemanario() == null) {
+				plato.setSemanario(crearSemana(""));
 			}
 		}
 	}
