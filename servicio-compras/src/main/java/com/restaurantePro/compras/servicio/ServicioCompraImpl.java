@@ -270,6 +270,28 @@ public class ServicioCompraImpl implements IntServicioCompra{
 		double reporteTotalVentas = objReporteVentas.getAtrTotalVentas();
 		return reporteTotalVentas;
 	}
+
+	@Override
+	public List<ReporteVentas> obtenerReporteVentasPorFechas(String parFechaInicio, String parFechaFin,String parIdRestaurante) {
+		List<ReporteVentas> listaDeReportes = new ArrayList<>();
+		List<String> listaFechas =objRepositorioFactura.obtenerFechasParaReportes(parFechaInicio, parFechaFin,parIdRestaurante);
+		for (String fecha : listaFechas) {
+			listaDeReportes.add(obtenerReporteVentas(fecha, fecha,parIdRestaurante));
+		}
+		return listaDeReportes;
+	}
+
+
+	@Override
+	public List<Double> obtenerReporteTotalVentasPorDia(String parFechaInicio, String parFechaFin,String parIdRestaurante) {
+		List<Double> reportesPorDia = new ArrayList<>();
+		List<ReporteVentas> listaDeReportes = obtenerReporteVentasPorFechas(parFechaInicio, parFechaFin,parIdRestaurante);
+		for (ReporteVentas reporteVentas : listaDeReportes) {
+			reportesPorDia.add(reporteVentas.getAtrTotalVentas());
+		}
+		return reportesPorDia;
+	}
+
 	
 
 

@@ -28,7 +28,9 @@ public interface IntServicioCompra {
 	public ReporteVentas obtenerReporteVentas(String parFechaInicio,String parFechaFin,String parIdRestaurante);
 	public ReporteVentas obtenerReporteVentasDelDia(String parIdRestaurante);
 	public Double obtenerReporteTotalVentasDelDia(String parIdRestaurante);
-	
+	public List<ReporteVentas> obtenerReporteVentasPorFechas(String parFechaInicio,String parFechaFin,String parIdRestaurante);
+	public List<Double> obtenerReporteTotalVentasPorDia(String parFechaInicio,String parFechaFin, String parIdRestaurante);
+
 
 
 }

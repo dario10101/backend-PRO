@@ -240,6 +240,28 @@ public class ControladorCompra {
 		return ResponseEntity.ok(reporteDelDia);
 	}
 	
+	@GetMapping("/obtenerReporteTotalVentasPordia")
+	public ResponseEntity<List<Double>> obtenerReporteTotalVentasPorDia(@RequestParam(name = "fechaInicio",required = true)String parFechaInicio,@RequestParam(name = "fechaFin",required = true)String parFechaFin,@RequestParam(name = "idRestaurante",required = true)String parIdRestaurante){
+		List<Double> reporteTotalVentasPorDia = objServioCompra.obtenerReporteTotalVentasPorDia(parFechaInicio, parFechaFin,parIdRestaurante);
+		if(reporteTotalVentasPorDia.isEmpty()) 
+		{
+			return ResponseEntity.noContent().build();
+		}
+		
+		return ResponseEntity.ok(reporteTotalVentasPorDia);
+	}
+
+	@GetMapping("/obtenerReporteVentasPorFechas")
+	public ResponseEntity<List<ReporteVentas>> obtenerReporteVentasPorFechas(@RequestParam(name = "fechaInicio",required = true)String parFechaInicio,@RequestParam(name = "fechaFin",required = true)String parFechaFin,@RequestParam(name = "idRestaurante",required = true)String parIdRestaurante){
+		List<ReporteVentas> listaReporteVentas = objServioCompra.obtenerReporteVentasPorFechas(parFechaInicio, parFechaFin,parIdRestaurante);
+		if(listaReporteVentas.isEmpty()) 
+		{
+			return ResponseEntity.noContent().build();
+		}
+		
+		return ResponseEntity.ok(listaReporteVentas);
+	}
+
 	
 	
 	
