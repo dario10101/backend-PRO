@@ -211,8 +211,6 @@ public class ServicioCompraImpl implements IntServicioCompra{
 		carrito.clear();
 		return carrito;
 	}
-	
-	
 
 	@Override
 	public List<Factura> listarFacturasCliente(Long parIdCliente) {
@@ -245,13 +243,12 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	@Override
 	public List<Factura> ListarReporteVentas(String parFechaInicio, String parFechaFin,String parIdRestaurante) {
 		List<Factura> listaReporteVentas = objRepositorioFactura.findReporte(parFechaInicio,parFechaFin,parIdRestaurante).stream().map(Factura->{
-					buscarFacturaPorId(Factura.getAtrIdFactua());
-					return Factura;
-				}).collect(Collectors.toList());
-				
-				return listaReporteVentas;
-			}
-
+			buscarFacturaPorId(Factura.getAtrIdFactua());
+			return Factura;
+		}).collect(Collectors.toList());
+		
+		return listaReporteVentas;
+	}
 
 	@Override
 	public ReporteVentas obtenerReporteVentas(String parFechaInicio,String parFechaFin,String parIdRestaurante) {
@@ -260,8 +257,20 @@ public class ServicioCompraImpl implements IntServicioCompra{
 		return objReporteVentas;
 	}
 
+	@Override
+	public ReporteVentas obtenerReporteVentasDelDia(String parIdRestaurate) {
+    	LocalDate fecha = LocalDate.now();
+        String fechaActual = fecha.getYear()+"-"+fecha.getMonthValue()+"-"+fecha.getDayOfMonth();
+		return obtenerReporteVentas(fechaActual, fechaActual,parIdRestaurate);
+	}
 
-
+	@Override
+	public Double obtenerReporteTotalVentasDelDia(String parIdRestaurante) {
+		ReporteVentas objReporteVentas = obtenerReporteVentasDelDia(parIdRestaurante);
+		double reporteTotalVentas = objReporteVentas.getAtrTotalVentas();
+		return reporteTotalVentas;
+	}
+	
 
 
 

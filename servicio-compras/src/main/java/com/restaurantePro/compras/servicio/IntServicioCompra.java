@@ -26,6 +26,9 @@ public interface IntServicioCompra {
 	public List<ItemFactura> limpiarCarrito();
 	public List<Factura> ListarReporteVentas(String parFechaInicio,String parFechaFin, String parIdRestaurante);
 	public ReporteVentas obtenerReporteVentas(String parFechaInicio,String parFechaFin,String parIdRestaurante);
+	public ReporteVentas obtenerReporteVentasDelDia(String parIdRestaurante);
+	public Double obtenerReporteTotalVentasDelDia(String parIdRestaurante);
+	
 
 
 }

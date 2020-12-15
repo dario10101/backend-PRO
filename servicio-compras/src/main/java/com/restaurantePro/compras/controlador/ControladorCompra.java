@@ -186,7 +186,6 @@ public class ControladorCompra {
 		return ResponseEntity.ok(listaFacturasAnuladas);
 	}
 	
-	
 	@GetMapping("/facturasActivas")
 	public ResponseEntity<List<Factura>> listarFacturasActivas()
 	{
@@ -220,17 +219,27 @@ public class ControladorCompra {
 		
 		return ResponseEntity.ok(objReporteVentas);
 	}
-
-
 	
+	@GetMapping("/obtenerReporteVentasDelDia/{idRestaurante}")
+	public ResponseEntity<ReporteVentas> obtenerReporteVentasDelDia(@PathVariable(name = "idRestaurante",required = true)String parIdRestaurante)
+	{
+		ReporteVentas objReporteVentasDelDia = objServioCompra.obtenerReporteVentasDelDia(parIdRestaurante);
+		if(objReporteVentasDelDia.getAtrListaFacturas().isEmpty()) 
+		{
+			return ResponseEntity.noContent().build();
+		}
+		
+		return ResponseEntity.ok(objReporteVentasDelDia);
+	}
 	
-
-
+	@GetMapping("/obtenerReporteDeVentasDelDiaActual/{idRestaurante}")
 	
-
-
+	public ResponseEntity<Double> obtenerReporteDeVentasDelDiaActual(@PathVariable(name = "idRestaurante")String parIdRestaurante)
+	{
+		Double reporteDelDia = objServioCompra.obtenerReporteTotalVentasDelDia(parIdRestaurante);
+		return ResponseEntity.ok(reporteDelDia);
+	}
 	
-
 	
 	
 	
