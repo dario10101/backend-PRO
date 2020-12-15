@@ -5,6 +5,7 @@ import java.util.List;
 import com.restaurantePro.compras.entidad.Factura;
 import com.restaurantePro.compras.entidad.ItemFactura;
 import com.restaurantePro.compras.modelo.Carrito;
+import com.restaurantePro.compras.modelo.ReporteVentas;
 
 public interface IntServicioCompra {
 	public ItemFactura buscarItemFacturaPorIdPlato(Long parIdPlato);
@@ -14,7 +15,7 @@ public interface IntServicioCompra {
 	public List<Factura> listarTodasLasFacturas();
 	public Factura EliminarFactura(Factura parFactura);
 	public Factura buscarPorNumeroFactura(String parNumFactura);
-	public Factura vender(Long parIdCliente);
+	public Factura vender(Long parIdCliente,String parIdRestaurante);
 	public List<Factura> listarFacturasCliente(Long parIdCliente);
 	public List<Factura> listarFacturasAnuladas();
 	public List<Factura> listarFacturasActivas();
@@ -24,4 +25,5 @@ public interface IntServicioCompra {
 	public Carrito obtenerCarrito();
 	public List<ItemFactura> limpiarCarrito();
 
+	
 }

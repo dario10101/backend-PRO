@@ -23,12 +23,11 @@ import com.restaurantePro.compras.modelo.Cliente;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+//import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "tbl_facturas")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 
@@ -37,6 +36,8 @@ public class Factura {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "fac_id")
 	private Long atrIdFactua;
+	@Column(name = "fac_idrestaurante")
+	private String atrIdRestaurante;
 	@Column(name = "fac_numfactura",unique = true)
 	private String atrNumeroFactura;
 	@Column(name = "fac_descripcion")
@@ -46,7 +47,10 @@ public class Factura {
 	@Column(name = "fac_estado")
 	private String atrEstado;
 	@Column(name = "fac_fecha")
-	private LocalDate atrFecha;
+	//private LocalDate atrFecha;
+	private String atrFecha;
+	@Column(name = "fac_totalventa")
+	private double atrTotalVenta;
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name = "fac_items")
@@ -54,6 +58,11 @@ public class Factura {
 	
 	@Transient
 	private Cliente objCliente;
+	
+	public Factura() 
+	{
+		this.atrTotalVenta = 0.0;
+	}
 	
 	public String getAtrNumeroFactura() 
 	{
@@ -67,10 +76,11 @@ public class Factura {
 	
     @PrePersist
     public void prePersist() {
-        this.atrFecha = LocalDate.now();
-        System.out.println("\n\n dia del mes "+this.atrFecha.getDayOfMonth());
+    	LocalDate fecha = LocalDate.now();
+        this.atrFecha = fecha.getYear()+"-"+fecha.getMonthValue()+"-"+fecha.getDayOfMonth();
+        /*System.out.println("\n\n dia del mes "+this.atrFecha.getDayOfMonth());
         System.out.println("\n\n mes "+this.atrFecha.getMonth().getValue());
-        System.out.println("\n\n anio "+this.atrFecha.getYear());
+        System.out.println("\n\n anio "+this.atrFecha.getYear());*/
        
     }
 

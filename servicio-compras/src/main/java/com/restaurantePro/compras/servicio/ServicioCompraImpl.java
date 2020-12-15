@@ -1,4 +1,6 @@
 package com.restaurantePro.compras.servicio;
+import java.time.LocalDate;
+//import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,6 +16,7 @@ import com.restaurantePro.compras.entidad.ItemFactura;
 import com.restaurantePro.compras.modelo.Carrito;
 import com.restaurantePro.compras.modelo.Cliente;
 import com.restaurantePro.compras.modelo.Plato;
+import com.restaurantePro.compras.modelo.ReporteVentas;
 import com.restaurantePro.compras.repositorio.IntRepositorioItemFactura;
 import com.restaurantePro.compras.repositorio.IntRepositorioFactura;
 
@@ -31,8 +34,7 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	
 	@Autowired
 	private IntPlatoFeign objPlatoFeing;
-	
-	
+		
 	private List<ItemFactura> carrito = new ArrayList<ItemFactura>();
 	private Carrito objCarrito = new Carrito();
 
@@ -119,11 +121,13 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	}
 
 	@Override
-	public Factura vender(Long parIdCliente) {
+	public Factura vender(Long parIdCliente, String parIdRestaurante) {
 		System.out.println("\n\nIngresando a veder\n\n");
-		Factura objFactura = Factura.builder().atrEstado(" CREADO ").atrIdCliente(parIdCliente).build();
+		Factura objFactura = Factura.builder().atrEstado(" CREADO ").atrIdCliente(parIdCliente).atrIdRestaurante(parIdRestaurante).build();
 		System.out.println("\n\n Factura creada\n\n");
-		objFactura.setListaItems(obtenerCarrito().getAtrListaItems());
+		Carrito objCarrito = obtenerCarrito();
+		objFactura.setListaItems(objCarrito.getAtrListaItems());
+		objFactura.setAtrTotalVenta(objCarrito.getAtrTotalApagar());
 		objFactura = crearFactura(objFactura);
 		return objFactura;
 	}
@@ -235,6 +239,10 @@ public class ServicioCompraImpl implements IntServicioCompra{
 		}).collect(Collectors.toList());
 		return listaFacturas;
 	}
+
+
+
+
 
 
 

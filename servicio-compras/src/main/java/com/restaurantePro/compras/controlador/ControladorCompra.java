@@ -1,4 +1,5 @@
 package com.restaurantePro.compras.controlador;
+//import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.restaurantePro.compras.entidad.Factura;
 import com.restaurantePro.compras.entidad.ItemFactura;
 import com.restaurantePro.compras.modelo.Carrito;
+import com.restaurantePro.compras.modelo.ReporteVentas;
 import com.restaurantePro.compras.servicio.IntServicioCompra;
 
 
@@ -154,10 +157,10 @@ public class ControladorCompra {
 		return ResponseEntity.ok(carrito);
 	}
 	
-	@PostMapping("/factura/{idCliente}")
-	public ResponseEntity<Factura> realizarVenta(@PathVariable(name = "idCliente") Long parIdCliente)
+	@PostMapping("/factura/{idCliente}/{idRestaurante}")
+	public ResponseEntity<Factura> realizarVenta(@PathVariable(name = "idCliente") Long parIdCliente,@PathVariable(name = "idRestaurante") String parIdRestaurante)
 	{
-		Factura objFactura = objServioCompra.vender(parIdCliente);
+		Factura objFactura = objServioCompra.vender(parIdCliente,parIdRestaurante);
 		return ResponseEntity.status(HttpStatus.CREATED).body(objFactura);
 	}
 	
@@ -194,5 +197,15 @@ public class ControladorCompra {
 		return ResponseEntity.ok(listaFacturasAnuladas);
 	}
 	
+	
 
+
+	
+
+
+	
+
+	
+	
+	
 }
