@@ -186,6 +186,7 @@ public class ControladorCompra {
 		return ResponseEntity.ok(listaFacturasAnuladas);
 	}
 	
+	
 	@GetMapping("/facturasActivas")
 	public ResponseEntity<List<Factura>> listarFacturasActivas()
 	{
@@ -196,6 +197,31 @@ public class ControladorCompra {
 		}
 		return ResponseEntity.ok(listaFacturasAnuladas);
 	}
+	
+	@GetMapping("/reporteVentas")
+	public ResponseEntity<List<Factura>> ReporteVentas(@RequestParam(name = "fechaInicio",required = true)String parFechaInicio,@RequestParam(name = "fechaFin",required = true)String parFechaFin,@RequestParam(name = "idRestaurante",required = true)String parIdRestaurante)
+	{
+		List<Factura> listaReporteVentas = objServioCompra.ListarReporteVentas(parFechaInicio,parFechaFin,parIdRestaurante);
+		if(listaReporteVentas.isEmpty()) 
+		{
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(listaReporteVentas);
+	}
+	
+	@GetMapping("/obtenerReporteVentas")
+	public ResponseEntity<ReporteVentas> obtenerReporteVentas(@RequestParam(name = "fechaInicio",required = true)String parFechaInicio,@RequestParam(name = "fechaFin",required = true)String parFechaFin,@RequestParam(name = "idRestaurante",required = true)String parIdRestaurante)
+	{
+		ReporteVentas objReporteVentas = objServioCompra.obtenerReporteVentas(parFechaInicio, parFechaFin,parIdRestaurante);
+		if(objReporteVentas.getAtrListaFacturas().isEmpty()) 
+		{
+			return ResponseEntity.noContent().build();
+		}
+		
+		return ResponseEntity.ok(objReporteVentas);
+	}
+
+
 	
 	
 

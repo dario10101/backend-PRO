@@ -211,6 +211,8 @@ public class ServicioCompraImpl implements IntServicioCompra{
 		carrito.clear();
 		return carrito;
 	}
+	
+	
 
 	@Override
 	public List<Factura> listarFacturasCliente(Long parIdCliente) {
@@ -239,6 +241,25 @@ public class ServicioCompraImpl implements IntServicioCompra{
 		}).collect(Collectors.toList());
 		return listaFacturas;
 	}
+
+	@Override
+	public List<Factura> ListarReporteVentas(String parFechaInicio, String parFechaFin,String parIdRestaurante) {
+		List<Factura> listaReporteVentas = objRepositorioFactura.findReporte(parFechaInicio,parFechaFin,parIdRestaurante).stream().map(Factura->{
+					buscarFacturaPorId(Factura.getAtrIdFactua());
+					return Factura;
+				}).collect(Collectors.toList());
+				
+				return listaReporteVentas;
+			}
+
+
+	@Override
+	public ReporteVentas obtenerReporteVentas(String parFechaInicio,String parFechaFin,String parIdRestaurante) {
+		ReporteVentas objReporteVentas = new ReporteVentas();
+		objReporteVentas.setAtrListaFacturas(ListarReporteVentas(parFechaInicio, parFechaFin,parIdRestaurante));
+		return objReporteVentas;
+	}
+
 
 
 

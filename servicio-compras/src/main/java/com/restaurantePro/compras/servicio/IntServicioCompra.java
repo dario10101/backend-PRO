@@ -24,6 +24,8 @@ public interface IntServicioCompra {
 	public ItemFactura eliminarItemCarrito(Long parIdPlato);
 	public Carrito obtenerCarrito();
 	public List<ItemFactura> limpiarCarrito();
+	public List<Factura> ListarReporteVentas(String parFechaInicio,String parFechaFin, String parIdRestaurante);
+	public ReporteVentas obtenerReporteVentas(String parFechaInicio,String parFechaFin,String parIdRestaurante);
 
-	
+
 }
