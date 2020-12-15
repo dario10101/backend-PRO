@@ -291,6 +291,7 @@ public class ServicioCompraImpl implements IntServicioCompra{
 		}
 		return reportesPorDia;
 	}
+	
 
 	
 
