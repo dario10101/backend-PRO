@@ -14,13 +14,26 @@ import com.pro.repository.RepositorioEmpleados;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Implementacion de los servicios disponobles para los empleados
+ * 
+ * @author Ruben
+ *
+ */
 @Service
 @RequiredArgsConstructor
 public class ServicioEmpleadosImpl implements ServicioEmpleados{
 	
+	
+	/**
+	 * Abstraccion del medio de almacenamiento de los empleados
+	 */
 	private final RepositorioEmpleados miRepositorioEmpleados;
 	
-	//contacto con el microserrvicio de roles
+	/**
+	 * Atributo que conecta con el servicio de roles, para validar credenciales de empleados y sus roles
+	 * automatizado por el framework, usando inversion de dependencias
+	 */
 	@Autowired
 	RolClient clienteRoles;
 
@@ -204,7 +217,11 @@ public class ServicioEmpleadosImpl implements ServicioEmpleados{
 	}
 	
 	
-	//Buscar el nombre del rol en el otro microservicio
+	/**
+	 * Buscar el nombre que tiene un rol de un empleado en el servicio de roles
+	 * @param idRol Identificador del rol
+	 * @return Nombre del rol
+	 */
 	private String buscarNombreRol(Long idRol){
 		Rol rolEncontrado = null;
 		try {
@@ -220,7 +237,13 @@ public class ServicioEmpleadosImpl implements ServicioEmpleados{
 	}
 	
 	
-	
+	/**
+	 * Filtrar los empleados con un status en especifico
+	 * @param empleados Lista de empleados
+	 * @param status status que necesitamis
+	 * @return Lista de empleados filtrados
+	 * @deprecated Hacer con una consulta directamente a la base de datos
+	 */
 	private List<Empleado> filtrarPorStatus(List<Empleado> empleados, String status) {
 		List<Empleado> nuevos = new ArrayList<Empleado>();
 		if(status != null && empleados != null) {

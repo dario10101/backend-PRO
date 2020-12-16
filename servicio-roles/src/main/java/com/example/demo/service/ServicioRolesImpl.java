@@ -15,21 +15,44 @@ import com.example.demo.repository.RepositorioRoles;
 
 import lombok.RequiredArgsConstructor;
 
-
+/**
+ * Implementacion del servicio de roles
+ * 
+ * Esta clase contiene todos los servicios relacionados con los roles de los stakeholders en el sistema, 
+ * para realizar el registro en la aplicacion, el login, debido a que se presupone una pantalla de login donde 
+ * una persona coloca su correo y contraseña y el sistema debera mostrar una pantalla especial para el, sea un cliente
+ * o un empleado de un restaurante
+ * 
+ * @author Ruben
+ *
+ */
 @Service
 @RequiredArgsConstructor
 public class ServicioRolesImpl implements ServicioRoles {
 
+	/**
+	 * Abstraccion proporcionada por el framework sobre los servicios del medio de
+	 * almacenamiento de roles 
+	 */
 	private final RepositorioRoles miRepositorioRoles;
 	
-	//Para cominucarse con el microservicio de clientes
+	/**
+	 * Atributo que permite cominucarse con el microservicio de clientes, para validar 
+	 * credenciales de clientes
+	 */
 	@Autowired
 	ClienteClient refCliente;
 	
-	//Para cominucarse con el microservicio de restaurantes
+	/**
+	 * Atributo que permite cominucarse con el microservicio de restaurantes, para validar 
+	 * credenciales de empleados
+	 */
 	@Autowired
 	RestauranteClient refRestaurante;
 	
+	/**
+	 * Valores por defecto de algunos roles
+	 */
 	private Long rolCliente = 1L;
 	private Long rolSuperadmin = 4L;
 	private Long idSuperadmin = 0L;
@@ -39,7 +62,6 @@ public class ServicioRolesImpl implements ServicioRoles {
 	public List<Rol> listarRoles() {
 		return miRepositorioRoles.findAll();
 	}
-
 	
 	@Override
 	public Usuario validarRol(Usuario user) {
@@ -114,8 +136,13 @@ public class ServicioRolesImpl implements ServicioRoles {
 		
 		return rolEncontrado;
 	}
+		
 	
-	
+	/**
+	 * Buscar un cliente, comunicandose con el microservicio de clientes
+	 * @param cliente Cliente con los valores de correo y contraseña
+	 * @return Cliente encontrado, si las credenciales son correctas
+	 */
 	private Cliente buscarCliente(Cliente cliente) {
 		Cliente cliente_encontrado = null;
 		try {
@@ -126,6 +153,11 @@ public class ServicioRolesImpl implements ServicioRoles {
 		return cliente_encontrado;
 	}
 	
+	/**
+	 * Buscar un empleado, comunicandose con el microservicio de restaurantes
+	 * @param empleado Debe contener los valores de correo y contraseña
+	 * @return
+	 */
 	private Empleado buscarEmpleado(Empleado empleado) {
 		Empleado empleado_encontrado = null;
 		try {
@@ -136,7 +168,13 @@ public class ServicioRolesImpl implements ServicioRoles {
 		return empleado_encontrado;
 	}
 	
-	//metodo temporal
+	/**
+	 * Simula la validacion del superadmin, 
+	 * @implNote funcionalidad que no esta implementada como deberia por el momento
+	 * @param correo
+	 * @param password
+	 * @return Credenciales correctas o incorrectas
+	 */
 	private boolean validarSuperadmin(String correo, String password) {
 		String correoSuperadmin = "admin@unicauca.edu.co";
 		String passwordSuperadmin = "123";

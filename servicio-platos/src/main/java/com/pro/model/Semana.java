@@ -12,6 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor @NoArgsConstructor
 public class Semana {
 
+	/**
+	 * Indican si un plato de va a ofrecer en el dia especifico 
+	 * EJ si se ofrece el martes, se coloca en el atributo martes true
+	 */
+	
 	private boolean lunes;
 	private boolean martes;
 	private boolean miercoles;

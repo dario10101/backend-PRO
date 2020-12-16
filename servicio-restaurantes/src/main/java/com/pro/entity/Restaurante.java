@@ -13,22 +13,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase que se mapea a la base de datos con la informacion del restaurante
+ * 
+ * @author Ruben
+ *
+ */
 @Entity
 @Table(name = "Restaurante")
 @Data 
 @AllArgsConstructor @NoArgsConstructor @Builder
 public class Restaurante {	
-	
-	/*
-    @Id
-    @Column(name = "id_rest")
-    //private Long id;
-    private Long idRest;
-    */
     
 	@Id
     @Column(name = "nit_rest")
-    //private Long id;
     private String nitRest;
 	
     @Column(name = "nombre_rest")
@@ -47,6 +45,9 @@ public class Restaurante {
     @Column(name = "categoria_rest")
     private String categoriaRest;
     
+    /**
+     * Puede ser ACTIVATED o DELETED
+     */
     @Column(name = "status_rest")
     private String statusRest;
     

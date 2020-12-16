@@ -19,16 +19,32 @@ import com.pro.repository.RepositorioSemanario;
 
 import lombok.RequiredArgsConstructor;
 
-
+/**
+ * 
+ * Implementacion de los servicios disponibles de los platos
+ * 
+ * @author Ruben
+ *
+ */
 @Service
 @RequiredArgsConstructor
 public class ServicioPlatosImpl implements ServicioPlatos{	
 
+	/**
+	 * Abstraccion del medio de almacenamiento de datos, de la entidad de platos
+	 */
 	private final RepositorioPlatos miRepositorioPlatos;
-	private final RepositorioSemanario miRepositorioSemanario;
 	
-	//Referencia al microservico de restaurantes
-	@Autowired
+	/**
+	 * Abstraccion del medio de almacenamiento de datos, de la entidad de Semanario
+	 */
+	private final RepositorioSemanario miRepositorioSemanario;
+		
+	/**
+	 * Referencia al servicio de restaurantes, utilizando inversion de dependencias
+	 * automatizado por el framework 
+	 */
+	@Autowired	
 	RestauranteClient clienteRestaurante;
 		
 	@Override
@@ -323,8 +339,7 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		
 		return categorias;
 	}
-	
-	
+		
 	
 	//----------------------------------------------------------------------------------------------
 	//---------- METODOS DEL SEMANARIO--------------------------------------------------------------
@@ -465,7 +480,14 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 	//----------------------------------------------------------------------------------------------
 	//---------- METODOS PRIVADOS-------------------------------------------------------------------
 	//----------------------------------------------------------------------------------------------
-		
+	
+	/**
+	 * Actualizar los dias en que se ofrece un plato, borrando los datos viejos
+	 * @param semanario_encontrado
+	 * @param plato_encontrado
+	 * @param dias
+	 * @return Semanario nuevo
+	 */
 	private Semanario sobreEscribirSemanario(Semanario semanario_encontrado, Plato plato_encontrado, String dias) {
 		if(semanario_encontrado == null) {
 			semanario_encontrado = Semanario.builder()
@@ -479,6 +501,13 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		return semanario_encontrado;
 	}
 	
+	/**
+	 * Actualizar los dias en que se ofrece un plato, conservando los datos viejos
+	 * @param semanario_encontrado
+	 * @param plato_encontrado
+	 * @param diasNuevos
+	 * @return Semanario actualizado
+	 */
 	private Semanario agregarSemanarioSinSobreEscribir(Semanario semanario_encontrado, Plato plato_encontrado, String[] diasNuevos) {
 		if(semanario_encontrado != null && plato_encontrado != null) {
 			String[] diasAntiguos = semanario_encontrado.getDias().split(",");
@@ -501,6 +530,12 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		return semanario_encontrado;
 	}
 	
+	/**
+	 * Construir un plato usando el metodo builder() proporcionado por el framework, 
+	 * para no tener problemas al almacenarlo en la base de datos
+	 * @param platoBase plato que se va a clonar
+	 * @return Plato creado a partir de otro
+	 */
 	private Plato construirPlato(Plato platoBase) {
 		Plato plAux = Plato.builder()
 				.idPlato(platoBase.getIdPlato())
@@ -517,7 +552,11 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		return plAux;
 	}
 	
-	//TODO ¿este metodo debe ir aqui?
+	/**
+	 * validar los atributos de un plato, arreglando valores que puedan estar mal
+	 * @param platoBase
+	 * @return Plato valido
+	 */
 	private Plato validarPlato(Plato platoBase) {
 		
 		//validar status
@@ -541,7 +580,12 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 				
 		return platoBase;
 	}
-		
+	
+	/**
+	 * Establecer comunicacion con el servicio de restaurantes, bara buscar un restaurante con un nit
+	 * @param nit
+	 * @return
+	 */
 	private Restaurante buscarRestaurante(String nit) {
 		Restaurante rest = null;
 		try {
@@ -552,7 +596,12 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		return rest;
 	}
 	
-	//Eliminar los platos de una lista con un status
+	/**
+	 * Eliminar los platos de una lista con un status
+	 * @param status status a eliminar de la lista
+	 * @param Lista que se va a actualizar
+	 * @deprecated Intentar hacerlo directamente con una consulta a la base de datos
+	 */
 	private void eliminarPorStatus(String status, List<Plato> platos){
 		if(platos != null && status != null) {
 			for(int i = 0; i < platos.size(); i++) {
@@ -563,6 +612,13 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		}
 	}
 	
+	/**
+	 * Crear una nueva lista con los platos de una categoria en especifico
+	 * @param categoria categoria solicitada
+	 * @param platos lista original de platos
+	 * @return lista depurada de platos
+	 * @deprecated Intentar hacerlo directamente con una consulta a la base de datos
+	 */
 	private List<Plato> filtrarPorCategoria(String categoria, List<Plato> platos) {
 		List<Plato> platosAux = new ArrayList<Plato>();
 		
@@ -573,14 +629,15 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 					platosAux.add(platos.get(i));
 				}
 			}
-			//platos = platosAux;
-			
-			//System.out.println("platos -> " + platos);
-			//System.out.println("platos aux -> " + platosAux);
 		}
 		return platosAux;
 	}
 	
+	/**
+	 * Calcula el dia de hoy segun el sistema, en caso de que el dia sea nulo
+	 * @param dia Si es nulo, retorna el dia actual
+	 * @return Dia valido
+	 */
 	private String validarDia(String dia) {
 		String diaValido = dia;
 		
@@ -594,8 +651,12 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		return diaValido;
 	}
 	
-	//TODO mejorar este codigo tan paila
+	/**
+	 * A una lista de platos les asigna su restaurante, dependiendo de su parametro del nit del restaurante
+	 * @param platos platos que necesitan su restaurante
+	 */
 	private void asignarRestaurantesAPlatos(List<Plato> platos){
+		//TODO mejorar eficiencia de este codigo
 		Restaurante rest;
 		String nitTemp;
 		
@@ -610,6 +671,11 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		}
 	}
 	
+	/**
+	 * Verificar si una lista de dias, es correcta, osea con datos de 1 - 7
+	 * @param dias
+	 * @return true o false
+	 */
 	private boolean validarDias(String[] dias) {
 		boolean validos = false;
 		
@@ -634,7 +700,11 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		return validos;
 	}
 
-	//TODO mucho machetazo, arreglar
+	/**
+	 * A una lista de platos de un restaurante, se le configura la semana, que indica que dias se ofrece y que dias nó
+	 * @param platos Platos a configurar
+	 * @param nitRest identificador de un restauranre
+	 */
 	private void configurarSemanario(List<Plato> platos, String nitRest) {
 		List<Semanario> semanarios = miRepositorioSemanario.findByNitRest(nitRest);	
 		Plato plato = null;
@@ -666,6 +736,11 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 		}
 	}
 	
+	/**
+	 * Configurar una clase Semana con los dias que se va a ofrecer un plato
+	 * @param dias dias que se va a ofrecer en forma de cadena
+	 * @return Objeto semana con los dias que se ofrece, en true o false
+	 */
 	private Semana crearSemana(String dias) {
 		boolean lunes = false;
 		boolean martes = false;

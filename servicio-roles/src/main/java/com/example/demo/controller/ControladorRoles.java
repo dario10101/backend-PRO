@@ -24,13 +24,29 @@ import com.example.demo.service.ServicioRoles;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
+/**
+ * Servicio REST que expone los servicios de roles, que sirven para el login de usuarios, sean clientes, empleados 
+ * u otros stakeholders que se requieran en un futuro
+ * 
+ * @author Ruben
+ *
+ */
 @RestController
 @RequestMapping (value = "/roles")
 public class ControladorRoles {
 	
+	/**
+	 * Referencia al servicio de roles que vamos a utilizar 
+	 */
 	@Autowired
     private ServicioRoles miServicioRoles;
 	
+	/**
+	 * Listar todos los roles disponibles
+	 * @return Lista de roles
+	 * @deprecated
+	 */
 	@GetMapping
 	public ResponseEntity<List<Rol>> listarRoles(){		
 		List<Rol> roles = miServicioRoles.listarRoles();
@@ -41,9 +57,14 @@ public class ControladorRoles {
 
         return ResponseEntity.ok(roles);
 	}
-	
-		
-	
+			
+	/**
+	 * Obtener informacion de un unuario, dados sus datos de correo y contraseña, 
+	 * que puede ser empleado o cliente
+	 * @param user Datos de credenciales
+	 * @param result
+	 * @return Datos del usuario, sea cliente o empleado, solo si las credenciales son correctar
+	 */
 	/* Ejemplo
 	{
 	    "correo": "nacho@unicauca.edu.co",
@@ -66,6 +87,12 @@ public class ControladorRoles {
         return ResponseEntity.status(HttpStatus.CREATED).body(rol_usuario_creado);        
     }
 	
+	/**
+	 * Buscar un rol por su id
+	 * @param idRol Identificador del rol
+	 * 
+	 * @return Rol encontrado
+	 */
 	@GetMapping(value = "buscar-por-id/{idrol}")
     public ResponseEntity<Rol> buscarRolPorId(@PathVariable("idrol") Long idRol) {
 		System.out.println("Buscando restaurante ...");

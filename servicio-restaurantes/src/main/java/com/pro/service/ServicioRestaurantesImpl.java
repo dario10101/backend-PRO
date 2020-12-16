@@ -9,10 +9,19 @@ import com.pro.entity.Restaurante;
 import com.pro.repository.RepositorioRestaurantes;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Implementacion de los servicios disponibles para los restaurantes
+ * 
+ * @author Ruben
+ *
+ */
 @Service
 @RequiredArgsConstructor
 public class ServicioRestaurantesImpl implements ServicioRestaurantes{
 	
+	/**
+	 * Abstraccion del medio de almacenamiento de los restaurantes
+	 */
 	private final RepositorioRestaurantes miRepositorioRestaurantes;
 
 	@Override
@@ -137,7 +146,12 @@ public class ServicioRestaurantesImpl implements ServicioRestaurantes{
 	
 	
 	
-	
+	/**
+	 * Eliminar restaurantes con un status en especifico
+	 * @param status status a quitar de la lista
+	 * @param restaurantes Lista de restaurantes a filtrar
+	 * @deprecated Hacer esto directamente en una consulta a la base de datos
+	 */
 	private void eliminarPorStatus(String status, List<Restaurante> restaurantes){
 		if(restaurantes != null) {
 			for(int i = 0; i < restaurantes.size(); i++) {

@@ -29,14 +29,25 @@ import com.pro.service.ServicioEmpleados;
 import com.pro.service.ServicioRestaurantes;
 
 
-
+/**
+ * Controlador REST que sirve como puerta de entrada a los servicios de los restaurantes
+ * 
+ * @author Ruben
+ *
+ */
 @RestController
 @RequestMapping (value = "/restaurantes")
 public class controladorRestaurantes {
-
+	
+	/**
+	 * Referencia a los servicio de restaurantes
+	 */
 	@Autowired
     private ServicioRestaurantes miServicioRestaurantes;
-	
+		
+	/**
+	 * Referencia a los servicio de elmpleados, usando inyeccion de dependencias
+	 */
 	@Autowired
     private ServicioEmpleados miServicioEmpleados;
 	
@@ -44,6 +55,10 @@ public class controladorRestaurantes {
 	//------------------------RESTAURANTES -------------------------------
 	//--------------------------------------------------------------------
 	
+	/**
+	 * Listar todos los restaurantes
+	 * @return Lista de restaurantes
+	 */
 	@GetMapping
 	public ResponseEntity<List<Restaurante>> listarRestaurantes(){	
 		
@@ -60,6 +75,10 @@ public class controladorRestaurantes {
         return ResponseEntity.ok(restaurantes);
 	}
 	
+	/**
+	 * Listar los restaurantes activos, osea, con el status en ACTIVATED
+	 * @return Lista de restaurantes
+	 */
 	//http://localhost:8092/restaurantes/activos
 	@GetMapping(value = "activos")
 	public ResponseEntity<List<Restaurante>> listarRestaurantesActivos(){	
@@ -77,6 +96,10 @@ public class controladorRestaurantes {
         return ResponseEntity.ok(restaurantes);
 	}	
 	
+	/**
+	 * Listar los restaurantes inactivos, osea, con el status en DELETED
+	 * @return Lista de restaurantes
+	 */
 	//http://localhost:8092/restaurantes/inactivos
 	@GetMapping(value = "inactivos")
 	public ResponseEntity<List<Restaurante>> listarRestaurantesInactivos(){	
@@ -94,6 +117,11 @@ public class controladorRestaurantes {
         return ResponseEntity.ok(restaurantes);
 	}	
 	
+	/**
+	 * buSCAR UN RESTAURANTE POR SU IDENTIFICADOR, EL nit
+	 * @param nit Identificador del restaurante
+	 * @return Restaurante encontrado
+	 */
 	
 	@GetMapping(value = "buscar-por-nit/{nit}")
     public ResponseEntity<Restaurante> buscarRestaurantePorNit(@PathVariable("nit") String nit) {
@@ -105,6 +133,12 @@ public class controladorRestaurantes {
         return ResponseEntity.ok(restaurante);
     }
 	
+	/**
+	 * Buscar los restaurantes con el mismo nombre
+	 * @param rest Debe contener el nombre del restaurante como atributo
+	 * @param result
+	 * @return Restaurantes encontrados
+	 */
 	
 	/* Ejemplo:	  
  	http://localhost:8080/restaurantes/buscar-por-nombre
@@ -130,6 +164,12 @@ public class controladorRestaurantes {
 	    return ResponseEntity.ok(restaurantes);
 	}
 	
+	/**
+	 * Agregar un nuevo restaurante
+	 * @param restaurante Restaurante nuevo
+	 * @param result
+	 * @return Restaurante creado, si fue exitoso el registro
+	 */
 	
 	/* EJEMPLO
 	{
@@ -156,6 +196,12 @@ public class controladorRestaurantes {
         return ResponseEntity.status(HttpStatus.CREATED).body(restaurante_creado);        
     }
 	
+	/**
+	 * Actualizar la informacion de un restaurante
+	 * @param nit Identificador del restaurante
+	 * @param restaurante Restaurante con los datos a modificar
+	 * @return Restaurante modificado
+	 */
 	
 	/* Ejemplo:
 	{
@@ -177,6 +223,11 @@ public class controladorRestaurantes {
         return ResponseEntity.ok(restaurante_encontrado);
     }
 	
+	/**
+	 * Cambiar el estado de un restaurante a eliminado
+	 * @param nit Identificador del restaurante
+	 * @return Restaurante con su status modificado
+	 */
 	
 	@DeleteMapping(value = "/eliminar-restaurante/{nit}")
     public ResponseEntity<Restaurante> eliminarRestaurante(@PathVariable("nit") String nit){
@@ -187,6 +238,11 @@ public class controladorRestaurantes {
         return ResponseEntity.ok(restaurante_encontrado);
     }
 	
+	/**
+	 * Cambiar el estado de un restaurante a activo
+	 * @param nit Identificador del restaurante
+	 * @return Restaurante con su status modificado
+	 */
 	
 	@PutMapping(value = "/activar-restaurante/{nit}")
     public ResponseEntity<Restaurante> activarRestaurante(@PathVariable("nit") String nit){
@@ -203,6 +259,11 @@ public class controladorRestaurantes {
 	//------------------------EMPLEADOS ----------------------------------
 	//--------------------------------------------------------------------
 	
+	/**
+	 * Listar todos los empleados de un restaurante
+	 * @param nit Identificador del restaurante
+	 * @return Lista de empleados encontrados
+	 */
 	
 	@GetMapping(value = "listar-empleados/{nit}")
 	public ResponseEntity<List<Empleado>> listarEmpleados(@PathVariable("nit") String nit){	
@@ -220,6 +281,11 @@ public class controladorRestaurantes {
         return ResponseEntity.ok(empleados);
 	}
 	
+	/**
+	 * Listar solo empleados activos
+	 * @param nit Identificador del restaurante
+	 * @return Empleados encontrados
+	 */
 	//http://localhost:8092/restaurantes/listar-empleados/activos/1
 	@GetMapping(value = "listar-empleados/activos/{nit}")
 	public ResponseEntity<List<Empleado>> listarEmpleadosActivos(@PathVariable("nit") String nit){	
@@ -237,6 +303,11 @@ public class controladorRestaurantes {
         return ResponseEntity.ok(empleados);
 	}
 	
+	/**
+	 * Listar solo empleados inactivos
+	 * @param nit Identificador del restaurante
+	 * @return Empleados encontrados
+	 */
 	//http://localhost:8092/restaurantes/listar-empleados/inactivos/1
 	@GetMapping(value = "listar-empleados/inactivos/{nit}")
 	public ResponseEntity<List<Empleado>> listarEmpleadosInactivos(@PathVariable("nit") String nit){	
@@ -254,6 +325,11 @@ public class controladorRestaurantes {
         return ResponseEntity.ok(empleados);
 	}
 	
+	/**
+	 * BUscar un empleado por su identificador
+	 * @param id Identificacion del empleado
+	 * @return Empleado encontrado
+	 */
 	@GetMapping(value = "/buscar-empleado-por-id/{id}")
     public ResponseEntity<Empleado> buscarEmpleadoPorId(@PathVariable("id") Long id) {
 		Empleado emp =  miServicioEmpleados.buscarEmpleadoPorId(id);
@@ -263,6 +339,11 @@ public class controladorRestaurantes {
         return ResponseEntity.ok(emp);
     }
 	
+	/**
+	 * Buscar empleado por su correo
+	 * @param correo Direccion de correo del empleado
+	 * @return Empleado encontrado
+	 */
 	@GetMapping(value = "buscar-empleado-por-correo/{correo}")
     public ResponseEntity<Empleado> buscarEmpleadoPorCorreo(@PathVariable("correo") String correo) {
 		System.out.println("Buscando restaurante ...");
@@ -273,7 +354,11 @@ public class controladorRestaurantes {
         return ResponseEntity.ok(emp);
     }
 	
-	
+	/**
+	 * Validar informacion de acceso de un empleado
+	 * @param empleado Debe contener los campor correo y contraseña
+	 * @return Enpleado encontrado, solo si son validos correo y contraseña
+	 */
 	/* Ejemplo
 	{
 	    "correoEmpleado" : "ana@unicauca.edu.co",
@@ -289,7 +374,12 @@ public class controladorRestaurantes {
         return ResponseEntity.ok(empleado_encontrado);
     }
 		
-	
+	/**
+	 * Agregar un nuevo empleado a un restaurante	
+	 * @param empleado Empleado nuevo
+	 * @param result 
+	 * @return Empleado creado, si se crea correctamente
+	 */
 	/* CREAR EMPLEADO, EJEMPLO:
 	{
 	    "nombreEmpleado": "Pepe",
@@ -321,7 +411,12 @@ public class controladorRestaurantes {
         return ResponseEntity.status(HttpStatus.CREATED).body(empleado_creado);        
     }
 		
-	
+	/**
+	 * Modificar informacion de un empleado
+	 * @param id Identificacion del empleado
+	 * @param empleado Datos a modificar del dempleado
+	 * @return Empleado modificado
+	 */
 	/* Ejemplo
 	{
 	    "nombreEmpleado": "Nelson",
@@ -347,7 +442,11 @@ public class controladorRestaurantes {
         return ResponseEntity.ok(empleado_encontrado);
     }
 	
-	
+	/**
+	 * Cambiar estado de un empleado a eliminado
+	 * @param id Identificacion del empleado
+	 * @return Empleado modificado
+	 */
 	@DeleteMapping(value = "/eliminar-empleado/{id}")
     public ResponseEntity<Empleado> eliminarEmpleado(@PathVariable("id") Long id){
 		Empleado empleado_encontrado = miServicioEmpleados.eliminarEmpleado(id);
@@ -357,7 +456,11 @@ public class controladorRestaurantes {
         return ResponseEntity.ok(empleado_encontrado);
     }
 	
-		
+	/**
+	 * Cambiar estado de un empleado a activo	
+	 * @param id Identificacion del empleado
+	 * @return Empleado modificado
+	 */
 	@PutMapping (value = "/activar-empleado/{id}")
     public ResponseEntity<Empleado> activarEmpleado(@PathVariable  Long id){
 		Empleado empleado = miServicioEmpleados.activarEmpleado(id);

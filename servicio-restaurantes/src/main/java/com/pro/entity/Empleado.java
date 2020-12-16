@@ -20,16 +20,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase que se mapea a la base de datos con la informacion del empleado
+ * 
+ * @author Ruben
+ */
 @Entity
 @Table(name = "Empleado")
 @Data 
 @AllArgsConstructor @NoArgsConstructor @Builder
 public class Empleado {
 
+	/**
+	 * Identificacion del empleado
+	 */
 	@Id
     @Column(name = "id_empleado")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //private Long id;
     private Long idEmpleado;
     
     @Column(name = "nombre_empleado")
@@ -50,16 +57,27 @@ public class Empleado {
     @Column(name = "direccion_empleado")
     private String direccionEmpleado;
     
+    /**
+     * Buede almacenar la imagen codificada o una URL
+     */
     @Column(name = "img_empleado")
     private String imgEmpleado;
     
+    /**
+     * ACTIVATED o DELETED
+     */
     @Column(name = "status_empleado")
     private String statusEmpleado;
     
+    /**
+     * ID del Cargo que tiene en el restaurante
+     */
     @Column(name = "id_rol")
     private Long IdRolEmpleado;
     
-    //nuevo
+    /**
+     * Nombre del Cargo que tiene en el restaurante
+     */
     @Column(name = "nombre_rol")
     private String nombreRolEmpleado;
     
@@ -70,7 +88,9 @@ public class Empleado {
     private Restaurante restaurante;
 	
     
-    // alerta de machetazo
+    /**
+     * No se almacena en la base de datos
+     */    
 	@Transient
 	private String nitRestAux;
 }

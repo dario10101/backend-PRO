@@ -18,6 +18,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entidad que indica como se guardan los datos del semanario, los dias que se ofrece un plato, en la base de datos
+ * 
+ * @author Ruben
+ *
+ */
 @Entity
 @Table (name = "Semanario")  
 @Data
@@ -39,6 +45,10 @@ public class Semanario {
 	@Column(name = "nit_rest")
     private String nitRest;
 	
+	
+	/**
+	 * Dias que se ofrece el plato
+	 */
 	@Column(name = "dias")
     private String dias;
 	

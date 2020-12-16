@@ -5,6 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+
+/**
+ * Esta clase permite que las peticiones de frameworks como react funcionen
+ *
+ */
 @Configuration
 public class CorsConfig {
 	@Bean

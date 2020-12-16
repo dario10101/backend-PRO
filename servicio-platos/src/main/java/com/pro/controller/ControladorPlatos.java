@@ -29,16 +29,28 @@ import com.pro.model.Semana;
 import com.pro.service.ServicioPlatos;
 
 
+/**
+ * Esta clase expone los servicios de platos para ser consumidos por otras aplicaciones
+ * 
+ * @author Ruben
+ *
+ */
 @RestController
 @RequestMapping (value = "/platos")
 public class ControladorPlatos {
 	
 	
+	/**
+	 * Referencia a los servicios de platos, utilizando inversion de dependencias, automatizado por el framework
+	 */
 	@Autowired
     private ServicioPlatos miServicioPlatos;
 	
 	
-	
+	/**
+	 * Listar todos lo platos
+	 * @return platos encontrados
+	 */
 	@GetMapping
 	public ResponseEntity<List<Plato>> listarPlatos(){		
 		List<Plato> platos = miServicioPlatos.listarPlatos();
@@ -50,7 +62,11 @@ public class ControladorPlatos {
         return ResponseEntity.ok(platos);
 	}
 	
-	
+	/**
+	 * Buscar todos los platos de un restaurante
+	 * @param nit identificador del restaurante
+	 * @return Todos los platos del restaurante
+	 */
 	@GetMapping(value = "buscar-por-restaurante/{nitrest}")
     public ResponseEntity<List<Plato>> buscarPlatoPorRestaurante(@PathVariable("nitrest") String nit) {
         List<Plato> platos =  miServicioPlatos.buscarPlatoPorRestaurante(nit);
@@ -66,7 +82,11 @@ public class ControladorPlatos {
         return ResponseEntity.ok(platos);
     }
 	
-		
+	/**
+	 * Busca un plato por su identificador
+	 * @param idPlato identificador del plato
+	 * @return Plato encontrado
+	 */
 	@GetMapping(value = "buscar-por-id/{idplato}")
     public ResponseEntity<Plato> buscarPlatoPorId(@PathVariable("idplato") Long idPlato) {
         Plato plato =  miServicioPlatos.buscarPlatoPorId(idPlato);
@@ -77,14 +97,23 @@ public class ControladorPlatos {
     }
 		
 
-	 /* Ejemplo:
+	 
+	/**
+	 * Todos los platos con un mismo nombre de un restaurante
+	 * @param plato Plato enviado, de ahi se saca el nombre
+	 * @param nit Identificadore del restaurante
+	 * @param result
+	 * @return Platos encontrados
+	*/
+	/* 
+	Ejemplo:
 	  
-	 	http://localhost:8080/platos/buscar-por-nombre/1
-	 	body:
-	 	{
-    		"nombrePlato": "Carne asada"
-	 	}	  
-	 */
+ 	http://localhost:8080/platos/buscar-por-nombre/1
+ 	body:
+ 	{
+		"nombrePlato": "Carne asada"
+ 	}	  
+	*/
 	@PostMapping(value = "buscar-por-nombre/{nitrest}")
     public ResponseEntity<List<Plato>> buscarPlatoPorNombre(@RequestBody Plato plato, @PathVariable("nitrest") String nit, BindingResult result) {
 		List<Plato> platos =  miServicioPlatos.buscarPlatoPorNombre(nit, plato.getNombrePlato());
@@ -105,6 +134,12 @@ public class ControladorPlatos {
 	  
  	http://localhost:8080/platos/buscar-por-status/1/ACTIVATED	  
 	*/
+	/**
+	 * Todos los platos con un mismo status, de un restaurante en especifico
+	 * @param nit Identificadore del restaurante
+	 * @param status (ACTIVATED o DELETED)
+	 * @return
+	 */
 	@GetMapping(value = "buscar-por-status/{nitrest}/{status}")
     public ResponseEntity<List<Plato>> buscarPlatoPorStatus(@PathVariable("nitrest") String nit, @PathVariable("status") String status) {
 		List<Plato> platos =  miServicioPlatos.buscarPlatoPorStatus(nit, status);
@@ -129,6 +164,13 @@ public class ControladorPlatos {
 		"categoriaPlato": "plato-especial"
  	}	  
     */
+	/**
+	 * Todos los platos con una misma categoria de un restaurante 
+	 * @param plato Clase plato, de donde se saca la categoria
+	 * @param nit Identificador del restaurante 
+	 * @param result
+	 * @return Platos encontrados
+	 */
 	@PostMapping(value = "buscar-por-categoria/{nitrest}")
     public ResponseEntity<List<Plato>> buscarPlatoPorCategoria(@RequestBody Plato plato, @PathVariable("nitrest") String nit, BindingResult result) {
 		List<Plato> platos =  miServicioPlatos.buscarPlatoPorCategoria(nit, plato.getCategoriaPlato());
@@ -161,6 +203,12 @@ public class ControladorPlatos {
 	    "nitRest": 1
 	}
 	*/
+	/**
+	 * Crear nuevo plato
+	 * @param plato Plato nuevo
+	 * @param result
+	 * @return Plato creado
+	 */
 	@PostMapping(value = "crear-plato")
 	public ResponseEntity<Plato> crearPlato(@Valid @RequestBody Plato plato, BindingResult result){		
 		if (result.hasErrors()){     
@@ -193,6 +241,12 @@ public class ControladorPlatos {
 	    "idRest": 1
 	}
 	*/
+	/**
+	 * Actualizar un plato
+	 * @param id id del plato que se quiere actualizar
+	 * @param plato nuevos datos del plato
+	 * @return Plato actualizado
+	 */
 	@PutMapping(value = "/actualizar-plato/{id}")
     public ResponseEntity<Plato> actualizarPlato(@PathVariable("id") Long id, @Valid @RequestBody Plato plato){
         plato.setIdPlato(id);
@@ -203,7 +257,11 @@ public class ControladorPlatos {
         return ResponseEntity.ok(plato_encontrado);
     }
 		
-	
+	/**
+	 * Cambiar estado de un plato de activo a eliminado
+	 * @param id Identificador del plato
+	 * @return Plato encontrado
+	 */
 	@DeleteMapping(value = "/eliminar-plato/{id}")
     public ResponseEntity<Plato> eliminarPlato(@PathVariable("id") Long id){
 		Plato plato_encontrado = miServicioPlatos.eliminarPlato(id);
@@ -213,7 +271,11 @@ public class ControladorPlatos {
         return ResponseEntity.ok(plato_encontrado);
     }
 		
-	
+	/**
+	 * Cambiar estado de un plato de eliminado a activo
+	 * @param id
+	 * @return
+	 */
 	@PutMapping (value = "/activar-plato/{id}")
     public ResponseEntity<Plato> activarPlato(@PathVariable  Long id){
         Plato plato = miServicioPlatos.activarPlato(id);
@@ -229,6 +291,12 @@ public class ControladorPlatos {
 	
 	resta 1 unidad al stock, al plato con id 31
 	*/
+	/**
+	 * Actualizar el stock de un plato
+	 * @param id Identificador del plato
+	 * @param cantidad nueva cantidad
+	 * @return Plato encontrado
+	 */
 	@PutMapping (value = "/actualizar-cantidad/{id}")
     public ResponseEntity<Plato> actualizarCantidadPlato(@PathVariable  Long id ,@RequestParam(name = "cantidad", required = true) Double cantidad){
         Plato plato = miServicioPlatos.actualizarStock(id, cantidad);
@@ -238,7 +306,11 @@ public class ControladorPlatos {
         return ResponseEntity.ok(plato);
     }
 		
-	
+	/**
+	 * Buscar las categorias de un restaurante
+	 * @param nit Identificador del restaurante
+	 * @return Categorias disponibles
+	 */
 	@GetMapping(value = "buscar-categorias/{nitrest}")
     public ResponseEntity<List<String>> buscarCategoriasPorRestaurante(@PathVariable("nitrest") String nit) {
         List<String> categorias =  miServicioPlatos.buscarCategoriasPorRestaurante(nit);
@@ -259,6 +331,13 @@ public class ControladorPlatos {
 	//---------- METODOS DEL SEMANARIO--------------------------------------------------------------
 	//----------------------------------------------------------------------------------------------
 	
+	/**
+	 * BUscar los platos que se ofrecen en un dia especifico en un restaurante
+	 * @param nit Identificador del restaurante
+	 * @param dia Dia solicitado, si no se pasa, toma el dia actual del sistema
+	 * @param categoria no obligatorio, si no se pasa, busca en todas las categorias
+	 * @return Lista de platos del dia
+	 */
 	// http://localhost:8091/platos/semanario/buscar-por-dia/1?dia=1&categoria=principio
 	@GetMapping(value = "/semanario/buscar-por-dia/{nitrest}")
 	public ResponseEntity<List<Plato>> buscarPlatosPorDia(@PathVariable("nitrest") String nit, 
@@ -284,7 +363,11 @@ public class ControladorPlatos {
 		return ResponseEntity.ok(platos);
 	}
 	
-	
+	/**
+	 * BUscar los dias en que se ofrece un plato
+	 * @param idPlato identificador del plato
+	 * @return Dias en que se ofrece (1-7)
+	 */
 	// http://localhost:8091/platos/semanario/buscar-por-plato/1
 	@GetMapping(value = "/semanario/buscar-por-plato/{idplato}")
 	public ResponseEntity<List<String>> buscarSemanarioPlato(@PathVariable("idplato") Long idPlato){
@@ -320,6 +403,13 @@ public class ControladorPlatos {
 	    "domingo": false
 	}
 	*/
+	/**
+	 * Modificar los dias en que se ofrece un plato
+	 * @param idPlato Identificador del plato
+	 * @param semana Contiene los dias en que se ofrece y los dias en que nó
+	 * @param result
+	 * @return Plato encontrado
+	 */
 	@PostMapping(value = "/semanario/modificar/{idplato}")
 	public ResponseEntity<Plato> modificarSemanario(@PathVariable("idplato") Long idPlato, 
 													@Valid @RequestBody Semana semana, BindingResult result){
@@ -353,7 +443,11 @@ public class ControladorPlatos {
 		return ResponseEntity.status(HttpStatus.CREATED).body(plato_encontrado);
 	}
 
-	
+	/**
+	 * Eliminar todos los registros de semanario de un plato
+	 * @param idPlato Identificador del plato
+	 * @return Plato encontrado
+	 */
 	@DeleteMapping(value = "/semanario/eliminar/{idplato}")
 	public ResponseEntity<Plato> eliminarPlatoSemanario(@PathVariable("idplato") Long idPlato){
 		if(idPlato != null) {
