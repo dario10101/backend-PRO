@@ -26,10 +26,20 @@ import com.example.demo.service.ServicioClientes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Esta clase representa un controlador REST que consume los métodos 
+ * expuestos en la fachada (Interface ServicioClientes)
+ * @author Héctor Fabio Meneses
+ *
+ */
 @RestController
 @RequestMapping (value = "/clientes")
 public class ControladorClientes {
 	
+	/**
+	 * Atributo que permite acceder a los servicios expuestos en la fachada(Interface ServicioClientes),
+	 * por medio de la inyección de dependencias 
+	 */
 	@Autowired
     private ServicioClientes miServicioClientes;
 	

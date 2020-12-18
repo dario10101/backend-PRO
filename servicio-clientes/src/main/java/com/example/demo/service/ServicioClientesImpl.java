@@ -9,10 +9,18 @@ import com.example.demo.repository.RepositorioClientes;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Esta clase implementa los metodos definidos en la interface SevicioClientes
+ * @author Héctor Fabio Meneses
+ *
+ */
 @Service
 @RequiredArgsConstructor
 public class ServicioClientesImpl implements ServicioClientes {
 	
+	/**
+	 * Atributo que permite acceder a los servicios expuestos en la interface "RepositorioClientes".
+	 */
 	private final RepositorioClientes miRepositorioClientes;
 	
 	@Override
@@ -115,7 +123,6 @@ public class ServicioClientesImpl implements ServicioClientes {
 			if(!cliente_encontrado.getStatusCliente().equals("ACTIVATED")) {
 				cliente_encontrado = null;
 			}
-			//Validar contraseña, al machetazo
 			else if(!cliente_encontrado.getPasswordCliente().equals(cliente.getPasswordCliente())) {
 				cliente_encontrado = null;
 			}

@@ -1,4 +1,6 @@
 package com.restaurantePro.compras.servicio;
+import java.time.LocalDate;
+//import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,6 +16,7 @@ import com.restaurantePro.compras.entidad.ItemFactura;
 import com.restaurantePro.compras.modelo.Carrito;
 import com.restaurantePro.compras.modelo.Cliente;
 import com.restaurantePro.compras.modelo.Plato;
+import com.restaurantePro.compras.modelo.ReporteVentas;
 import com.restaurantePro.compras.repositorio.IntRepositorioItemFactura;
 import com.restaurantePro.compras.repositorio.IntRepositorioFactura;
 
@@ -31,8 +34,7 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	
 	@Autowired
 	private IntPlatoFeign objPlatoFeing;
-	
-	
+		
 	private List<ItemFactura> carrito = new ArrayList<ItemFactura>();
 	private Carrito objCarrito = new Carrito();
 
@@ -42,15 +44,10 @@ public class ServicioCompraImpl implements IntServicioCompra{
 		return objRepositorioItemFactura.findById(parIdPlato).orElse(null);
 	}
 
-	@Override
-	public List<ItemFactura> listarTodosLosItems() {
-		// TODO Auto-generated method stub
-		return objRepositorioItemFactura.findAll();
-	}
 
 	@Override
 	public Factura crearFactura(Factura parFactura) {
-		Factura objFactura = objRepositorioFactura.findByAtrNumeroFactura(parFactura.getAtrNumeroFactura());
+		Factura objFactura = objRepositorioFactura.buscarPorNumeroFactura(parFactura.getAtrNumeroFactura(),parFactura.getAtrIdRestaurante());
 		if(objFactura!= null) 
 		{
 			return objFactura;
@@ -63,11 +60,13 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	}
 
 	@Override
-	public Factura buscarFacturaPorId(Long parIdFactura) {
-		Factura objFactura = objRepositorioFactura.findById(parIdFactura).orElse(null);
+	public Factura buscarFacturaPorId(Long parIdFactura,String parIdRestaurante) {
+		Factura objFactura = objRepositorioFactura.buscarFactuaPorId(parIdFactura, parIdRestaurante);
 		if(objFactura != null) 
 		{
+			System.out.println("\n\n antes del feing \n\n");
 			Cliente objCliente = objClienteFeing.buscarClientePorId(objFactura.getAtrIdCliente()).getBody();
+			System.out.println("\n\n despues del feing \n\n");
 			objFactura.setObjCliente(objCliente);
 			//objFactura = objRepositorioFactura.save(objFactura);
 			List<ItemFactura> listaItems = objFactura.getListaItems().stream().map(ItemFactura->{
@@ -81,9 +80,9 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	}
 
 	@Override
-	public List<Factura> listarTodasLasFacturas() {
-		List<Factura> listaFacturas = objRepositorioFactura.findAll().stream().map(Factura->{
-			buscarFacturaPorId(Factura.getAtrIdFactua());
+	public List<Factura> listarTodasLasFacturas(String parIdRestaurante) {
+		List<Factura> listaFacturas = objRepositorioFactura.ListarFacturasPorIdRestaurante(parIdRestaurante).stream().map(Factura->{
+			buscarFacturaPorId(Factura.getAtrIdFactua(),parIdRestaurante);
 			return Factura;
 		}).collect(Collectors.toList());
 		return listaFacturas;
@@ -92,7 +91,7 @@ public class ServicioCompraImpl implements IntServicioCompra{
 
 	@Override
 	public Factura EliminarFactura(Factura parFactura) {
-		Factura objFactura = objRepositorioFactura.findByAtrNumeroFactura(parFactura.getAtrNumeroFactura());
+		Factura objFactura = objRepositorioFactura.buscarPorNumeroFactura(parFactura.getAtrNumeroFactura(),parFactura.getAtrIdRestaurante());
 		if(objFactura == null) 
 		{
 			return null;
@@ -102,8 +101,8 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	}
 
 	@Override
-	public Factura buscarPorNumeroFactura(String parNumFactura) {
-		Factura objFactura = objRepositorioFactura.findByAtrNumeroFactura(parNumFactura);
+	public Factura buscarPorNumeroFactura(String parNumFactura,String parIdRestaurante) {
+		Factura objFactura = objRepositorioFactura.buscarPorNumeroFactura(parNumFactura,parIdRestaurante);
 		if(objFactura != null) 
 		{
 			Cliente objCliente = objClienteFeing.buscarClientePorId(objFactura.getAtrIdCliente()).getBody();
@@ -119,11 +118,13 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	}
 
 	@Override
-	public Factura vender(Long parIdCliente) {
+	public Factura vender(Long parIdCliente, String parIdRestaurante) {
 		System.out.println("\n\nIngresando a veder\n\n");
-		Factura objFactura = Factura.builder().atrEstado(" CREADO ").atrIdCliente(parIdCliente).build();
+		Factura objFactura = Factura.builder().atrEstado(" CREADO ").atrIdCliente(parIdCliente).atrIdRestaurante(parIdRestaurante).build();
 		System.out.println("\n\n Factura creada\n\n");
-		objFactura.setListaItems(obtenerCarrito().getAtrListaItems());
+		Carrito objCarrito = obtenerCarrito();
+		objFactura.setListaItems(objCarrito.getAtrListaItems());
+		objFactura.setAtrTotalVenta(objCarrito.getAtrTotalApagar());
 		objFactura = crearFactura(objFactura);
 		return objFactura;
 	}
@@ -192,7 +193,13 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	@Override
 	public Carrito obtenerCarrito() {
 		objCarrito.setAtrTotalApagar(0.0);
-		objCarrito.setAtrListaItems(carrito);
+		List<ItemFactura> listaItems = carrito.stream().map(ItemFactura->{
+			Plato objPlato = objPlatoFeing.buscarPlatoPorId(ItemFactura.getAtrIdPlato()).getBody();
+			ItemFactura.setObjplato(objPlato);
+			return ItemFactura;
+		}).collect(Collectors.toList());
+		
+		objCarrito.setAtrListaItems(listaItems);
 		return objCarrito;
 	}
 
@@ -203,9 +210,9 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	}
 
 	@Override
-	public List<Factura> listarFacturasCliente(Long parIdCliente) {
-		List<Factura> listaFacturas = objRepositorioFactura.findByAtrIdCliente(parIdCliente).stream().map(Factura->{
-			buscarFacturaPorId(Factura.getAtrIdFactua());
+	public List<Factura> listarFacturasCliente(Long parIdCliente,String parIdRestaurante) {
+		List<Factura> listaFacturas = objRepositorioFactura.buscarPorIdCliente(parIdCliente, parIdRestaurante).stream().map(Factura->{
+			buscarFacturaPorId(Factura.getAtrIdFactua(),parIdRestaurante);
 			return Factura;
 		}).collect(Collectors.toList());
 		return listaFacturas;
@@ -213,22 +220,79 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	}
 
 	@Override
-	public List<Factura> listarFacturasAnuladas() {
-		List<Factura> listaFacturas = objRepositorioFactura.findByAtrEstado().stream().map(Factura->{
-			buscarFacturaPorId(Factura.getAtrIdFactua());
+	public List<Factura> listarFacturasAnuladas(String parIdRestaurante) {
+		List<Factura> listaFacturas = objRepositorioFactura.findByAtrEstado(parIdRestaurante).stream().map(Factura->{
+			buscarFacturaPorId(Factura.getAtrIdFactua(),parIdRestaurante);
 			return Factura;
 		}).collect(Collectors.toList());
 		return listaFacturas;
 	}
 
 	@Override
-	public List<Factura> listarFacturasActivas() {
-		List<Factura> listaFacturas = objRepositorioFactura.findByAtrEstado1().stream().map(Factura->{
-			buscarFacturaPorId(Factura.getAtrIdFactua());
+	public List<Factura> listarFacturasActivas(String parIdRestaurante) {
+		List<Factura> listaFacturas = objRepositorioFactura.findByAtrEstado1(parIdRestaurante).stream().map(Factura->{
+			buscarFacturaPorId(Factura.getAtrIdFactua(),parIdRestaurante);
 			return Factura;
 		}).collect(Collectors.toList());
 		return listaFacturas;
 	}
+
+	@Override
+	public List<Factura> ListarReporteVentas(String parFechaInicio, String parFechaFin,String parIdRestaurante) {
+		List<Factura> listaReporteVentas = objRepositorioFactura.findReporte(parFechaInicio,parFechaFin,parIdRestaurante).stream().map(Factura->{
+			buscarFacturaPorId(Factura.getAtrIdFactua(),parIdRestaurante);
+			return Factura;
+		}).collect(Collectors.toList());
+		
+		return listaReporteVentas;
+	}
+
+	@Override
+	public ReporteVentas obtenerReporteVentas(String parFechaInicio,String parFechaFin,String parIdRestaurante) {
+		ReporteVentas objReporteVentas = new ReporteVentas();
+		objReporteVentas.setAtrListaFacturas(ListarReporteVentas(parFechaInicio, parFechaFin,parIdRestaurante));
+		return objReporteVentas;
+	}
+
+	@Override
+	public ReporteVentas obtenerReporteVentasDelDia(String parIdRestaurate) {
+    	LocalDate fecha = LocalDate.now();
+        String fechaActual = fecha.getYear()+"-"+fecha.getMonthValue()+"-"+fecha.getDayOfMonth();
+		return obtenerReporteVentas(fechaActual, fechaActual,parIdRestaurate);
+	}
+
+	@Override
+	public Double obtenerReporteTotalVentasDelDia(String parIdRestaurante) {
+		ReporteVentas objReporteVentas = obtenerReporteVentasDelDia(parIdRestaurante);
+		double reporteTotalVentas = objReporteVentas.getAtrTotalVentas();
+		return reporteTotalVentas;
+	}
+
+	@Override
+	public List<ReporteVentas> obtenerReporteVentasPorFechas(String parFechaInicio, String parFechaFin,String parIdRestaurante) {
+		List<ReporteVentas> listaDeReportes = new ArrayList<>();
+		List<String> listaFechas =objRepositorioFactura.obtenerFechasParaReportes(parFechaInicio, parFechaFin,parIdRestaurante);
+		for (String fecha : listaFechas) {
+			listaDeReportes.add(obtenerReporteVentas(fecha, fecha,parIdRestaurante));
+		}
+		return listaDeReportes;
+	}
+
+
+	@Override
+	public List<Double> obtenerReporteTotalVentasPorDia(String parFechaInicio, String parFechaFin,String parIdRestaurante) {
+		List<Double> reportesPorDia = new ArrayList<>();
+		List<ReporteVentas> listaDeReportes = obtenerReporteVentasPorFechas(parFechaInicio, parFechaFin,parIdRestaurante);
+		for (ReporteVentas reporteVentas : listaDeReportes) {
+			reportesPorDia.add(reporteVentas.getAtrTotalVentas());
+		}
+		return reportesPorDia;
+	}
+	
+
+	
+
+
 
 
 
