@@ -41,7 +41,7 @@ public class ServicioPlatosImpl implements ServicioPlatos{
 	private final RepositorioSemanario miRepositorioSemanario;
 		
 	/**
-	 * Referencia al servicio de restaurantes, utilizando inversion de dependencias
+	 * Referencia al servicio de restaurantes, utilizando inyeccion de dependencias
 	 * automatizado por el framework 
 	 */
 	@Autowired	

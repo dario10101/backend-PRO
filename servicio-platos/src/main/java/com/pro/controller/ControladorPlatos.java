@@ -41,7 +41,7 @@ public class ControladorPlatos {
 	
 	
 	/**
-	 * Referencia a los servicios de platos, utilizando inversion de dependencias, automatizado por el framework
+	 * Referencia a los servicios de platos, utilizando inyeccion de dependencias, automatizado por el framework
 	 */
 	@Autowired
     private ServicioPlatos miServicioPlatos;

@@ -22,7 +22,7 @@ import com.pro.model.Restaurante;
 public interface RestauranteClient {
 	
 	/**
-	 * Se conecta con el microservicio de restaurantes y trae todos los restaurantes
+	 * Se conecta con el microservicio de restaurantes y trae todosS los restaurantes
 	 * @deprecated no deberia usarse
 	 * @return Todos los restaurantes
 	 */
@@ -38,3 +38,9 @@ public interface RestauranteClient {
 	public ResponseEntity<Restaurante> buscarRestaurantePorId(@PathVariable("nit") String nit);
 
 }
+
+
+
+
+
+

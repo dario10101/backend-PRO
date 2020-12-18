@@ -32,7 +32,7 @@ public class ServicioEmpleadosImpl implements ServicioEmpleados{
 	
 	/**
 	 * Atributo que conecta con el servicio de roles, para validar credenciales de empleados y sus roles
-	 * automatizado por el framework, usando inversion de dependencias
+	 * automatizado por el framework, usando inyeccion de dependencias
 	 */
 	@Autowired
 	RolClient clienteRoles;

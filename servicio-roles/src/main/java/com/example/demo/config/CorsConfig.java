@@ -7,7 +7,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 /**
- * Esta clase permite que las peticiones de frameworks como react funcionen
+ * Por razones de seguridad, los navegadores prohíben las llamadas AJAX a recursos que residen fuera 
+ * del origen actual, esta clase sirve para que las peticiones que llegan desde frameworks como 
+ * react que utilizan AJAX no sean rechazadas
+ * 
+ * @author Ruben
  *
  */
 @Configuration
