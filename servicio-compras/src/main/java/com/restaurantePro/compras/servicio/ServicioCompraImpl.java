@@ -44,15 +44,10 @@ public class ServicioCompraImpl implements IntServicioCompra{
 		return objRepositorioItemFactura.findById(parIdPlato).orElse(null);
 	}
 
-	@Override
-	public List<ItemFactura> listarTodosLosItems() {
-		// TODO Auto-generated method stub
-		return objRepositorioItemFactura.findAll();
-	}
 
 	@Override
 	public Factura crearFactura(Factura parFactura) {
-		Factura objFactura = objRepositorioFactura.findByAtrNumeroFactura(parFactura.getAtrNumeroFactura());
+		Factura objFactura = objRepositorioFactura.buscarPorNumeroFactura(parFactura.getAtrNumeroFactura(),parFactura.getAtrIdRestaurante());
 		if(objFactura!= null) 
 		{
 			return objFactura;
@@ -65,11 +60,13 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	}
 
 	@Override
-	public Factura buscarFacturaPorId(Long parIdFactura) {
-		Factura objFactura = objRepositorioFactura.findById(parIdFactura).orElse(null);
+	public Factura buscarFacturaPorId(Long parIdFactura,String parIdRestaurante) {
+		Factura objFactura = objRepositorioFactura.buscarFactuaPorId(parIdFactura, parIdRestaurante);
 		if(objFactura != null) 
 		{
+			System.out.println("\n\n antes del feing \n\n");
 			Cliente objCliente = objClienteFeing.buscarClientePorId(objFactura.getAtrIdCliente()).getBody();
+			System.out.println("\n\n despues del feing \n\n");
 			objFactura.setObjCliente(objCliente);
 			//objFactura = objRepositorioFactura.save(objFactura);
 			List<ItemFactura> listaItems = objFactura.getListaItems().stream().map(ItemFactura->{
@@ -83,9 +80,9 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	}
 
 	@Override
-	public List<Factura> listarTodasLasFacturas() {
-		List<Factura> listaFacturas = objRepositorioFactura.findAll().stream().map(Factura->{
-			buscarFacturaPorId(Factura.getAtrIdFactua());
+	public List<Factura> listarTodasLasFacturas(String parIdRestaurante) {
+		List<Factura> listaFacturas = objRepositorioFactura.ListarFacturasPorIdRestaurante(parIdRestaurante).stream().map(Factura->{
+			buscarFacturaPorId(Factura.getAtrIdFactua(),parIdRestaurante);
 			return Factura;
 		}).collect(Collectors.toList());
 		return listaFacturas;
@@ -94,7 +91,7 @@ public class ServicioCompraImpl implements IntServicioCompra{
 
 	@Override
 	public Factura EliminarFactura(Factura parFactura) {
-		Factura objFactura = objRepositorioFactura.findByAtrNumeroFactura(parFactura.getAtrNumeroFactura());
+		Factura objFactura = objRepositorioFactura.buscarPorNumeroFactura(parFactura.getAtrNumeroFactura(),parFactura.getAtrIdRestaurante());
 		if(objFactura == null) 
 		{
 			return null;
@@ -104,8 +101,8 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	}
 
 	@Override
-	public Factura buscarPorNumeroFactura(String parNumFactura) {
-		Factura objFactura = objRepositorioFactura.findByAtrNumeroFactura(parNumFactura);
+	public Factura buscarPorNumeroFactura(String parNumFactura,String parIdRestaurante) {
+		Factura objFactura = objRepositorioFactura.buscarPorNumeroFactura(parNumFactura,parIdRestaurante);
 		if(objFactura != null) 
 		{
 			Cliente objCliente = objClienteFeing.buscarClientePorId(objFactura.getAtrIdCliente()).getBody();
@@ -213,9 +210,9 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	}
 
 	@Override
-	public List<Factura> listarFacturasCliente(Long parIdCliente) {
-		List<Factura> listaFacturas = objRepositorioFactura.findByAtrIdCliente(parIdCliente).stream().map(Factura->{
-			buscarFacturaPorId(Factura.getAtrIdFactua());
+	public List<Factura> listarFacturasCliente(Long parIdCliente,String parIdRestaurante) {
+		List<Factura> listaFacturas = objRepositorioFactura.buscarPorIdCliente(parIdCliente, parIdRestaurante).stream().map(Factura->{
+			buscarFacturaPorId(Factura.getAtrIdFactua(),parIdRestaurante);
 			return Factura;
 		}).collect(Collectors.toList());
 		return listaFacturas;
@@ -223,18 +220,18 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	}
 
 	@Override
-	public List<Factura> listarFacturasAnuladas() {
-		List<Factura> listaFacturas = objRepositorioFactura.findByAtrEstado().stream().map(Factura->{
-			buscarFacturaPorId(Factura.getAtrIdFactua());
+	public List<Factura> listarFacturasAnuladas(String parIdRestaurante) {
+		List<Factura> listaFacturas = objRepositorioFactura.findByAtrEstado(parIdRestaurante).stream().map(Factura->{
+			buscarFacturaPorId(Factura.getAtrIdFactua(),parIdRestaurante);
 			return Factura;
 		}).collect(Collectors.toList());
 		return listaFacturas;
 	}
 
 	@Override
-	public List<Factura> listarFacturasActivas() {
-		List<Factura> listaFacturas = objRepositorioFactura.findByAtrEstado1().stream().map(Factura->{
-			buscarFacturaPorId(Factura.getAtrIdFactua());
+	public List<Factura> listarFacturasActivas(String parIdRestaurante) {
+		List<Factura> listaFacturas = objRepositorioFactura.findByAtrEstado1(parIdRestaurante).stream().map(Factura->{
+			buscarFacturaPorId(Factura.getAtrIdFactua(),parIdRestaurante);
 			return Factura;
 		}).collect(Collectors.toList());
 		return listaFacturas;
@@ -243,7 +240,7 @@ public class ServicioCompraImpl implements IntServicioCompra{
 	@Override
 	public List<Factura> ListarReporteVentas(String parFechaInicio, String parFechaFin,String parIdRestaurante) {
 		List<Factura> listaReporteVentas = objRepositorioFactura.findReporte(parFechaInicio,parFechaFin,parIdRestaurante).stream().map(Factura->{
-			buscarFacturaPorId(Factura.getAtrIdFactua());
+			buscarFacturaPorId(Factura.getAtrIdFactua(),parIdRestaurante);
 			return Factura;
 		}).collect(Collectors.toList());
 		

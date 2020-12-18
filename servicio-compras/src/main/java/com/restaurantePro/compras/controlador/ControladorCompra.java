@@ -19,25 +19,23 @@ import com.restaurantePro.compras.modelo.Carrito;
 import com.restaurantePro.compras.modelo.ReporteVentas;
 import com.restaurantePro.compras.servicio.IntServicioCompra;
 
-
+/**
+ * Esta clase representa un controlador REST que consume los métodos 
+ * expuestos en la fachada (Interface ServicioClientes)
+ * @author Héctor Fabio Meneses
+ *
+ */
 
 @RestController
 @RequestMapping(value = "/compras")
 public class ControladorCompra {
-	
+
+	/**
+	 * Atributo que permite acceder a los servicios expuestos en la fachada(Interface ServicioClientes),
+	 * por medio de la inyección de dependencias 
+	 */
 	@Autowired
 	private IntServicioCompra objServioCompra;
-	
-	@GetMapping("/items")
-	public ResponseEntity<List<ItemFactura>> listarItems()
-	{
-		List<ItemFactura> listaItem = objServioCompra.listarTodosLosItems();
-		if(listaItem.isEmpty()) 
-		{
-			return ResponseEntity.noContent().build();
-		}
-		return ResponseEntity.ok(listaItem);
-	}
 	
 	@GetMapping("/item/{idPlato}")
 	public ResponseEntity<ItemFactura> obtenerItemPorIdPlato(@PathVariable(name = "idPlato")Long parIdPlato)
@@ -57,10 +55,10 @@ public class ControladorCompra {
 		return ResponseEntity.status(HttpStatus.CREATED).body(objFactura);
 	}
 	
-	@GetMapping(value = "facturaPorId/{idFactura}")
-	public ResponseEntity<Factura> obtenerFacturaPorId(@PathVariable(name = "idFactura")Long parIdFactura)
+	@GetMapping(value = "facturaPorId/{idFactura}/{idRestaurante}")
+	public ResponseEntity<Factura> obtenerFacturaPorId(@PathVariable(name = "idFactura")Long parIdFactura,@PathVariable(name = "idRestaurante")String parIdRestaurante)
 	{
-		Factura objFactura = objServioCompra.buscarFacturaPorId(parIdFactura);
+		Factura objFactura = objServioCompra.buscarFacturaPorId(parIdFactura,parIdRestaurante);
 		if(objFactura==null) 
 		{
 			ResponseEntity.noContent().build();
@@ -68,10 +66,10 @@ public class ControladorCompra {
 		return ResponseEntity.ok(objFactura);
 	}
 	
-	@GetMapping(value = "facturaPorNumFactura/{numFactura}")
-	public ResponseEntity<Factura> obtenerFacturaPorNumFactura(@PathVariable(name = "numFactura")String parNumFactura)
+	@GetMapping(value = "facturaPorNumFactura/{numFactura}/{idRestaurante}")
+	public ResponseEntity<Factura> obtenerFacturaPorNumFactura(@PathVariable(name = "numFactura")String parNumFactura,@PathVariable(name = "idRestaurante")String parIdRestaurante)
 	{
-		Factura objFactura = objServioCompra.buscarPorNumeroFactura(parNumFactura);
+		Factura objFactura = objServioCompra.buscarPorNumeroFactura(parNumFactura,parIdRestaurante);
 		if(objFactura==null) 
 		{
 			ResponseEntity.noContent().build();
@@ -79,10 +77,10 @@ public class ControladorCompra {
 		return ResponseEntity.ok(objFactura);
 	}
 	
-	@GetMapping("/facturas")
-	public ResponseEntity<List<Factura>> listarTodasLasFacturas()
+	@GetMapping("/facturas/{idRestaurante}")
+	public ResponseEntity<List<Factura>> listarTodasLasFacturas(@PathVariable(name = "idRestaurante")String parIdRestaurante)
 	{
-		List<Factura> listaFacturas = objServioCompra.listarTodasLasFacturas();
+		List<Factura> listaFacturas = objServioCompra.listarTodasLasFacturas(parIdRestaurante);
 		if(listaFacturas.isEmpty()) 
 		{
 			return ResponseEntity.noContent().build();
@@ -164,10 +162,10 @@ public class ControladorCompra {
 		return ResponseEntity.status(HttpStatus.CREATED).body(objFactura);
 	}
 	
-	@GetMapping("/facturas/cliente/{idCliente}")
-	public ResponseEntity<List<Factura>> listarFacturasPorIdCliente(@PathVariable(name = "idCliente")Long parIdCliente)
+	@GetMapping("/facturas/cliente/{idCliente}/{idRestaurante}")
+	public ResponseEntity<List<Factura>> listarFacturasPorIdCliente(@PathVariable(name = "idCliente")Long parIdCliente,@PathVariable(name = "idRestaurante")String parIdRestaurante)
 	{
-		List<Factura> listaFacturas = objServioCompra.listarFacturasCliente(parIdCliente);
+		List<Factura> listaFacturas = objServioCompra.listarFacturasCliente(parIdCliente,parIdRestaurante);
 		if(listaFacturas.isEmpty()) 
 		{
 			return ResponseEntity.noContent().build();
@@ -175,10 +173,10 @@ public class ControladorCompra {
 		return ResponseEntity.ok(listaFacturas);
 	}
 	
-	@GetMapping("/facturasAnuladas")
-	public ResponseEntity<List<Factura>> listarFacturasAnuladas()
+	@GetMapping("/facturasAnuladas/{idRestaurante}")
+	public ResponseEntity<List<Factura>> listarFacturasAnuladas(@PathVariable(name = "idRestaurante")String parIdRestaurante)
 	{
-		List<Factura> listaFacturasAnuladas = objServioCompra.listarFacturasAnuladas();
+		List<Factura> listaFacturasAnuladas = objServioCompra.listarFacturasAnuladas(parIdRestaurante);
 		if(listaFacturasAnuladas.isEmpty()) 
 		{
 			return ResponseEntity.noContent().build();
@@ -186,10 +184,10 @@ public class ControladorCompra {
 		return ResponseEntity.ok(listaFacturasAnuladas);
 	}
 	
-	@GetMapping("/facturasActivas")
-	public ResponseEntity<List<Factura>> listarFacturasActivas()
+	@GetMapping("/facturasActivas/{idRestaurante}")
+	public ResponseEntity<List<Factura>> listarFacturasActivas(@PathVariable(name = "idRestaurante")String parIdRestaurante)
 	{
-		List<Factura> listaFacturasAnuladas = objServioCompra.listarFacturasActivas();
+		List<Factura> listaFacturasAnuladas = objServioCompra.listarFacturasActivas(parIdRestaurante);
 		if(listaFacturasAnuladas.isEmpty()) 
 		{
 			return ResponseEntity.noContent().build();
