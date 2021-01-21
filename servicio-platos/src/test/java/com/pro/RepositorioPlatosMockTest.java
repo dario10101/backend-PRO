@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.pro.entity.Plato;
+import com.pro.model.Restaurante;
 import com.pro.repository.RepositorioPlatos;
 
 @DataJpaTest
@@ -59,8 +60,7 @@ public class RepositorioPlatosMockTest {
                 .categoriaPlato("especial")
                 .statusPlato("ACTIVATE")
                 .cantidadPlato(15.0)
-                .ingredientesPlato("Frijoles, huevo, arroz, chicharron,salchicha")
-                .restaurante(Restaurante.builder().idRest(1L).build())
+                .restaurante(Restaurante.builder().nitRest("1").build())
                 .build();
 
 		miRepositorioPlatos.save(platoRecuperado);

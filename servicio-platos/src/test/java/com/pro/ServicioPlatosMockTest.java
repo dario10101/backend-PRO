@@ -12,8 +12,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.pro.entity.Plato;
-import com.pro.entity.Restaurante;
 import com.pro.repository.RepositorioPlatos;
+import com.pro.repository.RepositorioSemanario;
 import com.pro.service.ServicioPlatos;
 import com.pro.service.ServicioPlatosImpl;
 
@@ -23,13 +23,16 @@ public class ServicioPlatosMockTest {
 	@Mock
 	RepositorioPlatos objRepositorioPlatos;
 	
+	@Mock
+	RepositorioSemanario objRepositorioSemanario;
+	
 	private ServicioPlatos objServicioPlatos;
 	
 	@BeforeEach
 	public void propararPrueba() 
 	{
 		MockitoAnnotations.initMocks(this);
-		objServicioPlatos = new ServicioPlatosImpl(objRepositorioPlatos);
+		objServicioPlatos = new ServicioPlatosImpl(objRepositorioPlatos, objRepositorioSemanario);
 		Plato objPlato = Plato.builder()
 				.idPlato(1L)
                 .nombrePlato("Ollucos")
@@ -39,8 +42,6 @@ public class ServicioPlatosMockTest {
                 .categoriaPlato("Especial")
                 .statusPlato("ACTIVATED")
                 .cantidadPlato(15.0)
-                .ingredientesPlato("ENTRADAS INGREDIENTES POSTRES")
-                .restaurante(Restaurante.builder().idRest(2L).build())
                 .build();
 		Mockito.when(objRepositorioPlatos.findById(1L)).thenReturn(Optional.of(objPlato));		
 		Mockito.when(objRepositorioPlatos.findByNombrePlato("Ollucos")).thenReturn(List.of(objPlato));
@@ -50,7 +51,7 @@ public class ServicioPlatosMockTest {
 	@Test
 	public void realizarBusquedaPorNombre() 
 	{
-		List<Plato> listaPlatos = objServicioPlatos.buscarPlatoPorNombre("Ollucos");
+		List<Plato> listaPlatos = objServicioPlatos.buscarPlatoPorNombre("1", "Ollucos");
 		Assertions.assertThat(listaPlatos.get(0).getNombrePlato()).isEqualTo("Ollucos");
 	}
 	
