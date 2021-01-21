@@ -1,0 +1,26 @@
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 2 , ' factura menu del dia ' , 1 , NOW(), ' CREADO ', 0.0, '0' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 3 , ' factura menu del dia ' , 2 , NOW(), ' CREADO ', 0.0, '0' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 4 , ' factura menu del dia ' , 1 , NOW(), ' ANULADA ', 0.0, '0' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 5 , ' factura menu del dia ' , 1 , '2019-11-14', ' CREADO ', 0.0, '0' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 6 , ' factura menu del dia ' , 1 , '2019-11-15', ' CREADO ', 0.0, '0' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 7 , ' factura menu del dia ' , 1 , '2019-11-16', ' CREADO ', 0.0, '0' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 8 , ' factura menu del dia ' , 1 , '2019-11-17', ' CREADO ', 0.0, '0' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 9 , ' factura menu del dia ' , 1 , '2019-11-18', ' CREADO ', 0.0, '0' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 10 , ' factura menu del dia ' , 1 , '2020-09-16', ' CREADO ', 0.0, '0' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 11 , ' factura menu del dia ' , 1 , '2020-09-16', ' CREADO ', 0.0, '0' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 12 , ' factura menu del dia ' , 1 , '2020-09-16', ' ANULADA ', 0.0, '0' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 13 , ' factura menu del dia ' , 1 , '2020-10-14', ' CREADO ', 0.0, '0' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 14 , ' factura menu del dia ' , 1 , '2020-10-23', ' CREADO ', 100000.0, '2' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 15 , ' factura menu del dia ' , 1 , '2020-11-23', ' CREADO ', 250000.0, '2' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 16 , ' factura menu del dia ' , 1 , '2020-11-24', ' CREADO ', 2000000.0, '1' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 17 , ' factura menu del dia ' , 1 , '2020-11-24', ' CREADO ', 500000.0, '1' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 18 , ' factura menu del dia ' , 1 , '2020-11-24', ' CREADO ', 1000000.0, '1' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 19 , ' factura menu del dia ' , 1 , '2020-11-24', ' CREADO ', 1000000.0, '1' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 20 , ' factura menu del dia ' , 1 , '2020-11-25', ' CREADO ', 1000000.0, '2' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 21 , ' factura menu del dia ' , 1 , '2020-11-26', ' CREADO ', 2000000.0, '1' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 22 , ' factura menu del dia ' , 1 , '2020-11-26', ' CREADO ', 500000.0, '1' );
+INSERT INTO tbl_facturas(fac_id, fac_descripcion, fac_idcliente, fac_fecha, fac_estado, fac_totalventa, fac_idrestaurante) VALUES ( 23 , ' factura menu del dia ' , 1 , '2020-11-26', ' CREADO ', 1000000.0, '1' );
+
+INSERT INTO tbl_itemfacturas(item_id, item_cantidad, item_precio, item_producto_id) VALUES ( 1, 1, 178.89, 1 );
+INSERT INTO tbl_itemfacturas(item_id, item_cantidad, item_precio, item_producto_id) VALUES ( 2, 2, 12.5, 2 );
+INSERT INTO tbl_itemfacturas(item_id, item_cantidad, item_precio, item_producto_id) VALUES ( 3, 1, 40.06, 3 );
