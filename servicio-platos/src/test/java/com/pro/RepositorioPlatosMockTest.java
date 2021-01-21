@@ -43,13 +43,9 @@ public class RepositorioPlatosMockTest {
         	System.out.println("nombre: " + platos.get(i).getNombrePlato());
         }
         System.out.println("\n\n");
-<<<<<<< HEAD
-        Assertions.assertThat(platos.size()).isEqualTo(3);
-=======
         //Assertions.assertThat(founds.size()).isEqualTo(3);
 		*/
 
->>>>>>> Ruben2
     }
 	
 	@Test

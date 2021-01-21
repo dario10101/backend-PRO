@@ -11,10 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RepositorioPlatos extends JpaRepository<Plato, Long> {
 	
-<<<<<<< HEAD
-	public List<Plato> findByRestaurante(Restaurante restaurante);
-	//TODO
-=======
 	//public List<Plato> findByRestaurante(Restaurante restaurante);
 	
 	/**
@@ -22,7 +18,6 @@ public interface RepositorioPlatos extends JpaRepository<Plato, Long> {
 	 * @param nombre_plato
 	 * @return Lista de platos
 	 */
->>>>>>> Ruben2
 	public List<Plato> findByNombrePlato(String nombre_plato);
 	
 	/**

@@ -39,13 +39,6 @@ import com.pro.service.ServicioPlatos;
 @RequestMapping (value = "/platos")
 public class ControladorPlatos {
 	
-<<<<<<< HEAD
-	// Servicio encargado de gestionar los platos
-	@Autowired	
-    private ServicioPlatos miServicioPlatos;
-    	
-	//Lista todos los platos 
-=======
 	
 	/**
 	 * Referencia a los servicios de platos, utilizando inyeccion de dependencias, automatizado por el framework
@@ -58,7 +51,6 @@ public class ControladorPlatos {
 	 * Listar todos lo platos
 	 * @return platos encontrados
 	 */
->>>>>>> Ruben2
 	@GetMapping
 	public ResponseEntity<List<Plato>> listarPlatos(){		
 		List<Plato> platos = miServicioPlatos.listarPlatos();
@@ -71,26 +63,6 @@ public class ControladorPlatos {
         return ResponseEntity.ok(platos);
 	}
 	
-<<<<<<< HEAD
-	// Buscar plato por el id en la url
-	@GetMapping(value = "buscar-por-id/{id}")
-    public ResponseEntity<Plato> buscarPlatoPorId(@PathVariable("id") Long id) {
-        Plato plato =  miServicioPlatos.buscarPlatoPorId(id);
-        
-        // No existe el plato
-        if (null==plato){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(plato);
-    }
-	
-	// Buscar plato por el nombre en la url
-	@GetMapping(value = "buscar-por-nombre/{nombre}")
-    public ResponseEntity<List<Plato>> buscarPlatoPorNombre(@PathVariable("nombre") String nombrePlato) {
-        List<Plato> platos =  miServicioPlatos.buscarPlatoPorNombre(nombrePlato);
-        
-        // No hay platos con ese nombre
-=======
 	/**
 	 * Buscar todos los platos de un restaurante
 	 * @param nit identificador del restaurante
@@ -104,7 +76,6 @@ public class ControladorPlatos {
             return ResponseEntity.notFound().build();
         }
         
->>>>>>> Ruben2
         if (platos.size() <= 0){
             return ResponseEntity.notFound().build();
         }
@@ -112,15 +83,6 @@ public class ControladorPlatos {
         return ResponseEntity.ok(platos);
     }
 	
-<<<<<<< HEAD
-	// Buscar los platos activos y eliminados (ACTIVATED o DELETED) en la url
-	@GetMapping(value = "buscar-por-status/{status}")
-    public ResponseEntity<List<Plato>> buscarPlatoPorStatus(@PathVariable("status") String statusPlato) {
-        List<Plato> platos =  miServicioPlatos.buscarPlatoPorStatus(statusPlato);
-        
-        // No hay platos con ese status
-        if (platos.size() <= 0){
-=======
 	/**
 	 * Busca un plato por su identificador
 	 * @param idPlato identificador del plato
@@ -130,20 +92,11 @@ public class ControladorPlatos {
     public ResponseEntity<Plato> buscarPlatoPorId(@PathVariable("idplato") Long idPlato) {
         Plato plato =  miServicioPlatos.buscarPlatoPorId(idPlato);
         if (null==plato){
->>>>>>> Ruben2
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(plato);
     }
 		
-<<<<<<< HEAD
-	// Buscar plato por la categoria en la url
-	@GetMapping(value = "buscar-por-categoria/{categoria}")
-    public ResponseEntity<List<Plato>> buscarPlatoPorCategoria(@PathVariable("categoria") String categoriaPlato) {
-        List<Plato> platos =  miServicioPlatos.buscarPlatoPorCategoria(categoriaPlato);
-        
-        // No hay platos con esa categoria
-=======
 
 	 
 	/**
@@ -170,26 +123,12 @@ public class ControladorPlatos {
             return ResponseEntity.notFound().build();
         }
         
->>>>>>> Ruben2
         if (platos.size() <= 0){
             return ResponseEntity.notFound().build();
         }
         
         return ResponseEntity.ok(platos);
     }
-<<<<<<< HEAD
-	
-	// Buscar todos lo platos con el id de un restaurante
-	@GetMapping(value = "/buscar-por-restaurante/{id}")
-    public ResponseEntity<List<Plato>> buscarPlatosPorRestaurante(@PathVariable("id") Long id) {
-		Restaurante restaurante  = Restaurante.builder().idRest(id).build();
-		
-		List<Plato> platos = miServicioPlatos.buscarPlatoPorRestaurante(restaurante);
-		
-		// No hay platos en el restaurante
-		if(platos.size() <= 0){
-            return ResponseEntity.noContent().build();
-=======
 		
 	
 	/* Ejemplo:
@@ -208,7 +147,6 @@ public class ControladorPlatos {
         
         if (platos == null){
             return ResponseEntity.notFound().build();
->>>>>>> Ruben2
         }
         
         if (platos.size() <= 0){
@@ -219,14 +157,6 @@ public class ControladorPlatos {
     }
 			
 	
-<<<<<<< HEAD
-	// Recive y guarda un nuevo plato, debe ser valido	
-	@PostMapping
-	public ResponseEntity<Plato> crearPlato(@Valid @RequestBody Plato plato, BindingResult result){
-        //System.out.println("\nLlega, id: \n" + plato.getIdPlato() + " desc: " + plato.getDescPlato() + "\n\n");
-		
-		// La peticion o el plato no son validos
-=======
 	/* Ejemplo:
 	  
  	http://localhost:8080/platos/buscar-por-categoria/1
@@ -282,17 +212,11 @@ public class ControladorPlatos {
 	 */
 	@PostMapping(value = "crear-plato")
 	public ResponseEntity<Plato> crearPlato(@Valid @RequestBody Plato plato, BindingResult result){		
->>>>>>> Ruben2
 		if (result.hasErrors()){     
 			System.out.println("\n\nTiene errores.\n\n");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));
         }
         
-<<<<<<< HEAD
-        //TODO enviar mensaje diferente si ya existe el plato
-        		
-=======
->>>>>>> Ruben2
         Plato plato_creado =  miServicioPlatos.crearPlato(plato);        
         
         if (plato_creado == null){
@@ -301,10 +225,6 @@ public class ControladorPlatos {
         
         return ResponseEntity.status(HttpStatus.CREATED).body(plato_creado);        
     }
-<<<<<<< HEAD
-
-	// Actualiza un plato
-=======
 	
 	
 	/* EJEMPLO
@@ -328,7 +248,6 @@ public class ControladorPlatos {
 	 * @param plato nuevos datos del plato
 	 * @return Plato actualizado
 	 */
->>>>>>> Ruben2
 	@PutMapping(value = "/actualizar-plato/{id}")
     public ResponseEntity<Plato> actualizarPlato(@PathVariable("id") Long id, @Valid @RequestBody Plato plato){
         plato.setIdPlato(id);
@@ -340,17 +259,12 @@ public class ControladorPlatos {
         }
         return ResponseEntity.ok(plato_encontrado);
     }
-<<<<<<< HEAD
-
-	// Cambia el estado de un metodo a DELETED
-=======
 		
 	/**
 	 * Cambiar estado de un plato de activo a eliminado
 	 * @param id Identificador del plato
 	 * @return Plato encontrado
 	 */
->>>>>>> Ruben2
 	@DeleteMapping(value = "/eliminar-plato/{id}")
     public ResponseEntity<Plato> eliminarPlato(@PathVariable("id") Long id){
 		Plato plato_encontrado = miServicioPlatos.eliminarPlato(id);
@@ -361,17 +275,12 @@ public class ControladorPlatos {
         }
         return ResponseEntity.ok(plato_encontrado);
     }
-<<<<<<< HEAD
-
-	// Cambia el estado de un metodo a ACTIVATED
-=======
 		
 	/**
 	 * Cambiar estado de un plato de eliminado a activo
 	 * @param id
 	 * @return
 	 */
->>>>>>> Ruben2
 	@PutMapping (value = "/activar-plato/{id}")
     public ResponseEntity<Plato> activarPlato(@PathVariable  Long id){
         Plato plato = miServicioPlatos.activarPlato(id);
@@ -383,10 +292,6 @@ public class ControladorPlatos {
         return ResponseEntity.ok(plato);
     }
 	
-<<<<<<< HEAD
-	// Suma el valor en cantidad al atock del plato, si se desea restar, pasar un numero negativo
-	@PutMapping (value = "/actualizar-cantidad/{id}")	
-=======
 	
 	/* Ejemplo
 	http://localhost:8080/platos/actualizar-cantidad/31?cantidad=-1 
@@ -400,7 +305,6 @@ public class ControladorPlatos {
 	 * @return Plato encontrado
 	 */
 	@PutMapping (value = "/actualizar-cantidad/{id}")
->>>>>>> Ruben2
     public ResponseEntity<Plato> actualizarCantidadPlato(@PathVariable  Long id ,@RequestParam(name = "cantidad", required = true) Double cantidad){
         Plato plato = miServicioPlatos.actualizarStock(id, cantidad);
         
@@ -571,9 +475,6 @@ public class ControladorPlatos {
 	
 	
 	
-<<<<<<< HEAD
-	//Construir mensaje de error
-=======
 	
 	//----------------------------------------------------------------------------------------------
 	private String configurarDias(Semana semana) {
@@ -591,7 +492,6 @@ public class ControladorPlatos {
 	}
 		
 	//----------------------------------------------------------------------------------------------	
->>>>>>> Ruben2
 	private String formatMessage( BindingResult result){
 		List<Map<String,String>> errors = result.getFieldErrors().stream()
                 .map(err ->{
