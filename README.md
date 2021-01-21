@@ -13,5 +13,3 @@ conozca sus tareas y tiempo de entrega, planificándose un total de cuatro entre
 Link al blog del proyecto: http://project.tonohost.com/
 
 Link al repositorio de front: https://github.com/MayraCastillo/Frontend-PRO/tree/Mayra2
-
-Nota: La rama del backend con el codigo actualizado y completo es la rama 'Ruben2'
